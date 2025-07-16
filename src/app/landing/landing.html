@@ -2,8 +2,8 @@
 <header class="navbar">
     <div class="navbar-brand">LLM ChatBot</div>
     <div class="navbar-actions">
-        <button class="signup-btn">Sign Up</button>
-        <button class="login-btn">Log In</button>
+        <button class="signup-btn" [routerLink]="['/signup']">Sign Up</button>
+        <button class="login-btn" [routerLink]="['/login']">Log In</button>
     </div>
 </header>
 
@@ -17,6 +17,6 @@
         A secure, scalable, and intelligent system that allows employees of an organization to query and retrieve project-related information from various document formats (PDF, Word, Excel) using a Large Language Model (LLM).
     </p>
     <div class="button-container">
-        <button class="get-started-btn">Get Started</button>
+        <button class="get-started-btn" routerLink="/login">Get Started</button>
     </div>
 </main>
