@@ -1,0 +1,122 @@
+/* Fullscreen container centered */
+.signup-container {
+    height: 100vh;
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 80px;
+    box-sizing: border-box;
+}
+
+/* Fixed Header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color: #007bff;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Logo text */
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Home link */
+.home-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Card wrapper */
+.signup-card {
+    background-color: white;
+    width: 360px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Title */
+.title {
+    text-align: center;
+    font-size: 24px;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+/* Form structure */
+.signup-form label {
+    display: block;
+    font-weight: 600;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+/* Input with icon */
+.input-group {
+    display: flex;
+    align-items: center;
+    background: #f1f1f1;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.input-group .icon {
+    margin-right: 8px;
+}
+
+input[type="text"],
+input[type="email"],
+select {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 8px;
+    font-size: 14px;
+}
+
+/* Dropdown style */
+select {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+/* Terms checkbox */
+.terms {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    font-size: 13px;
+}
+
+.terms input {
+    margin-right: 6px;
+}
+
+/* Submit button */
+.submit-btn {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}

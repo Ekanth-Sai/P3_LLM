@@ -1,0 +1,64 @@
+<div class="signup-container">
+    <div class="header">
+        <span class="logo">LLM Chatbot</span>
+        <a routerLink="/" class="home-link">Home</a>
+    </div>
+
+    <div class="signup-card">
+        <h2 class="title">Sign Up</h2>
+        <form class="signup-form" (ngSubmit)="onSignupSubmit()">
+            <label>First Name</label>
+            <div class="input-group">
+                <span class="icon">👤</span>
+                <input type="text" placeholder="Enter first name" />
+            </div>
+
+            <label>Last Name</label>
+            <div class="input-group">
+                <span class="icon">👤</span>
+                <input type="text" placeholder="Enter last name" />
+            </div>
+
+            <label>Email Id</label>
+            <div class="input-group">
+                <span class="icon">✉️</span>
+                <input type="email" placeholder="Enter email id" />
+            </div>
+
+            <label>Current Project</label>
+            <div class="input-group">
+                <span class="icon">👥</span> 
+                <select>
+                    <option disabled selected>Team Details</option>
+                    <option>Project A</option>
+                    <option>Project B</option>
+                </select>
+            </div>
+
+
+            <label>Designation</label>
+            <div class="input-group">
+                <span class="icon">💼</span>
+                <input type="text" placeholder="Enter your designation" />
+            </div>
+
+
+            <label>Manager Name</label>
+            <div class="input-group">
+                <span class="icon">👔</span> 
+                <select>
+                    <option disabled selected>Manager Name</option>
+                    <option>Manager 1</option>
+                    <option>Manager 2</option>
+                </select>
+            </div>
+
+            <div class="terms">
+                <input type="checkbox" />
+                <span>*Agree to the terms and conditions</span>
+            </div>
+
+            <button type="submit" class="submit-btn">Sign Up</button>
+        </form>
+    </div>
+</div>

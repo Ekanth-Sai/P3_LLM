@@ -1,0 +1,147 @@
+.bot-usage-container {
+    font-family: Arial, sans-serif;
+    background-color: #f7f8fa;
+    min-height: 100vh;
+}
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    background-color: #007bff;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.home-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.main-content {
+    padding: 30px;
+}
+
+.welcome-text {
+    margin-top: 50px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.subtext {
+    color: gray;
+    margin-bottom: 50px;
+}
+
+.chat-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 20px;
+    height: 715px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tab-bar {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    background: #f1f1f1;
+}
+
+.tab {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.tab.active {
+    background: white;
+    border-bottom: 3px solid #007aff;
+}
+
+.chat-body {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.bot-welcome {
+    flex: 1;
+    padding: 40px 20px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background: #f9f9f9;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bot-icon {
+    font-size: 32px;
+}
+
+.bot-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px 0 5px;
+}
+
+.bot-description {
+    color: #555;
+    font-size: 14px;
+}
+
+.chat-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+    margin-top: 20px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    outline: none;
+    font-size: 14px;
+}
+
+.send-btn {
+    margin-left: 10px;
+    background: #007aff;
+    border: none;
+    border-radius: 50%;
+    padding: 10px 12px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,18 @@
+<div class="admin-container">
+    <nav class="navbar">
+        <div class="nav-left">Admin</div>
+        <div class="nav-right">Home</div>
+    </nav>
+
+    <div class="dashboard-content">
+        <h2>Welcome to the Admin Dashboard</h2>
+
+        <div class="dropdown-card">
+            <select [(ngModel)]="selectedOption" (change)="navigateToPage()">
+                <option disables selected value="">Choose an Option</option>
+                <option value="pending">Pending Requests</option>
+                <option value="users">Existing Users</option>
+            </select>
+        </div>
+    </div>
+</div>

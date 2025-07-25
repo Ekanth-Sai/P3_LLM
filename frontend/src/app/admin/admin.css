@@ -1,0 +1,48 @@
+.admin-container {
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+    background-color: white;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    background-color: #007bff;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 80px;
+}
+
+.dashboard-content h2 {
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+.dropdown-card {
+    border: 1.5px solid #333;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+select {
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    min-width: 220px;
+    outline: none;
+}
