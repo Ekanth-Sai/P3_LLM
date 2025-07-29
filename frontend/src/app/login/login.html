@@ -16,17 +16,17 @@
         </div>
 
     <div class="login-box">
-        <form>
+        <form (ngSubmit)="onLogin()">
             <label>Email</label>
             <div class="input-group">
                 <span class="input-icon">👤</span>
-                <input type="email" placeholder="Enter Email">
+                <input type="email" placeholder="Enter Email" [(ngModel)]="email" required [ngModelOptions]="{standalone: true}">
             </div>
 
             <label>Password</label>
             <div class="input-group">
                 <span class="input-icon">🔒</span>
-                <input [type]="passwordVisible ? 'text': 'password'" placeholder="Enter Password">
+                <input [type]="passwordVisible ? 'text': 'password'" placeholder="Enter Password" [(ngModel)]="password" required [ngModelOptions]="{standalone: true}">
                 <span class="input-icon-right" (click)="togglePasswordVisibility()">{{ passwordVisible ? '👁️' : '👁️‍🗨️' }}</span>
             </div>
 

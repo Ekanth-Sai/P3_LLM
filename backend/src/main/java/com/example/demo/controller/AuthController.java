@@ -1,11 +1,8 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.LoginResponse;
@@ -17,6 +14,7 @@ import com.example.demo.security.JwtUtil;
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "*")
 public class AuthController {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -24,15 +22,19 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            User user = userRepository.findByEmail(loginRequest.getEmail())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!user.getPassword().equals(request.getPassword())) {
-            throw new RuntimeException("Invalid Password");
+            if (!user.getPassword().equals(loginRequest.getPassword())) {
+                throw new RuntimeException("Invalid Password");
+            }
+
+            String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
+            return ResponseEntity.ok(new LoginResponse(token, user.getRole()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new LoginResponse(null, null));
         }
-
-        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
-        return new LoginResponse(token, user.getRole());
     }
 }
