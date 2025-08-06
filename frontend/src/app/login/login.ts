@@ -33,17 +33,23 @@ export class LoginComponent {
   onLogin() {
     this.authService.login({ email: this.email, password: this.password }).subscribe({
       next: (response: any) => {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('role', response.role);
-        if (response.role === 'USER') {
-          this.router.navigate(['/bot-usage']);
+        if (response.status === 'success') {
+          localStorage.setItem('role', response.role);
+
+          if (response.role === 'USER') {
+            this.router.navigate(['/bot-usage']);
+          } else if (response.role === 'ADMIN') {
+            this.router.navigate(['/admin']);
+          } else {
+            alert('Unknown role');
+          }
         } else {
-          alert('Invalid role');
+          alert('Invalid credentials');
         }
       },
       error: (err: any) => {
         alert('Login failed');
-        console.error(err);
+        console.error(err)
       },
     });
   }
