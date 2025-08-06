@@ -1,76 +1,50 @@
-import { Component } from '@angular/core';
+// src/app/login/login.ts
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
-interface LoginResponse {
-  token: string;
-  role: string;
-}
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterModule, HttpClientModule, FormsModule],
+  imports: [FormsModule, RouterModule, CommonModule],
   templateUrl: './login.html',
-  styleUrls: ['./login.css']
+  styleUrls: ['./login.css'],
 })
   
 export class LoginComponent {
+  email = '';
+  password = '';
   passwordVisible = false;
-  email: string = '';
-  password: string = '';
 
-  constructor(private router: Router, private http: HttpClient) { }
+  private router = inject(Router);
+  private authService = inject(AuthService);
 
   togglePasswordVisibility() {
     this.passwordVisible = !this.passwordVisible;
   }
 
+  loginWithSSO() {
+    alert('SSO login is not implemented yet.')
+  }
+
   onLogin() {
-    if (!this.email || !this.password) {
-      alert('Please enter both email and password');
-      return;
-    }
-
-    const loginData = {
-      email: this.email,
-      password: this.password
-    };
-
-    console.log(loginData.email)
-    console.log(loginData.password)
-
-    this.http.post<LoginResponse>('http://localhost:8080/api/auth/login', loginData).subscribe({
-      next: (response) => {
-        if (response.token && response.role) {
-          // Store token in localStorage
-          localStorage.setItem('authToken', response.token);
-          localStorage.setItem('userRole', response.role);
-          
-          console.log('Login successful, role:', response.role);
-          
-          // Navigate based on role
-          if (response.role === 'ADMIN') {
-            this.router.navigate(['/admin']);
-          } else if (response.role === 'USER') {
-            this.router.navigate(['/bot-usage']);
-          } else {
-            console.error('Unknown role:', response.role);
-            alert('Unknown user role');
-          }
+    this.authService.login({ email: this.email, password: this.password }).subscribe({
+      next: (response: any) => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('role', response.role);
+        if (response.role === 'USER') {
+          this.router.navigate(['/bot-usage']);
         } else {
-          alert('Login failed: Invalid response from server');
+          alert('Invalid role');
         }
       },
-      error: (error) => {
-        console.error('Login error: ', error);
-        if (error.status === 400) {
-          alert('Login failed: Invalid credentials');
-        } else {
-          alert('Login failed: ' + (error.error?.message || 'Server error'));
-        }
-      }
+      error: (err: any) => {
+        alert('Login failed');
+        console.error(err);
+      },
     });
   }
 }

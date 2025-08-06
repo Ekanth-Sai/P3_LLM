@@ -9,35 +9,38 @@
 <!-- Login Container -->
 <div class="login-container">
     <div class="login-wrapper">
-        <div class="login-header">   
+        <div class="login-header">
             <span class="icon">📄</span>
             <h2>Welcome Back</h2>
             <p class="subheading">Sign in to your account to continue</p>
         </div>
 
-    <div class="login-box">
-        <form (ngSubmit)="onLogin()">
-            <label>Email</label>
-            <div class="input-group">
-                <span class="input-icon">👤</span>
-                <input type="email" placeholder="Enter Email" [(ngModel)]="email" required [ngModelOptions]="{standalone: true}">
-            </div>
+        <div class="login-box">
+            <form (ngSubmit)="onLogin()">
+                <label>Email</label>
+                <div class="input-group">
+                    <span class="input-icon">👤</span>
+                    <input type="email" name="email" placeholder="Enter Email" [(ngModel)]="email" required />
+                </div>
 
-            <label>Password</label>
-            <div class="input-group">
-                <span class="input-icon">🔒</span>
-                <input [type]="passwordVisible ? 'text': 'password'" placeholder="Enter Password" [(ngModel)]="password" required [ngModelOptions]="{standalone: true}">
-                <span class="input-icon-right" (click)="togglePasswordVisibility()">{{ passwordVisible ? '👁️' : '👁️‍🗨️' }}</span>
-            </div>
+                <label>Password</label>
+                <div class="input-group">
+                    <span class="input-icon">🔒</span>
+                    <input [type]="passwordVisible ? 'text' : 'password'" name="password" placeholder="Enter Password"
+                        [(ngModel)]="password" required />
+                    <span class="input-icon-right" (click)="togglePasswordVisibility()">
+                        {{ passwordVisible ? '👁️' : '👁️‍🗨️' }}
+                    </span>
+                </div>
 
-            <button class="login-btn" (click)="onLogin()">Login</button>
-            <button class="sso-btn">Login with SSO</button>
+                <button class="login-btn" type="submit">Login</button>
+                <button class="sso-btn" type="button" (click)="loginWithSSO()">Login with SSO</button>
 
-            <p class="register-text">
-                Don't have an account?
-                <a [routerLink]="['/signup']">Register</a> 
-            </p>
-        </form>
+                <p class="register-text">
+                    Don't have an account?
+                    <a [routerLink]="['/signup']">Register</a>
+                </p>
+            </form>
+        </div>
     </div>
-    </div>
-</div>
+</div>  
