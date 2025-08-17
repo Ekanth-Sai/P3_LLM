@@ -1,63 +1,79 @@
 <div class="signup-container">
+    <!-- Fixed Header -->
     <div class="header">
         <span class="logo">LLM Chatbot</span>
         <a routerLink="/" class="home-link">Home</a>
     </div>
 
+    <!-- Signup Card -->
     <div class="signup-card">
         <h2 class="title">Sign Up</h2>
         <form class="signup-form" (ngSubmit)="onSignupSubmit()">
+            <!-- First Name -->
             <label>First Name</label>
             <div class="input-group">
                 <span class="icon">👤</span>
-                <input type="text" placeholder="Enter first name" />
+                <input type="text" placeholder="Enter first name" [(ngModel)]="firstName" name="firstName" required />
             </div>
 
+            <!-- Last Name -->
             <label>Last Name</label>
             <div class="input-group">
                 <span class="icon">👤</span>
-                <input type="text" placeholder="Enter last name" />
+                <input type="text" placeholder="Enter last name" [(ngModel)]="lastName" name="lastName" required />
             </div>
 
+            <!-- Email -->
             <label>Email Id</label>
             <div class="input-group">
                 <span class="icon">✉️</span>
-                <input type="email" placeholder="Enter email id" />
+                <input type="email" placeholder="Enter email id" [(ngModel)]="email" name="email" required />
             </div>
 
+            <label>Password</label>
+            <div class="input-group">
+                <span class="icon">🔒</span>
+                <input type="password" placeholder="Enter password" [(ngModel)]="password" name="password" required />
+            </div>
+
+
+            <!-- Current Project -->
             <label>Current Project</label>
             <div class="input-group">
-                <span class="icon">👥</span> 
-                <select>
+                <span class="icon">👥</span>
+                <select [(ngModel)]="project" name="project" required>
                     <option disabled selected>Team Details</option>
                     <option>Project A</option>
                     <option>Project B</option>
                 </select>
             </div>
 
-
+            <!-- Designation -->
             <label>Designation</label>
             <div class="input-group">
                 <span class="icon">💼</span>
-                <input type="text" placeholder="Enter your designation" />
+                <input type="text" placeholder="Enter your designation" [(ngModel)]="designation" name="designation"
+                    required />
             </div>
 
-
+            <!-- Manager Name -->
             <label>Manager Name</label>
             <div class="input-group">
-                <span class="icon">👔</span> 
-                <select>
+                <span class="icon">👔</span>
+                <select [(ngModel)]="manager" name="manager" required>
                     <option disabled selected>Manager Name</option>
                     <option>Manager 1</option>
                     <option>Manager 2</option>
                 </select>
             </div>
 
+            <!-- Terms & Conditions -->
             <div class="terms">
-                <input type="checkbox" />
+                <input type="checkbox" [(ngModel)]="termsAccepted" name="terms" required />
                 <span>*Agree to the terms and conditions</span>
             </div>
 
+            <!-- Submit Button -->
             <button type="submit" class="submit-btn">Sign Up</button>
         </form>
     </div>

@@ -1,18 +1,72 @@
 <div class="admin-container">
+    <!-- Navbar -->
     <nav class="navbar">
-        <div class="nav-left">Admin</div>
-        <div class="nav-right">Home</div>
+        <div class="nav-left">Admin Dashboard</div>
+        <div class="nav-right" (click)="goBackToDashboard()" style="cursor:pointer">Home</div>
     </nav>
 
-    <div class="dashboard-content">
+    <!-- Dashboard View -->
+    <div class="dashboard-content" *ngIf="view==='dashboard'">
         <h2>Welcome to the Admin Dashboard</h2>
-
+        <p>Select an option below to manage users:</p>
         <div class="dropdown-card">
             <select [(ngModel)]="selectedOption" (change)="navigateToPage()">
-                <option disables selected value="">Choose an Option</option>
+                <option disabled selected value="">Choose an Option</option>
                 <option value="pending">Pending Requests</option>
                 <option value="users">Existing Users</option>
             </select>
         </div>
+    </div>
+
+    <!-- Existing Users Table -->
+    <div class="table-card" *ngIf="view==='existing'">
+        <h3>Existing Users</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td>{{user.id}}</td>
+                    <td><input [(ngModel)]="user.email" /></td>
+                    <td>
+                        <select [(ngModel)]="user.role">
+                            <option value="USER">USER</option>
+                            <option value="ADMIN">ADMIN</option>
+                        </select>
+                    </td>
+                    <td><button (click)="updateUser(user)">Update</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pending Users Table -->
+    <div class="table-card" *ngIf="view==='pending'">
+        <h3>Pending User Requests</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of pendingUsers">
+                    <td>{{user.id}}</td>
+                    <td>{{user.email}}</td>
+                    <td>
+                        <button class="accept-btn" (click)="handlePending(user,'accept')">Accept</button>
+                        <button class="decline-btn" (click)="handlePending(user,'decline')">Decline</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
