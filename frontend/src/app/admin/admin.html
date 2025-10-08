@@ -1,11 +1,13 @@
 <div class="admin-container">
-    <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-left">Admin Dashboard</div>
         <div class="nav-right" (click)="goBackToDashboard()" style="cursor:pointer">Home</div>
     </nav>
 
-    <!-- Dashboard View -->
+    <div *ngIf="message" [ngClass]="{'message-success': messageType === 'success', 'message-error': messageType === 'error'}">
+        {{message}}
+    </div>
+
     <div class="dashboard-content" *ngIf="view==='dashboard'">
         <h2>Welcome to the Admin Dashboard</h2>
         <p>Select an option below to manage users:</p>
@@ -14,11 +16,11 @@
                 <option disabled selected value="">Choose an Option</option>
                 <option value="pending">Pending Requests</option>
                 <option value="users">Existing Users</option>
+                <option value="bot-usage">Bot Usage</option>
             </select>
         </div>
     </div>
 
-    <!-- Existing Users Table -->
     <div class="table-card" *ngIf="view==='existing'">
         <h3>Existing Users</h3>
         <table class="admin-table">
@@ -46,7 +48,6 @@
         </table>
     </div>
 
-    <!-- Pending Users Table -->
     <div class="table-card" *ngIf="view==='pending'">
         <h3>Pending User Requests</h3>
         <table class="admin-table">
@@ -62,11 +63,30 @@
                     <td>{{user.id}}</td>
                     <td>{{user.email}}</td>
                     <td>
-                        <button class="accept-btn" (click)="handlePending(user,'accept')">Accept</button>
-                        <button class="decline-btn" (click)="handlePending(user,'decline')">Decline</button>
+                        <button class="accept-btn" (click)="handlePending(user, 'accept')">Accept</button>
+                        <button class="decline-btn" (click)="handlePending(user, 'decline')">Decline</button>
+                    </td>
+                </tr>
+                <tr *ngIf="decliningUser">
+                    <td colspan="3">
+                        <div>
+                            <textarea [(ngModel)]="declineReason" placeholder="Reason for declining {{decliningUser.email}}..."></textarea>
+                            <button (click)="confirmDecline()">Confirm Decline</button>
+                            <button (click)="cancelDecline()">Cancel</button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <form (submit)="onFileUpload($event)">
+        <input type="file" (change)="onFileSelected($event)" />
+        <button type="submit">Upload File</button>
+    </form>
+
+    <div *ngFor="let file of files">
+        <span>{{file.filename}}</span>
+        <button (click)="downloadFile(file)">Download File</button>
     </div>
 </div>

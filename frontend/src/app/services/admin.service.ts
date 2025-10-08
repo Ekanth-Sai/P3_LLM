@@ -26,7 +26,10 @@ getPendingUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.baseUrl}/pending-users`);
 }
 
-handlePendingUser(id: number, action: string, reason?: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/pending-users/${id}`, { action, reason });
+handlePendingUser(id: number, action: string, reason?: string) {
+    return this.http.post(`${this.baseUrl}/pending-users/${id}`, {
+    action,
+    reason: reason || ''
+    });
 }
 }

@@ -9,20 +9,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String firstName; // add this
-    private String lastName; // add this
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;
     private String role;
 
-    private boolean pending;
-    private String rejectionReason;
+    private String status;
 
-    private String project; // add this
-    private String designation; // add this
-    private String manager; // add this
+    private String project;
+    private String designation;
+    private String manager;
 
-    // getters and setters for all fields
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -71,20 +70,12 @@ public class User {
         this.role = role;
     }
 
-    public boolean isPending() {
-        return pending;
+    public String getStatus() {
+        return status;
     }
 
-    public void setPending(boolean pending) {
-        this.pending = pending;
-    }
-
-    public String getRejectionReason() {
-        return rejectionReason;
-    }
-
-    public void setRejectionReason(String rejectionReason) {
-        this.rejectionReason = rejectionReason;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getProject() {

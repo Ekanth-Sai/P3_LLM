@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.authdemo.repository.UserRepository;
 import com.example.authdemo.model.User;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @RestController
@@ -25,23 +25,22 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    // Fetch all users
-    @GetMapping("path")
-    public String getMethodName(@RequestParam String param) {
-        return new String();
-    }
-    
+    @GetMapping
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findByStatus("ACTIVE");
     }
 
-    // Delete user by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        if (!userRepository.existsById(id)) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (!optionalUser.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        userRepository.deleteById(id);
+
+        User user = optionalUser.get();
+        user.setStatus("DELETED");
+        userRepository.save(user);
+
         return ResponseEntity.ok(Map.of("status", "deleted"));
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmailAndPassword(String email, String password);
 
-    List<User> findByPending(boolean pending);
+    List<User> findByStatus(String status);
     
     Optional<User> findByEmail(String email);
 }

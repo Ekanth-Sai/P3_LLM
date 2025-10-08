@@ -27,7 +27,7 @@ public class SignupController {
         user.setEmail(payload.get("email"));
         user.setPassword(payload.get("password")); // <-- add this
         user.setRole("USER");
-        user.setPending(true);
+        user.setStatus("PENDING");
         user.setProject(payload.get("project"));
         user.setDesignation(payload.get("designation"));
         user.setManager(payload.get("manager"));
