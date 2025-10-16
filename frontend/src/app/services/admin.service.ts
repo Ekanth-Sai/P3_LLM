@@ -1,35 +1,32 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface User {
-    id: number;
-    email: string;
-    role: string;
-}
-
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class AdminService {
-private baseUrl = 'http://localhost:8080/admin';
+  private http = inject(HttpClient);
+  private javaApiUrl = 'http://localhost:8080/admin'; // Java backend for user management
+  private pythonApiUrl = 'http://localhost:5001'; // Python backend for role checks
 
-constructor(private http: HttpClient) {}
+  isAdmin(username: string): Observable<{ is_admin: boolean }> {
+    return this.http.get<{ is_admin: boolean }>(`${this.pythonApiUrl}/is-admin?username=${username}`);
+  }
 
-getExistingUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}/users`);
-}
+  getExistingUsers(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.javaApiUrl}/users`);
+  }
 
-updateUser(id: number, updates: Partial<User>): Observable<any> {
-    return this.http.put(`${this.baseUrl}/users/${id}`, updates);
-}
+  getPendingUsers(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.javaApiUrl}/pending-users`);
+  }
 
-getPendingUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}/pending-users`);
-}
+  updateUser(id: number, updates: any): Observable<any> {
+    return this.http.put(`${this.javaApiUrl}/users/${id}`, updates);
+  }
 
-handlePendingUser(id: number, action: string, reason?: string) {
-    return this.http.post(`${this.baseUrl}/pending-users/${id}`, {
-    action,
-    reason: reason || ''
-    });
-}
+  handlePendingUser(id: number, action: string, reason?: string): Observable<any> {
+    return this.http.post(`${this.javaApiUrl}/pending-users/${id}`, { action, reason });
+  }
 }

@@ -26,6 +26,19 @@ public class AdminController {
     @Autowired
     private UserFileRepository userFileRepository;
 
+    @GetMapping("/files")
+    public List<Map<String, Object>> getFiles() {
+        List<UserFile> files = userFileRepository.findAll();
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (UserFile file : files) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", file.getId());
+            map.put("filename", file.getFilename());
+            result.add(map);
+        }
+        return result;
+    }
+
     @GetMapping("/users")
     public List<Map<String, Object>> getUsers() {
         List<User> users = userRepository.findByStatus("ACTIVE");

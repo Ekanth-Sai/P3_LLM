@@ -7,6 +7,10 @@ class AccessManager:
 
     # In a real application, this would come from a database or configuration service.
     ROLES_PERMISSIONS: Dict[str, Dict[str, List[str]]] = {
+        "admin": {
+            "allowed_departments": ["HR", "Accounting", "Sales", "Legal", "General"],
+            "allowed_sensitivity": ["Internal", "Confidential", "Highly Confidential"]
+        },
         "hr_manager": {
             "allowed_departments": ["HR", "General"],
             "allowed_sensitivity": ["Internal", "Confidential"]
@@ -31,6 +35,7 @@ class AccessManager:
 
     # Dummy user-role mapping
     USERS_ROLES: Dict[str, List[str]] = {
+        "admin@example.com": ["admin"],
         "ekanthsaiy@gmail.com": ["executive"],
         "alice": ["hr_manager"],
         "bob": ["accounting_staff"],
