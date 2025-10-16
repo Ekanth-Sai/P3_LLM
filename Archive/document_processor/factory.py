@@ -8,6 +8,7 @@ from .docx_processor import DocxProcessor
 from .xlsx_processor import XlsxProcessor
 from .pdf_processor import PdfProcessor
 from .image_processor import ImageProcessor
+from .text_processor import TextProcessor
 
 class DocumentProcessorFactory:
     """Factory to get the correct document processor based on file extension."""
@@ -23,6 +24,7 @@ class DocumentProcessorFactory:
         ".bmp": ImageProcessor,
         ".tiff": ImageProcessor,
         ".tif": ImageProcessor,
+        ".txt": TextProcessor,
     }
 
     @staticmethod

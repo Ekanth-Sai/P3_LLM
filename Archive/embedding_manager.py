@@ -19,7 +19,7 @@ class EmbeddingManager:
         
         response = ollama.embed(model=EMBEDDING_MODEL_NAME, input=text)
         #print (response)
-        return response['embeddings']
+        return response['embeddings'][0]
         # except Exception as e:
         #     print(f"Error generating embedding with Ollama for text: '{text[:50]}...' Error: {e}")
         #     return [] # Return empty list on error

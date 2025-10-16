@@ -18,7 +18,14 @@
             </div>
 
             <div class="chat-body">
-                <div class="bot-welcome">
+                <!-- Message Display Area -->
+                <div class="message-area">
+                    <div *ngFor="let message of messages" class="message" [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
+                        <div class="message-bubble">{{ message.text }}</div>
+                    </div>
+                </div>
+
+                <div class="bot-welcome" *ngIf="messages.length === 0">
                     <div class="bot-icon">🤖</div>
                     <p class="bot-title">Welcome to LLM ChatBot</p>
                     <p class="bot-description">
@@ -27,8 +34,11 @@
                 </div>
 
                 <div class="chat-input">
-                    <input type="text" placeholder="Ask me about to explain the project">
-                    <button class="send-btn">📨</button>
+                    <input type="text" 
+                        placeholder="Ask me about to explain the project" 
+                        [(ngModel)]="newMessage" 
+                        (keydown.enter)="sendMessage()">
+                    <button class="send-btn" (click)="sendMessage()">📨</button>
                 </div>
             </div>
         </div>

@@ -74,7 +74,7 @@ class VectorDBManager:
                     "metadata": results['metadatas'][0][i],
                     "distance": results['distances'][0][i]
                 })
-        return processed_results[0]
+        return processed_results
 
     def reset_collection(self):
         """Deletes and recreates the collection, effectively clearing it."""

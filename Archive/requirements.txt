@@ -1,0 +1,12 @@
+flask
+Flask-Cors
+python-dotenv
+python-docx
+Pillow
+pytesseract
+PyPDF2
+openpyxl
+ollama
+numpy
+chromadb
+reportlab

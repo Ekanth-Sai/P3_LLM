@@ -35,6 +35,7 @@ export class LoginComponent {
       next: (response: any) => {
         if (response.status === 'success') {
           localStorage.setItem('role', response.role);
+          localStorage.setItem('email', this.email);
 
           if (response.role === 'USER') {
             this.router.navigate(['/bot-usage']);

@@ -82,6 +82,47 @@
     flex-direction: column;
     align-items: center;
     flex: 1;
+    position: relative; /* For positioning message area */
+}
+
+.message-area {
+    position: absolute;
+    top: 20px;
+    bottom: 80px; /* Space for chat input */
+    left: 20px;
+    right: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    display: flex;
+}
+
+.message-bubble {
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 70%;
+}
+
+.user-message {
+    justify-content: flex-end;
+}
+
+.user-message .message-bubble {
+    background-color: #007aff;
+    color: white;
+}
+
+.bot-message {
+    justify-content: flex-start;
+}
+
+.bot-message .message-bubble {
+    background-color: #e5e5ea;
+    color: black;
 }
 
 .bot-welcome {
@@ -115,11 +156,15 @@
 }
 
 .chat-input {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    padding: 0 20px;
+    width: calc(100% - 40px);
+    padding: 0;
     margin-top: 20px;
 }
 

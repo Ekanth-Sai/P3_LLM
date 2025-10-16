@@ -31,6 +31,7 @@ class AccessManager:
 
     # Dummy user-role mapping
     USERS_ROLES: Dict[str, List[str]] = {
+        "ekanthsaiy@gmail.com": ["executive"],
         "alice": ["hr_manager"],
         "bob": ["accounting_staff"],
         "charlie": ["sales_rep"],

@@ -104,6 +104,7 @@ class DocQASystem:
 
     def ingest_data_from_folder(self, folder_path: str):
         """Ingests all supported documents from a given folder."""
+        self.vector_db_manager.reset_collection()
         print(f"\n--- Ingesting data from: {folder_path} ---")
         for root, _, files in os.walk(folder_path):
             for file_name in files:
