@@ -4,7 +4,6 @@ import com.example.authdemo.model.User;
 import com.example.authdemo.model.UserFile;
 import com.example.authdemo.repository.UserFileRepository;
 import com.example.authdemo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -31,8 +30,23 @@ public class AdminController {
 		this.userFileRepository = userFileRepository;
 	}
 
-	@GetMapping("/users")
+
+    @GetMapping("/files")
+    public List<Map<String, Object>> getFiles() {
+        List<UserFile> files = userFileRepository.findAll();
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (UserFile file : files) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", file.getId());
+            map.put("filename", file.getFilename());
+            result.add(map);
+        }
+        return result;
+    }
+
+    @GetMapping("/users")
     public List<User> getUsers() {
+
         List<User> users = userRepository.findByStatus("ACTIVE");
 //        List<Map<String, Object>> result = new ArrayList<>();
 //        for (User user : users) {

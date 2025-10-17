@@ -10,6 +10,8 @@ from vector_db_manager import VectorDBManager
 from llm_qa_manager import LLM_QAManager
 from auth import AccessManager
 
+PROCESSED_FILES_LOG = os.path.join("chroma_db", "processed_files.log")
+
 class DocQASystem:
     def __init__(self):
         self.access_manager = AccessManager()
@@ -95,6 +97,10 @@ class DocQASystem:
             self.vector_db_manager.add_documents(processed_chunks, chunk_embeddings, metadatas)
             print(f"Successfully processed and added chunks from {file_path} to DB.")
 
+            # Log the processed file
+            with open(PROCESSED_FILES_LOG, "a") as f:
+                f.write(f"{file_path}\n")
+
         except FileNotFoundError as e:
             print(f"Error: {e}")
         except ValueError as e:
@@ -104,7 +110,6 @@ class DocQASystem:
 
     def ingest_data_from_folder(self, folder_path: str):
         """Ingests all supported documents from a given folder."""
-        self.vector_db_manager.reset_collection()
         print(f"\n--- Ingesting data from: {folder_path} ---")
         for root, _, files in os.walk(folder_path):
             for file_name in files:
@@ -160,10 +165,10 @@ class DocQASystem:
             elif len(allowed_filters["sensitivity"]) > 1:
                 chroma_filter["sensitivity"] = {"$in": allowed_filters["sensitivity"]}
         
-        # Combine filters with an AND if both department and sensitivity are present
+        # Combine filters with an OR if both department and sensitivity are present
         final_filter = {}
         if "department" in chroma_filter and "sensitivity" in chroma_filter:
-            final_filter["$and"] = [
+            final_filter["$or"] = [
                 {"department": chroma_filter["department"]},
                 {"sensitivity": chroma_filter["sensitivity"]}
             ]

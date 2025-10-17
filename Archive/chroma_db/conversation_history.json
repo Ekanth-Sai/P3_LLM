@@ -1,0 +1,104 @@
+[
+    {
+        "username": "admin@example.com",
+        "query": "Give the name of the project",
+        "response": "An error occurred while trying to generate a response from the AI (Ollama API Error).",
+        "timestamp": "2025-10-16T16:43:52.794383"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of the project?",
+        "response": "An error occurred while trying to generate a response from the AI (Ollama API Error).",
+        "timestamp": "2025-10-16T16:44:34.752735"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of the project and deadline?",
+        "response": "According to Document Chunks 1, 2, and 3, the name of the project is \"Phoenix\" and the deadline is December 15th.",
+        "timestamp": "2025-10-16T16:49:25.346690"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of the project?",
+        "response": "I couldn't find any relevant information that you are authorized to access.",
+        "timestamp": "2025-10-16T17:36:18.693824"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of the project?",
+        "response": "I couldn't find any relevant information that you are authorized to access.",
+        "timestamp": "2025-10-16T17:36:37.682785"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of the project?",
+        "response": "I couldn't find any relevant information that you are authorized to access.",
+        "timestamp": "2025-10-16T17:42:22.230024"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of the project?",
+        "response": "I couldn't find any relevant information that you are authorized to access.",
+        "timestamp": "2025-10-16T17:44:18.903431"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of the backend",
+        "response": "I can answer that! According to Document Chunk 1, there is no mention of a backend or any technical details about the project. The only information provided is the project code name (\"Phoenix\") and the deadline (December 15th). Therefore, I cannot find the information about the name of the backend in the provided context.",
+        "timestamp": "2025-10-16T17:48:01.807653+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of he project?",
+        "response": "According to the document chunk, the name of the project is \"Phoenix\".",
+        "timestamp": "2025-10-16T17:48:42.579461+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of the candidate from the resume?",
+        "response": "I apologize, but the context does not provide any information about a candidate or their resume. The only information provided is the project code name (\"Phoenix\") and the deadline (December 15th). Therefore, I cannot find the information you are looking for in this context.",
+        "timestamp": "2025-10-16T17:49:01.780203+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of the candidate from the resume",
+        "response": "I apologize, but I cannot find any information about a candidate or their resume in the provided context. The only information available is that the project code name is \"Phoenix\" and the deadline is December 15th. Therefore, I do not have enough information to answer your question.",
+        "timestamp": "2025-10-16T17:50:15.458444+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of the candidate fron the resume?",
+        "response": "I can find that information in Document Chunk 2!\n\nThe name of the candidate mentioned in the resume is Yellanki Ekantha Sai Sundar.",
+        "timestamp": "2025-10-16T17:55:47.249421+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of the project and give its deadline",
+        "response": "Based on Document Chunk 1, I can provide the following answer:\n\nThe project code name is \"Phoenix\" and the deadline is December 15th.",
+        "timestamp": "2025-10-16T17:56:11.981126+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "Mention the projects which Ekanth did",
+        "response": "I can help with that!\n\nUnfortunately, I couldn't find any information about specific projects that Ekanth worked on. The provided context only includes details about his job titles, platforms, and dates of employment or education. There is no mention of specific projects he was involved in.\n\nIf you need more information or want me to look elsewhere, please let me know!",
+        "timestamp": "2025-10-16T17:56:45.778260+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "Give his job titles",
+        "response": "Based on the provided context (Documents 1-5), I can extract the following job title:\n\n* Software Developer: Intern\n\nThis is mentioned in Document 5 under the \"Software Developer\" heading.",
+        "timestamp": "2025-10-16T17:57:21.746536+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is his education?",
+        "response": "According to Document Chunk 2, his education is a Bachelor of Technology in Computer Science and Engineering from Gokaraju Rangaraju Institute of Engineering and Technology in Hyderabad, Telangana, with a CGPA of 9.1.",
+        "timestamp": "2025-10-16T17:57:54.957303+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "Give the questions of the assignment",
+        "response": "Based on Document Chunks 1 and 3, I can provide you with the questions from Assignment-1. Here they are:\n\n1. What are the different levels of NLP? Explain them with suitable examples.\n2. Explain NLP pipeline in detail .\n3. Explain different components of NLP system and Discuss different phases of NLP.\n4. Explain the role of grammar in language processing.\n5. Discuss the unique challenges involved in processing Indian languages compared to English. Explain with examples related to morphology, syntax, or script.\n6. Compare grammar-based language models and statistical language models.\n\nLet me know if you need help with answering these questions!",
+        "timestamp": "2025-10-16T17:59:25.053685+00:00"
+    }
+]

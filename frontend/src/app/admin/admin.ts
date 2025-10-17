@@ -55,11 +55,11 @@ export class AdminComponent implements OnInit {
   }
 
   loadUsers() {
-    this.adminService.getExistingUsers().subscribe(data => this.users = data);
+    this.adminService.getExistingUsers().subscribe((data: any[]) => this.users = data);
   }
 
   loadPendingUsers() {
-    this.adminService.getPendingUsers().subscribe(data => this.pendingUsers = data);
+    this.adminService.getPendingUsers().subscribe((data: any[]) => this.pendingUsers = data);
   }
 
   updateUser(user: any) {

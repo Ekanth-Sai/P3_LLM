@@ -12,12 +12,12 @@
 
         <div class="chat-card">
             <div class="tab-bar">
-                <button class="tab active">💬 Chat</button>
-                <button class="tab">📄 Documents</button>
-                <button class="tab">🕒 History</button>
+                <button class="tab" [class.active]="activeTab === 'chat'" (click)="showChat()">💬 Chat</button>
+                <button class="tab" [class.active]="activeTab === 'documents'" *ngIf="isAdmin" (click)="showDocuments()">📄 Documents</button>
+                <button class="tab" [class.active]="activeTab === 'history'" (click)="showHistory()">🕒 History</button>
             </div>
 
-            <div class="chat-body">
+            <div class="chat-body" *ngIf="activeTab === 'chat'">
                 <!-- Message Display Area -->
                 <div class="message-area">
                     <div *ngFor="let message of messages" class="message" [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
@@ -39,6 +39,30 @@
                         [(ngModel)]="newMessage" 
                         (keydown.enter)="sendMessage()">
                     <button class="send-btn" (click)="sendMessage()">📨</button>
+                </div>
+            </div>
+
+            <div class="history-body" *ngIf="activeTab === 'history'">
+                <div *ngIf="history.length === 0" class="no-history">
+                    <p>No conversation history found.</p>
+                </div>
+                <div *ngIf="history.length > 0" class="history-list">
+                    <div *ngFor="let conv of history" class="history-item">
+                        <p><strong>You:</strong> {{ conv.query }}</p>
+                        <p><strong>Bot:</strong> {{ conv.response }}</p>
+                        <p class="timestamp">{{ conv.timestamp | date:'medium' }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="documents-body" *ngIf="activeTab === 'documents'">
+                <div *ngIf="documents.length === 0" class="no-documents">
+                    <p>No documents found.</p>
+                </div>
+                <div *ngIf="documents.length > 0" class="documents-list">
+                    <ul>
+                        <li *ngFor="let doc of documents">{{ doc.filename }}</li>
+                    </ul>
                 </div>
             </div>
         </div>
