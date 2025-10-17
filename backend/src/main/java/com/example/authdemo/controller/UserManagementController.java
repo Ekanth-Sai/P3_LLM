@@ -13,7 +13,7 @@ import com.example.authdemo.security.UserService;
 
 @RestController
 @RequestMapping("/admin")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserManagementController {
 
     private final UserService userService;
