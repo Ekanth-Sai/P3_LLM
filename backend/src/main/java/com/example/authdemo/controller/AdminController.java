@@ -4,7 +4,6 @@ import com.example.authdemo.model.User;
 import com.example.authdemo.model.UserFile;
 import com.example.authdemo.repository.UserFileRepository;
 import com.example.authdemo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -20,11 +19,17 @@ import java.util.*;
 @CrossOrigin(origins = "http://localhost:4200")
 public class AdminController {
 
-    @Autowired
+
     private UserRepository userRepository;
 
-    @Autowired
     private UserFileRepository userFileRepository;
+    
+    public AdminController(UserRepository userRepository, UserFileRepository userFileRepository) {
+		super();
+		this.userRepository = userRepository;
+		this.userFileRepository = userFileRepository;
+	}
+
 
     @GetMapping("/files")
     public List<Map<String, Object>> getFiles() {
@@ -40,18 +45,24 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public List<Map<String, Object>> getUsers() {
+    public List<User> getUsers() {
+
         List<User> users = userRepository.findByStatus("ACTIVE");
-        List<Map<String, Object>> result = new ArrayList<>();
-        for (User user : users) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", user.getId());
-            map.put("email", user.getEmail());
-            map.put("role", user.getRole());
-            result.add(map);
-        }
-        return result;
+//        List<Map<String, Object>> result = new ArrayList<>();
+//        for (User user : users) {
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("id", user.getId());
+//            map.put("email", user.getEmail());
+//            map.put("role", user.getRole());
+//            result.add(map);
+//        }
+        return users;
     }
+	
+	@GetMapping("/users/{id}")
+	public Optional<User> getUserById(@PathVariable Long id) {
+		return userRepository.findById(id);
+	}
 
     @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody Map<String, String> updates) {
