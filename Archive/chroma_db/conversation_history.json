@@ -100,5 +100,35 @@
         "query": "Give the questions of the assignment",
         "response": "Based on Document Chunks 1 and 3, I can provide you with the questions from Assignment-1. Here they are:\n\n1. What are the different levels of NLP? Explain them with suitable examples.\n2. Explain NLP pipeline in detail .\n3. Explain different components of NLP system and Discuss different phases of NLP.\n4. Explain the role of grammar in language processing.\n5. Discuss the unique challenges involved in processing Indian languages compared to English. Explain with examples related to morphology, syntax, or script.\n6. Compare grammar-based language models and statistical language models.\n\nLet me know if you need help with answering these questions!",
         "timestamp": "2025-10-16T17:59:25.053685+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "Give me the name of the project and the deadline I should work on",
+        "response": "Based on the provided context (Document Chunks 1, 2, 3, 4), I can find the information you're looking for!\n\nThe project code name is \"Phoenix\", and the deadline is December 15th.",
+        "timestamp": "2025-10-21T15:44:36.015277+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "List the internships that the candidate has worked on",
+        "response": "Based on the provided context (Document Chunks 1 & 2), I can see that the candidate has worked as a Software Developer Intern at Platform 3 Solutions Pvt. Ltd. since May 2025. There is no information about multiple internships, so it appears that this is the only internship the candidate has worked on.",
+        "timestamp": "2025-10-21T15:45:24.801936+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "Give the questions from the assignments",
+        "response": "Based on the provided context (Document Chunks 1, 2, 3, 4, and 5), I can extract the following questions from the assignment:\n\n1. What are the different levels of NLP? Explain them with suitable examples.\n2. Explain NLP pipeline in detail .\n3. Explain different components of NLP system and Discuss different phases of NLP.\n4. Explain the role of grammar in language processing. \n5. Discuss the unique challenges involved in processing Indian languages compared to English. Explain with examples related to morphology, syntax, or script.\n6. Compare grammar-based language models and statistical language models.\n\nThese questions are from Assignment-1, as mentioned in Document Chunks 1 and 2.",
+        "timestamp": "2025-10-21T15:47:52.969086+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What did Ekanth do in his internship at p3 solutions?",
+        "response": "I can answer your question based on the provided context! Since there is no specific information about Ekanth's activities or accomplishments during his internship at Platform 3 Solutions Pvt. Ltd., I cannot provide a direct answer.\n\nHowever, I can tell you that according to Document Chunk 1 and 2, Ekanth worked as a Software Developer: Intern at Platform 3 Solutions Pvt. Ltd. from May 2025 - Present, in Siruseri, Tamil Nadu. Additionally, his technology skills include Springboot, Machine Learning, Artificial Intelligence, Java Development, among others.\n\nIf you have any further questions or if there's anything else I can help with, please feel free to ask!",
+        "timestamp": "2025-10-21T15:49:10.637931+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What was the duration of internship of Ekanth at p3 solutions? When did it start?",
+        "response": "Based on Document Chunks 1, 2, I can provide information about Ekanth's internship.\n\nAccording to the documents, Ekanth had an internship as a Software Developer at Platform 3 Solutions Pvt. Ltd. with the following details:\n\n* Duration: Not explicitly mentioned in the provided context.\n* Start date: May 2025\n\nUnfortunately, the starting date is not specified earlier than May 2025, so I cannot provide more information on when it started.",
+        "timestamp": "2025-10-21T15:50:02.321262+00:00"
     }
 ]
