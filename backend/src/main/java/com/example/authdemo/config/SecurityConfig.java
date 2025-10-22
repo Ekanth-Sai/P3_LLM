@@ -23,16 +23,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/login").permitAll()
-                .requestMatchers("/create-user").permitAll()
-                .requestMatchers("/admin/**").authenticated()
-                .anyRequest().authenticated()
-            )
-            .httpBasic(); // or JWT once added
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                .anyRequest().permitAll()
+                )
+                .httpBasic(); // or JWT once added
         return http.build();
     }
+    
+    // .requestMatchers("/api/auth/login").permitAll()
+    // .requestMatchers("/create-user").permitAll()
+    // .requestMatchers("/admin/**").authenticated()
+    // .anyRequest().authenticated()
 
 
     @Bean
