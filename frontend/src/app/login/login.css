@@ -11,8 +11,8 @@ body, html {
     left: 0;
     right: 0;
     z-index: 0;
-    background-color: #007bff;
-    color: white;
+    background-color: #ffffff;
+    color: rgb(74, 99, 154);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;

@@ -25,13 +25,14 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-            	//.requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/api/auth/login").permitAll()  
                 .requestMatchers("/admin/**").authenticated()
                 .anyRequest().authenticated()
             )
-            .httpBasic();
+            .httpBasic(); // or JWT once added
         return http.build();
     }
+
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
