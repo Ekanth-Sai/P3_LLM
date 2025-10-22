@@ -59,7 +59,6 @@ public class AuthController {
         }
 
         //  Return role and success message
-        System.out.println("reached bottom");
         return ResponseEntity.ok(Map.of(
                 "status", "success",
                 "role", user.getRole(),

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class SignupService {
-    private baseUrl = 'http://localhost:8080/signup'; // your Spring Boot endpoint
+    private baseUrl = 'http://localhost:8080/create-user'; // your Spring Boot endpoint
     
     constructor(private http: HttpClient) { }
 

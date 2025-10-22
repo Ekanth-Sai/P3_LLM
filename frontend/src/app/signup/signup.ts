@@ -41,12 +41,13 @@ export class SignupComponent {
       manager: this.manager
     };
 
-    this.http.post('http://localhost:8080/signup', signupData).subscribe({
+    this.http.post('http://localhost:8080/create-user', signupData).subscribe({
       next: (res: any) => {
-        alert('Signup successful. Status: ' + res.status);
+        alert('Signup successful. Status: ' + res.message);
         this.router.navigate(['/login']);
-      },
-      error: (err) => {
+      }
+      ,
+      error: (err: any) => {
         console.error(err);
         alert('Signup failed');
       }
