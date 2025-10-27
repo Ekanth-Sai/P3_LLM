@@ -162,7 +162,25 @@ public class AdminController {
 
         String filename = userFile.getFilename().replaceAll("[^a-zA-Z0-9.-]", "_");
         return ResponseEntity.ok()
-            .header("Content-Disposition", "attachment; filename=\"" + filename + "\"")
-            .body(userFile.getData());
+                .header("Content-Disposition", "attachment; filename=\"" + filename + "\"")
+                .body(userFile.getData());
+    }
+    
+    @DeleteMapping("/files/{filename}")
+    public ResponseEntity<?> deleteFile(@PathVariable String filename) {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            String pythonApiUrl = "http://localhost:5001/delete-document";
+
+            Map<String, String> request = new HashMap<>();
+            request.put("filename", filename);
+
+            ResponseEntity<String> response = restTemplate.postForEntity(pythonApiUrl, request, String.class);
+
+            return ResponseEntity.ok(Collections.singletonMap("status", "deleted"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Collections.singletonMap("error", "Failed to delete: " + e.getMessage()));
+        }
     }
 }
+
