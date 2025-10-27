@@ -10,7 +10,7 @@
     left: 0;
     right: 0;
     z-index: 0;
-    background-color: #007bff;
+    background-color: #06c;
     color: white;
     padding: 1rem 2rem;
     display: flex;
@@ -73,7 +73,7 @@
 
 .tab.active {
     background: white;
-    border-bottom: 3px solid #007aff;
+    border-bottom: 3px solid #06c;
 }
 
 .chat-body {
@@ -112,7 +112,7 @@
 }
 
 .user-message .message-bubble {
-    background-color: #007aff;
+    background-color: #06c;
     color: white;
 }
 
@@ -179,7 +179,7 @@
 
 .send-btn {
     margin-left: 10px;
-    background: #007aff;
+    background: #06c;
     border: none;
     border-radius: 50%;
     padding: 10px 12px;

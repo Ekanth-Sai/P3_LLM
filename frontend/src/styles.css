@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+/*body::before {
+    content: "";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: url('/assets/images/logo.png') no-repeat center center;
+    background-size: 300px;
+    opacity: 0.2;
+    width: 800px;
+    height: 800px;
+    z-index: 1;
+    pointer-events: none;
+  }
+  */
+
+  
+  

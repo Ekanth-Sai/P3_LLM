@@ -27,7 +27,7 @@ public class UserManagementController {
     @PostMapping("/create-user")
     public ResponseEntity<?> createUser(@RequestBody User user) {
         User newUser = userService.createUser(user.getEmail(),user.getFirstName(),
-		        		user.getLastName(), user.getPassword(),user.getProject(),
+		        		user.getLastName(), user.getPassword(),user.getProject(),user.getDepartment(),
 		        		user.getDesignation(),user.getManager());
         return ResponseEntity.ok(Map.of(
         	    "status", "success",

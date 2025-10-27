@@ -5,7 +5,19 @@
     </header>
 
     <main class="main-content">
-        <h1 class="welcome-text">Welcome XYZ</h1>
+        <h1 class="welcome-text">Welcome, <span id="username"></span>! </h1>
+         
+
+        <script>
+            fetch('http://localhost:8080/api/user/me', { credentials: 'include' })
+              .then(response => response.json())
+              .then(data => {
+                console.log("Response data:", data);  // 👈 Add this for debugging
+                document.getElementById('username').innerText = data.username;
+              })
+              .catch(err => console.error("Fetch error:", err));
+          </script>
+
         <p class="subtext">
             Ask questions, upload documents, and explore your conversation history
         </p>

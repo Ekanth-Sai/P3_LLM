@@ -40,14 +40,14 @@ export class AdminComponent implements OnInit {
     setTimeout(() => this.message = null, 5000);
   }
 
-  navigateToPage() {
-    if (this.selectedOption === 'pending') {
+  navigateTo(page: string) {
+    if (page === 'pending') {
       this.view = 'pending';
       this.loadPendingUsers();
-    } else if (this.selectedOption === 'users') {
+    } else if (page === 'users') {
       this.view = 'existing';
       this.loadUsers();
-    } else if (this.selectedOption === 'bot-usage') {
+    } else if (page === 'bot-usage') {
       this.router.navigate(['/bot-usage']);
     } else {
       this.view = 'dashboard';
