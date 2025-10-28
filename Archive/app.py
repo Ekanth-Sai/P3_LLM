@@ -112,7 +112,7 @@ def query():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
-@app.route("/delete-document", method = ["POST"])
+@app.route("/delete-document", methods = ["POST"])
 def delete_document():
     data = request.get_json()
     filename = data.get("filename")

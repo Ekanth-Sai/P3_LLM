@@ -4,22 +4,51 @@
         <div class="nav-right" (click)="goBackToDashboard()" style="cursor:pointer">Home</div>
     </nav>
 
-    <div *ngIf="message" [ngClass]="{'message-success': messageType === 'success', 'message-error': messageType === 'error'}">
-        {{message}}
-    </div>
-
     <div class="dashboard-content" *ngIf="view==='dashboard'">
-        <h2>Welcome to the Admin Dashboard</h2>
-        <p>Select an option below to manage users:</p>
-        <div class="dropdown-card">
-            <select [(ngModel)]="selectedOption" (change)="navigateToPage()">
-                <option disabled selected value="">Choose an Option</option>
-                <option value="pending">Pending Requests</option>
-                <option value="users">Existing Users</option>
-                <option value="bot-usage">Bot Usage</option>
-            </select>
-        </div>
+        <section class="section-features" id="features" data-aos="fade-up">
+          <div class="w-layout-blockcontainer features-wrapper w-container">
+            <h2 class="heading-4">Available Actions</h2>
+            <div class="w-layout-blockcontainer container1 w-container">
+      
+<!-- Pending Requests -->
+<div class="div-block feature">
+    <img src="assets/images/pending_users.png" alt="Pending Requests" class="feature-image">
+    <div class="w-layout-blockcontainer feature-description-wrapper w-container">
+      <h3>Pending Requests</h3>
+      <div class="w-layout-blockcontainer feature-buttons w-container">
+        <button (click)="navigateTo('pending')" class="view-button w-button">View Requests</button>
+      </div>
     </div>
+  </div>
+  
+  <!-- Existing Users -->
+  <div class="div-block feature">
+    <img src="assets/images/existing_users.png" alt="Existing Users" class="feature-image">
+    <div class="w-layout-blockcontainer feature-description-wrapper w-container">
+      <h3>Existing Users</h3>
+      <div class="w-layout-blockcontainer feature-buttons w-container">
+        <button (click)="navigateTo('users')" class="view-button w-button">View Users</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bot Usage -->
+  <div class="div-block feature">
+    <img src="assets/images/chatbot.png" alt="Bot Usage" class="feature-image">
+    <div class="w-layout-blockcontainer feature-description-wrapper w-container">
+      <h3>Bot Usage</h3>
+      <div class="w-layout-blockcontainer feature-buttons w-container">
+        <button (click)="navigateTo('bot-usage')" class="view-button w-button">Chat with LLM</button>
+      </div>
+    </div>
+  </div>
+  
+      
+            </div>
+          </div>
+        </section>
+      </div>
+    <div class="section-divider"></div>
 
     <div class="table-card" *ngIf="view==='existing'">
         <h3>Existing Users</h3>
@@ -28,6 +57,8 @@
                 <tr>
                     <th>ID</th>
                     <th>Email</th>
+                    <th>Name</th>
+                    <th>Department</th>
                     <th>Role</th>
                     <th>Action</th>
                 </tr>
@@ -36,6 +67,8 @@
                 <tr *ngFor="let user of users">
                     <td>{{user.id}}</td>
                     <td><input [(ngModel)]="user.email" /></td>
+                    <td>{{ (user.firstName || user.lastName) ? (user.firstName || '') + ' ' + (user.lastName || '') : 'Not Provided' }}</td>
+                    <td><input [(ngModel)]="user.department" /></td>
                     <td>
                         <select [(ngModel)]="user.role">
                             <option value="USER">USER</option>
@@ -55,6 +88,9 @@
                 <tr>
                     <th>ID</th>
                     <th>Email</th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>Department</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -62,7 +98,10 @@
                 <tr *ngFor="let user of pendingUsers">
                     <td>{{user.id}}</td>
                     <td>{{user.email}}</td>
-                    <td>
+                    <td>{{ (user.firstName || user.lastName) ? (user.firstName || '') + ' ' + (user.lastName || '') : 'Not Provided' }}</td>
+                    <td>{{user.designation || "Not Provided"}}</td>
+                    <td>{{user.department || "Not Provided"}}</td>
+                    <td class="action-btn">
                         <button class="accept-btn" (click)="handlePending(user, 'accept')">Accept</button>
                         <button class="decline-btn" (click)="handlePending(user, 'decline')">Decline</button>
                     </td>
@@ -80,10 +119,13 @@
         </table>
     </div>
 
+   <div class ="file-upload-container">
+    <h4> 📤 File Upload </h4>
     <form (submit)="onFileUpload($event)">
         <input type="file" (change)="onFileSelected($event)" />
         <button type="submit">Upload File</button>
     </form>
+    </div>  
 
     <div *ngFor="let file of files">
         <span>{{file.filename}}</span>

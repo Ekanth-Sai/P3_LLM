@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.example.authdemo.security.CustomUserDetailsService;
+import com.example.authdemo.security.JwtAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
@@ -20,21 +21,33 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//            .csrf(csrf -> csrf.disable())
+//            .authorizeHttpRequests(auth -> auth
+////                .requestMatchers("/api/auth/login").permitAll()
+////                .requestMatchers("/create-user").permitAll()
+////                .requestMatchers("/admin/**").authenticated()
+//                .anyRequest().permitAll() //.authenticated()
+//            )
+//            .httpBasic(); // or JWT once added
+//        return http.build();
+//    }
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()
-                )
-                .httpBasic(); // or JWT once added
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/create-user").permitAll()
+                .requestMatchers("/admin/**").authenticated()
+                .anyRequest().authenticated()
+            )
+            .httpBasic(); // or JWT once added
         return http.build();
     }
-    
-    // .requestMatchers("/api/auth/login").permitAll()
-    // .requestMatchers("/create-user").permitAll()
-    // .requestMatchers("/admin/**").authenticated()
-    // .anyRequest().authenticated()
 
 
     @Bean

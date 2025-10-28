@@ -12,6 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
@@ -134,18 +137,19 @@ public class AdminController {
         if(contentType == null || !Arrays.asList("image/png", "image/jpeg", "application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/plain").contains(contentType)) {
             return ResponseEntity.status(400).body(Collections.singletonMap("error", "Invalid file type. Only PNG, JPEG, PDF, DOCX, and XLSX are allowed."));
         }
-
+        
         try {
-            String tempDir = "/home/ekanthsai/Desktop/P3_LLM/temp_uploads/";
-            Path path = Paths.get(tempDir + file.getOriginalFilename());
+            String tempDir = "/Users/harshakuppala/Desktop/P3_LLM/temp_uploads/";
+            LocalDateTime dateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH-mm-ss");
+            String currentDateTime = dateTime.format(formatter);
+            Path path = Paths.get(tempDir + file.getOriginalFilename()+" d&t-"+currentDateTime);
             Files.write(path, file.getBytes());
-
             RestTemplate restTemplate = new RestTemplate();
             String pythonApiUrl = "http://localhost:5001/process-document";
             HashMap<String, String> request = new HashMap<>();
             request.put("file_path", path.toString());
             ResponseEntity<String> response = restTemplate.postForEntity(pythonApiUrl, request, String.class);
-
             return ResponseEntity.ok(Collections.singletonMap("status", "uploaded and processing started"));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "Upload failed: " + e.getMessage()));

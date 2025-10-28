@@ -18,6 +18,7 @@ public class User {
     private String status;
 
     private String project;
+    private String department;
     private String designation;
     private String manager;
 
@@ -101,4 +102,12 @@ public class User {
     public void setManager(String manager) {
         this.manager = manager;
     }
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
 }

@@ -1,48 +1,545 @@
+/* ============================
+   Base Container
+============================ */
+  
 .admin-container {
     font-family: 'Segoe UI', sans-serif;
     height: 100vh;
     background-color: white;
-}
+    padding-top: 40px;
+    box-sizing: border-box;
+  }
 
-.navbar {
+  
+  
+  /* ============================
+     Navbar
+  ============================ */
+  .navbar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 0;
-    background-color: #007bff;
+    z-index: 10;
+    background-color: #06c;
     color: white;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-.dashboard-content {
+  }
+  
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .navbar-brand {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  /* ============================
+     Dashboard Content
+  ============================ */
+  .dashboard-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 80px;
-}
-
-.dashboard-content h2 {
+  }
+  
+  .dashboard-content h2 {
     font-weight: 600;
     margin-bottom: 40px;
-}
-
-.dropdown-card {
+  }
+  
+  .dropdown-card {
     border: 1.5px solid #333;
     border-radius: 12px;
     padding: 25px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
-
-select {
+  }
+  
+  select {
     padding: 12px;
     font-size: 15px;
     border-radius: 6px;
     border: 1px solid #ccc;
     min-width: 220px;
     outline: none;
+  }
+  
+  /* ============================
+     Message Alerts
+  ============================ */
+  .message-success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    margin: 1rem auto;
+    width: 80%;
+    border-radius: 6px;
+    text-align: center;
+  }
+  
+  .message-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    margin: 1rem auto;
+    width: 80%;
+    border-radius: 6px;
+    text-align: center;
+  }
+  
+/* ============================
+   Table Container
+============================ */
+.table-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+  margin-top: 40px;
+  width: 100%;
 }
+
+.table-card h3 {
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+/* ============================
+   Table Styling
+============================ */
+.admin-table {
+  width: 90%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  table-layout: fixed; 
+}
+
+.admin-table thead {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 14px 12px;
+  font-size: 0.95rem;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+  vertical-align: middle; 
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ============================
+   Column Sizing (Fixed + Flexible)
+============================ */
+
+/* ID column */
+.admin-table th:nth-child(1),
+.admin-table td:nth-child(1) {
+  width: 70px;
+  min-width: 70px;
+  text-align: center;
+}
+
+/* Email column */
+.admin-table th:nth-child(2),
+.admin-table td:nth-child(2) {
+  width: 20%;
+  text-align: center;
+}
+
+/* Name column */
+.admin-table th:nth-child(3),
+.admin-table td:nth-child(3) {
+  width: 20%;
+  text-align: center;
+}
+
+/* Department column */
+.admin-table th:nth-child(4),
+.admin-table td:nth-child(4) {
+  width: 15%;
+  text-align: center;
+}
+
+/* Role column */
+.admin-table th:nth-child(5),
+.admin-table td:nth-child(5) {
+  width: 160px;
+  min-width: 160px;
+  align-content: center;
+  text-align: center;
+}
+
+/* Action column */
+.admin-table th:nth-child(6),
+.admin-table td:nth-child(6) {
+  width: 120px;
+  min-width: 120px;
+  align-content: center;
+  text-align: center;
+}
+
+/* ============================
+   Inputs & Selects
+============================ */
+.admin-table input,
+.admin-table select,
+.admin-table textarea {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #fdfdfd;
+}
+
+.admin-table input:focus,
+.admin-table select:focus,
+.admin-table textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+
+  
+  /* ============================
+     Row Hover & Alternating
+  ============================ */
+  .admin-table tbody tr:nth-child(even) {
+    background-color: #f7f9fc;
+  }
+  
+  .admin-table tbody tr:hover {
+    background-color: #eaf3ff;
+    transition: background 0.3s ease;
+  }
+  
+  /* ============================
+     Inputs & Select
+  ============================ */
+  .admin-table td input,
+  .admin-table td select,
+  .admin-table td button {
+    height: 38px;             
+    line-height: 38px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  .admin-table td input,
+  .admin-table td select {
+    flex: 1;
+    max-width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 0.9rem;
+  }
+  
+  .admin-table td input:focus,
+  .admin-table td select:focus {
+    border-color: #06c;
+    outline: none;
+  }
+  
+  /* ============================
+     Action Buttons
+  ============================ */
+  .admin-table td button {
+    padding: 6px 12px;
+    background-color: #06c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .admin-table td button:hover {
+    background-color: #0056b3;
+  }
+  .action-btn{
+    display:flex;
+    flex-direction:row;
+    gap: 10px;                  
+    justify-content: center;    
+    align-items: center;
+  }
+  .accept-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+  }
+  
+  .accept-btn:hover {
+    background-color: #218838;
+  }
+  
+  .decline-btn {
+    background-color: #452c2f;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+  }
+  
+  .decline-btn:hover {
+    background-color: #c82333;
+  }
+  
+  /* ============================
+     Textarea for Decline Reason
+  ============================ */
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: none;
+    margin-top: 10px;
+  }
+  
+  /* ============================
+     File Upload Section
+  ============================ */
+  .file-upload-container {
+    margin-top: 50px;
+    margin-left: auto;           
+    margin-right: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    background-color: rgba(213, 213, 213, 0.5);
+    backdrop-filter: blur(0.5px);
+    border-radius: 12px;
+    padding: 20px;
+    padding-bottom: 80px;
+    width: 500px;
+    height: 100px;
+  }
+  .file-upload-container h4{
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  form {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  form input[type="file"] {
+    padding: 6px;
+  }
+  
+  form button {
+    padding: 8px 16px;
+    background-color: #06c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+  }
+  
+  form button:hover {
+    background-color: #0056b3;
+  }
+    /* --------------projects----------------------*/
+    .section {
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
+      background-color: #ffffff;
+      margin-top: 0;
+  }
+  
+  .section-features {
+      background-color: #ffffff;
+      flex-flow: column;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+  }
+    .features-wrapper {
+      grid-column-gap: 80px;
+      grid-row-gap: 80px;
+      flex-flow: column;
+      justify-content: center;
+      align-items: center;
+      margin: 50px 0;
+      padding: 0;
+      display: flex;
+  }
+  
+  .feature-description-wrapper div {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #f0f0f0;
+      text-align: center;
+      padding: 0 10px;
+      margin-top: 10px;
+  }
+  
+  
+  .div-block {
+      flex-flow: column;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+  }
+  
+  .div-block.feature {
+      /*background: linear-gradient(145deg, #06c, #1f2a78);*/
+      background: #06c;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      color: white;
+  }
+  
+  .div-block.feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.25);
+  }
+  
+  .div-block.feature h3 {
+      margin-top: 10px;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: white;
+      text-align: center;
+  }
+  
+.container1{
+    grid-column-gap: 200px;
+    grid-row-gap: 200px;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+}
+  .features-wrapper {
+    grid-column-gap: 80px;
+    grid-row-gap: 80px;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 0;
+    padding: 0;
+    display: flex;
+}
+
+  
+
+  
+  .feature-description-wrapper div {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #000000;
+      text-align: center;
+      padding: 0 10px;
+      margin-top: 10px;
+  }
+
+
+
+  .feature-buttons .w-button {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    color: rgb(0, 0, 0);
+    /* background-color: var(--feature-button); */
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+  .feature-buttons .w-button:hover {
+    background-color: rgb(203, 203, 203);
+}
+
+
+.view-button {
+    /* background-color: var(--feature-button); */
+    background-color: #ffffff;
+    -webkit-text-stroke-color: #000;
+    text-shadow: 0 1px 1px #0003;
+    border-radius: 20px;
+}
+.feature-image {
+  border-radius: 14px;
+  width: 100%;
+  height: auto;
+  max-width: 400px;
+  object-fit: contain;
+  display: block;
+}
+
+.features-wrapper {
+  position: relative;
+  z-index: 2;
+}
+  
+
+  
+  /* ============================
+     Responsive Design
+  ============================ */
+  @media (max-width: 768px) {
+    .admin-table thead {
+      display: none;
+    }
+  
+    .admin-table tbody tr {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      min-height: auto; /* let rows expand naturally on mobile */
+    }
+  
+    .admin-table td {
+      flex: none;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+  
+    .admin-table td::before {
+      content: attr(data-label);
+      font-weight: 600;
+      margin-right: 10px;
+    }
+  }

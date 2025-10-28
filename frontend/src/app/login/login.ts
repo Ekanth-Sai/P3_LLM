@@ -13,7 +13,6 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
 })
-  
 export class LoginComponent {
   email = '';
   password = '';
@@ -27,16 +26,21 @@ export class LoginComponent {
   }
 
   loginWithSSO() {
-    alert('SSO login is not implemented yet.')
+    alert('SSO login is not implemented yet.');
   }
 
   onLogin() {
     this.authService.login({ email: this.email, password: this.password }).subscribe({
       next: (response: any) => {
         if (response.status === 'success') {
+          // ✅ Store JWT token
+          localStorage.setItem('token', response.token);
+
+          // ✅ Store role & email (optional but useful)
           localStorage.setItem('role', response.role);
           localStorage.setItem('email', this.email);
 
+          // ✅ Navigate based on role
           if (response.role === 'USER') {
             this.router.navigate(['/bot-usage']);
           } else if (response.role === 'ADMIN') {
@@ -49,8 +53,8 @@ export class LoginComponent {
         }
       },
       error: (err: any) => {
+        console.error('❌ Login error:', err);
         alert('Login failed');
-        console.error(err)
       },
     });
   }

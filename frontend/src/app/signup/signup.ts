@@ -19,6 +19,7 @@ export class SignupComponent {
   email = '';
   project = '';
   designation = '';
+  department='';
   manager = '';
   password = '';   // <-- add this
   termsAccepted = false;
@@ -37,6 +38,7 @@ export class SignupComponent {
       email: this.email,
       password: this.password,    // <-- include password
       project: this.project,
+      department:this.department,
       designation: this.designation,
       manager: this.manager
     };
