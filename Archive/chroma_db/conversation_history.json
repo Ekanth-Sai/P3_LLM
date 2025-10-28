@@ -184,5 +184,17 @@
         "query": "What is the name of the candidate?",
         "response": "According to the provided context (Document Chunks 1-5), the name of the candidate is Yellanki Ekantha Sai Sundar.",
         "timestamp": "2025-10-28T14:40:47.995426+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "Give me the gist of the competitior analysis document",
+        "response": "Based on the provided context, it appears that the competitor analysis document contains a series of images with text \"c\" written on each one. Unfortunately, there is no additional information or content available to provide insight into the actual competitor analysis.\n\nHowever, if you're looking for any patterns or connections between the images, I can tell you that all five images have the same text \"c\" written on them.",
+        "timestamp": "2025-10-28T16:19:31.651000+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "What is the Dhan.pdf about?",
+        "response": "Based on the provided context, it appears that the Dhan.pdf document is an overview of AIML (Artificial Intelligence for Machine Learning) models used by Dhan, a stock brokerage application. The document discusses various machine learning models and techniques that Dhan might be using, such as collaborative filtering, content-based scoring, sequencing models, production ensembles, GB trees, parametric models, GARCH, and more.\n\nThe document also provides suggestions on how to \"beat\" Dhan's AIML models by ranking them, applying contextualization, building probabilistic forecasts, implementing corporate events estimation, fine-tuning sentiment analysis, and quantifying uncertainty using Bayesian Neural Networks or deep ensembles.\n\nIt does not appear that the document is specifically focused on a particular topic or industry, but rather provides an overview of machine learning models and techniques used in general.",
+        "timestamp": "2025-10-28T16:22:18.984532+00:00"
     }
 ]

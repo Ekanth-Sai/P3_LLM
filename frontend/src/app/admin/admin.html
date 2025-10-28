@@ -122,8 +122,7 @@
     <form (submit)="onFileUpload($event)">
         <input type="file" (change)="onFileSelected($event)" />
         <button type="submit">Upload File</button>
-    </form>
-    </div>  
+    </form> 
 
     <div *ngFor="let file of files">
         <span>{{file.filename}}</span>
