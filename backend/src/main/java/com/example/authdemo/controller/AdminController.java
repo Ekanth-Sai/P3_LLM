@@ -35,16 +35,60 @@ public class AdminController {
 
 
     @GetMapping("/files")
-    public List<Map<String, Object>> getFiles() {
-        List<UserFile> files = userFileRepository.findAll();
-        List<Map<String, Object>> result = new ArrayList<>();
-        for (UserFile file : files) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", file.getId());
-            map.put("filename", file.getFilename());
-            result.add(map);
+    public ResponseEntity<?> getFiles() {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            String pythonApiUrl = "http://localhost:5001/processed-documents";
+
+            ResponseEntity<String[]> response = restTemplate.getForEntity(pythonApiUrl, String[].class);
+
+            List<Map<String, String>> filesList = new ArrayList<>();
+
+            if(response.getBody() != null) {
+                for(String filepath : response.getBody()) {
+                    Map<String, String> fileMap = new HashMap<>();
+
+                    String filename = filepath.substring(filepath.lastIndexOf('/') + 1);
+                    fileMap.put("filename", filename);
+                    fileMap.put("path", filepath);
+                    filesList.add(fileMap);
+                }
+            }
+
+            return ResponseEntity.ok(filesList);
+        } catch (Exception e) {
+            return ResponseEntity.status(500)
+                    .body(Collections.singletonMap("error", "Failed to fetch files: " + e.getMessage()));
         }
-        return result;
+    }
+    // public List<Map<String, Object>> getFiles() {
+    //     List<UserFile> files = userFileRepository.findAll();
+    //     List<Map<String, Object>> result = new ArrayList<>();
+    //     for (UserFile file : files) {
+    //         Map<String, Object> map = new HashMap<>();
+    //         map.put("id", file.getId());
+    //         map.put("filename", file.getFilename());
+    //         result.add(map);
+    //     }
+    //     return result;
+    // }
+
+    @DeleteMapping("/files/{filename}")
+    public ResponseEntity<?> deleteFile(@PathVariable String filename) {
+        try {
+            RestTemplate  restTemplate = new RestTemplate();
+            String pythonApiUrl = "http://localhost:5001/delete-document";
+
+            Map<String, String> request = new HashMap<>();
+            request.put("filename", filename);
+
+            ResponseEntity<String> response = restTemplate.postForEntity(pythonApiUrl, request, String.class);
+
+            return ResponseEntity.ok(Collections.singletonMap("status", "deleted"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500)
+                    .body(Collections.singletonMap("error", "Failed to deete: " + e.getMessage()));
+        }
     }
 
     @GetMapping("/users")
@@ -168,21 +212,21 @@ public class AdminController {
                 .body(userFile.getData());
     }
     
-    @DeleteMapping("/files/{filename}")
-    public ResponseEntity<?> deleteFile(@PathVariable String filename) {
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            String pythonApiUrl = "http://localhost:5001/delete-document";
+    // @DeleteMapping("/files/{filename}")
+    // public ResponseEntity<?> deleteFile(@PathVariable String filename) {
+    //     try {
+    //         RestTemplate restTemplate = new RestTemplate();
+    //         String pythonApiUrl = "http://localhost:5001/delete-document";
 
-            Map<String, String> request = new HashMap<>();
-            request.put("filename", filename);
+    //         Map<String, String> request = new HashMap<>();
+    //         request.put("filename", filename);
 
-            ResponseEntity<String> response = restTemplate.postForEntity(pythonApiUrl, request, String.class);
+    //         ResponseEntity<String> response = restTemplate.postForEntity(pythonApiUrl, request, String.class);
 
-            return ResponseEntity.ok(Collections.singletonMap("status", "deleted"));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(Collections.singletonMap("error", "Failed to delete: " + e.getMessage()));
-        }
-    }
+    //         return ResponseEntity.ok(Collections.singletonMap("status", "deleted"));
+    //     } catch (Exception e) {
+    //         return ResponseEntity.status(500).body(Collections.singletonMap("error", "Failed to delete: " + e.getMessage()));
+    //     }
+    // }
 }
 

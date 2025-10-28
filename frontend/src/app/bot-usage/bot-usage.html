@@ -5,19 +5,7 @@
     </header>
 
     <main class="main-content">
-        <h1 class="welcome-text">Welcome, <span id="username"></span>! </h1>
-         
-
-        <script>
-            fetch('http://localhost:8080/api/user/me', { credentials: 'include' })
-              .then(response => response.json())
-              .then(data => {
-                console.log("Response data:", data);  // 👈 Add this for debugging
-                document.getElementById('username').innerText = data.username;
-              })
-              .catch(err => console.error("Fetch error:", err));
-          </script>
-
+        <h1 class="welcome-text">Welcome {{ username }}</h1>
         <p class="subtext">
             Ask questions, upload documents, and explore your conversation history
         </p>
@@ -25,14 +13,15 @@
         <div class="chat-card">
             <div class="tab-bar">
                 <button class="tab" [class.active]="activeTab === 'chat'" (click)="showChat()">💬 Chat</button>
-                <button class="tab" [class.active]="activeTab === 'documents'" *ngIf="isAdmin" (click)="showDocuments()">📄 Documents</button>
+                <button class="tab" [class.active]="activeTab === 'documents'" *ngIf="isAdmin"
+                    (click)="showDocuments()">📄 Documents</button>
                 <button class="tab" [class.active]="activeTab === 'history'" (click)="showHistory()">🕒 History</button>
             </div>
 
             <div class="chat-body" *ngIf="activeTab === 'chat'">
-                <!-- Message Display Area -->
                 <div class="message-area">
-                    <div *ngFor="let message of messages" class="message" [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
+                    <div *ngFor="let message of messages" class="message"
+                        [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
                         <div class="message-bubble">{{ message.text }}</div>
                     </div>
                 </div>
@@ -41,14 +30,12 @@
                     <div class="bot-icon">🤖</div>
                     <p class="bot-title">Welcome to LLM ChatBot</p>
                     <p class="bot-description">
-                        Ask me anything about your documentation, and I’ll help you find the answers.
+                        Ask me anything about your documentation, and I'll help you find the answers.
                     </p>
                 </div>
 
                 <div class="chat-input">
-                    <input type="text" 
-                        placeholder="Ask me about to explain the project" 
-                        [(ngModel)]="newMessage" 
+                    <input type="text" placeholder="Ask me to explain the project" [(ngModel)]="newMessage"
                         (keydown.enter)="sendMessage()">
                     <button class="send-btn" (click)="sendMessage()">📨</button>
                 </div>
@@ -67,14 +54,37 @@
                 </div>
             </div>
 
-            <div class="documents-body" *ngIf="activeTab === 'documents'">
-                <div *ngIf="documents.length === 0" class="no-documents">
-                    <p>No documents found.</p>
+            <div class="documents-body" *ngIf="activeTab === 'documents' && isAdmin">
+                <div class="documents-header">
+                    <h3>Knowledge Base Documents</h3>
+                    <p class="subtitle">Manage files used by the LLM</p>
                 </div>
-                <div *ngIf="documents.length > 0" class="documents-list">
-                    <ul>
-                        <li *ngFor="let doc of documents">{{ doc.filename }}</li>
-                    </ul>
+
+                <div *ngIf="loadingDocuments" class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading documents...</p>
+                </div>
+
+                <div *ngIf="!loadingDocuments && documents.length === 0" class="no-documents">
+                    <p>📭 No documents in knowledge base</p>
+                </div>
+
+                <div *ngIf="!loadingDocuments && documents.length > 0" class="documents-list">
+                    <div *ngFor="let doc of documents" class="document-item">
+                        <div class="doc-info">
+                            <span class="doc-icon">📄</span>
+                            <span class="doc-name">{{ doc.filename }}</span>
+                        </div>
+                        <button class="delete-doc-btn" (click)="deleteDocument(doc.filename)">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Delete confirmation message -->
+                <div *ngIf="deleteMessage" class="delete-message"
+                    [ngClass]="{'success': deleteSuccess, 'error': !deleteSuccess}">
+                    {{ deleteMessage }}
                 </div>
             </div>
         </div>

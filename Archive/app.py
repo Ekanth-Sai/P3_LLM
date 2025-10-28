@@ -122,10 +122,11 @@ def delete_document():
     
     try:
         collection = system.vector_db_manager.collection
-        results = collection.get(where = {"source": {"$regex": f".*{filename}.*"}})
+        results = collection.get(where = {"filename": filename})
 
         if results and results["ids"]:
             collection.delete(ids = results["ids"])
+            print(f"Deleted {len(results['ids'])} chunks from ChromaDB")
         
         if os.path.exists(PROCESSED_FILES_LOG):
             with open(PROCESSED_FILES_LOG, "r") as f:
@@ -138,6 +139,7 @@ def delete_document():
         
         return jsonify({"message": f"Successfully deleted {filename}"})
     except Exception as e:
+        print(f"Error deleting document: {e}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
