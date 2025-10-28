@@ -114,10 +114,17 @@ export class AdminComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', this.selectedFile);
 
-    this.http.post('http://localhost:8080/admin/upload-file', formData).subscribe(
-      () => this.showMessage('File uploaded!'),
-      () => this.showMessage('Upload failed', 'error')
-    );
+    this.http.post('http://localhost:8080/admin/upload-file', formData, { responseType: 'text' })
+    .subscribe({
+      next: (res) => {
+        console.log('✅ Upload response:', res);
+        this.showMessage('File uploaded!');
+      },
+      error: (err) => {
+        console.error('❌ Upload error:', err);
+        this.showMessage('Upload failed', 'error');
+      }
+    });
   }
 
   downloadFile(fileId: number) {

@@ -121,6 +121,12 @@
 
    <div class ="file-upload-container">
     <h4> 📤 File Upload </h4>
+    <div *ngIf="message" [ngClass]="{
+      'message-success': messageType === 'success',
+      'message-error': messageType === 'error'
+    }">
+    {{ message }}
+  </div>
     <form (submit)="onFileUpload($event)">
         <input type="file" (change)="onFileSelected($event)" />
         <button type="submit">Upload File</button>
