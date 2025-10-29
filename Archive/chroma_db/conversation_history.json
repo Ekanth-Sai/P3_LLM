@@ -132,21 +132,69 @@
         "timestamp": "2025-10-21T15:50:02.321262+00:00"
     },
     {
-        "username": "admin@p3.com",
-        "query": "what is what2wear ?",
-        "response": "I apologize, but I cannot find any information about \"what2wear\" in the provided context. The documents only mention software development, debugging, testing, web-applications, databases, APIs, cloud services, machine learning, LLM's, artificial intelligence, and specific technologies like Spring Boot and Angular. There is no mention of \"what2wear\".",
-        "timestamp": "2025-10-28T16:19:26.927059+00:00"
+        "username": "admin@example.com",
+        "query": "What is the name of the candidate?",
+        "response": "According to the provided context (Document Chunks 1-4), the name of the candidate is Yellanki Ekantha Sai Sundar.",
+        "timestamp": "2025-10-22T14:56:45.857888+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the experience of the candidate in P3 solutions?",
+        "response": "I can help with that! According to the provided context (Document Chunks 1-4), it appears that the candidate has been working as a Software Developer Intern at Platform 3 Solutions Pvt. Ltd. since May 2025, and the current status is marked as \"Present\", indicating an ongoing internship. However, I couldn't find any information about the start date or duration of their experience in P3 solutions, as it's not explicitly mentioned.",
+        "timestamp": "2025-10-22T14:58:17.378826+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "Give me the questions from the assignment?",
+        "response": "Based on the provided context (Documents 1-3), I can extract the following questions from the Assignment:\n\n1. What are the different levels of NLP? Explain them with suitable examples.\n2. Explain NLP pipeline in detail .\n3. Explain different components of NLP sysytem and Discuss different phases of NLP.\n4. Explain the role of grammar in language processing. \n5. Discuss the unique challenges involved in processing Indian languages compared to English. Explain with examples related to morphology, syntax, or script.\n6. Compare grammar-based language models and statistical language models.\n\nNote that Documents 4-5 only contain a brief description of \"Assisting Software Development, Debugging and Testing\" without any specific questions.",
+        "timestamp": "2025-10-22T15:01:14.899885+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of the candidate?",
+        "response": "According to the provided context, the name of the candidate is \"Yellanki Ekantha Sai Sundar\".",
+        "timestamp": "2025-10-22T15:04:51.354759+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the priority level of CR?",
+        "response": "I cannot find any information about CR or its priority level in the provided context. The context appears to be related to an assignment or conference, but it does not mention CR or its priority level. If you can provide more information or clarify what CR refers to, I may be able to assist you further.",
+        "timestamp": "2025-10-22T15:11:42.556296+00:00"
+    },
+    {
+        "username": "admin@example.com",
+        "query": "What is the name of the project and give the deadline",
+        "response": "According to the provided context (Document Chunks 1-4), the name of the project is \"Phoenix\" and the deadline is December 15th.",
+        "timestamp": "2025-10-22T15:16:04.389860+00:00"
     },
     {
         "username": "admin@p3.com",
-        "query": "what it the current role of harsha ",
-        "response": "According to the provided context (Document Chunks 1-3), Harsha Venkat K is currently a Software Developer Intern at Platform 3 Solutions, working since July 2025.",
-        "timestamp": "2025-10-28T16:20:34.157961+00:00"
+        "query": "What is the name of the project?",
+        "response": "According to the provided documents (Chunks 1-4), the name of the project is \"Phoenix\".",
+        "timestamp": "2025-10-27T15:06:16.461821+00:00"
     },
     {
         "username": "admin@p3.com",
-        "query": "can you explain more about his role ",
-        "response": "Based on the provided context (Document Chunks 1-4), I can summarize the person's role as:\n\n* Assisting in software development, debugging, and testing\n* Developing and maintaining web applications using front-end and back-end technologies\n* Working with databases, APIs, and cloud services for application development\n* Working on machine learning applications, LLMs, artificial intelligence, Spring Boot, and Angular\n\nIt does not seem to mention anything specific about their role in NLP (Natural Language Processing) or related topics, which is the focus of Assignment-1.",
-        "timestamp": "2025-10-28T16:22:18.757590+00:00"
+        "query": "Give the gist of competitor analysis",
+        "response": "I apologize, but I cannot find any information about \"competitor analysis\" in the provided context (Documents Chunk 1-3). These documents appear to be focused on Natural Language Processing (NLP) topics and do not mention competitor analysis. Document Chunks 4 and 5 seem to be unrelated to NLP or competitor analysis, as they discuss CNN-based approaches for autonomous vehicle simulation.",
+        "timestamp": "2025-10-27T15:08:33.872492+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "What is the name of the candidate?",
+        "response": "According to the provided context (Document Chunks 1-5), the name of the candidate is Yellanki Ekantha Sai Sundar.",
+        "timestamp": "2025-10-28T14:40:47.995426+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "Give me the gist of the competitior analysis document",
+        "response": "Based on the provided context, it appears that the competitor analysis document contains a series of images with text \"c\" written on each one. Unfortunately, there is no additional information or content available to provide insight into the actual competitor analysis.\n\nHowever, if you're looking for any patterns or connections between the images, I can tell you that all five images have the same text \"c\" written on them.",
+        "timestamp": "2025-10-28T16:19:31.651000+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "What is the Dhan.pdf about?",
+        "response": "Based on the provided context, it appears that the Dhan.pdf document is an overview of AIML (Artificial Intelligence for Machine Learning) models used by Dhan, a stock brokerage application. The document discusses various machine learning models and techniques that Dhan might be using, such as collaborative filtering, content-based scoring, sequencing models, production ensembles, GB trees, parametric models, GARCH, and more.\n\nThe document also provides suggestions on how to \"beat\" Dhan's AIML models by ranking them, applying contextualization, building probabilistic forecasts, implementing corporate events estimation, fine-tuning sentiment analysis, and quantifying uncertainty using Bayesian Neural Networks or deep ensembles.\n\nIt does not appear that the document is specifically focused on a particular topic or industry, but rather provides an overview of machine learning models and techniques used in general.",
+        "timestamp": "2025-10-28T16:22:18.984532+00:00"
     }
 ]

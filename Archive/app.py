@@ -112,5 +112,35 @@ def query():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
+@app.route("/delete-document", methods = ["POST"])
+def delete_document():
+    data = request.get_json()
+    filename = data.get("filename")
+
+    if not filename:
+        return jsonify({"error": "filename is required"}), 400 
+    
+    try:
+        collection = system.vector_db_manager.collection
+        results = collection.get(where = {"filename": filename})
+
+        if results and results["ids"]:
+            collection.delete(ids = results["ids"])
+            print(f"Deleted {len(results['ids'])} chunks from ChromaDB")
+        
+        if os.path.exists(PROCESSED_FILES_LOG):
+            with open(PROCESSED_FILES_LOG, "r") as f:
+                lines = f.readlines()
+            
+            with open(PROCESSED_FILES_LOG, "w") as f:
+                for line in lines:
+                    if filename not in line:
+                        f.write(line) 
+        
+        return jsonify({"message": f"Successfully deleted {filename}"})
+    except Exception as e:
+        print(f"Error deleting document: {e}")
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)

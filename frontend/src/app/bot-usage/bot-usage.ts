@@ -12,13 +12,14 @@ import { DocumentService } from '../services/document.service';
   imports: [FormsModule, CommonModule, HttpClientModule],
   templateUrl: './bot-usage.html',
   styleUrls: ['./bot-usage.css'],
-  providers: [HistoryService, AdminService, DocumentService] // Add services to providers
+  providers: [HistoryService, AdminService, DocumentService] 
 })
+  
 export class BotUsageComponent implements OnInit {
   private http = inject(HttpClient);
   private historyService = inject(HistoryService);
   private adminService = inject(AdminService);
-  private documentService = inject(DocumentService);
+  // private documentService = inject(DocumentService);
 
   messages: { text: string, isUser: boolean }[] = [];
   newMessage: string = '';
@@ -26,14 +27,30 @@ export class BotUsageComponent implements OnInit {
   documents: any[] = [];
   activeTab: string = 'chat';
   isAdmin: boolean = false;
+  username: string = '';
+
+  loadingDocuments: boolean = false;
+  deleteMessage: string | null = null;
+  deleteSuccess: boolean = false;
+
+  // ngOnInit() {
+  //   const username = localStorage.getItem('email');
+  //   if (username) {
+  //     this.adminService.isAdmin(username).subscribe(response => {
+  //       this.isAdmin = response.is_admin;
+  //     });
+  //   }
+  // }
 
   ngOnInit() {
-    const username = localStorage.getItem('email');
-    if (username) {
-      this.adminService.isAdmin(username).subscribe(response => {
+    const email = localStorage.getItem('email');
+    this.username = email || 'User';
+
+    if (email) {
+      this.adminService.isAdmin(email).subscribe(response => {
         this.isAdmin = response.is_admin;
       });
-    }
+    } 
   }
 
   sendMessage() {
@@ -67,9 +84,50 @@ export class BotUsageComponent implements OnInit {
   }
 
   showDocuments() {
+    if (!this.isAdmin) return;
+    
     this.activeTab = 'documents';
-    this.documentService.getDocuments().subscribe(documents => {
-      this.documents = documents;
+    this.loadingDocuments = true;
+    this.deleteMessage = null;
+
+    // this.documentService.getDocuments().subscribe(documents => {
+    //   this.documents = documents;
+    // });
+
+    this.http.get<any[]>('http://localhost:8080/admin/files').subscribe({
+      next: (files) => {
+        this.documents = files;
+        this.loadingDocuments = false;
+      },
+      error: (err) => {
+        console.error('Error loading documents: ', err);
+        this.loadingDocuments = false;
+        this.documents = [];
+      }
+    });
+  }
+
+  deleteDocument(filename: string) {
+    if (!confirm(`Are you sure you want to delete "${filename}" from the knowledge base?`)) {
+      return;
+    }
+
+    this.http.delete(`http://localhost:8080/admin/files/${filename}`).subscribe({
+      next: () => {
+        this.deleteMessage = `Successfully deleted "${filename}" from the knowledge base.`;
+        this.deleteSuccess = true;
+
+        this.showDocuments();
+
+        setTimeout(() => this.deleteMessage = null, 3000);
+      },
+      error: (err) => {
+        console.error('Error deleting document: ', err);
+        this.deleteMessage = `Failed to delete "${filename}".`;
+        this.deleteSuccess = false;
+
+        setTimeout(() => this.deleteMessage = null, 3000);
+      }
     });
   }
 
