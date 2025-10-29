@@ -22,17 +22,14 @@ import java.util.*;
 @CrossOrigin(origins = "http://localhost:4200")
 public class AdminController {
 
-
     private UserRepository userRepository;
-
     private UserFileRepository userFileRepository;
-    
-    public AdminController(UserRepository userRepository, UserFileRepository userFileRepository) {
-		super();
-		this.userRepository = userRepository;
-		this.userFileRepository = userFileRepository;
-	}
 
+    public AdminController(UserRepository userRepository, UserFileRepository userFileRepository) {
+        super();
+        this.userRepository = userRepository;
+        this.userFileRepository = userFileRepository;
+    }
 
     @GetMapping("/files")
     public ResponseEntity<?> getFiles() {
@@ -44,10 +41,9 @@ public class AdminController {
 
             List<Map<String, String>> filesList = new ArrayList<>();
 
-            if(response.getBody() != null) {
-                for(String filepath : response.getBody()) {
+            if (response.getBody() != null) {
+                for (String filepath : response.getBody()) {
                     Map<String, String> fileMap = new HashMap<>();
-
                     String filename = filepath.substring(filepath.lastIndexOf('/') + 1);
                     fileMap.put("filename", filename);
                     fileMap.put("path", filepath);
@@ -61,22 +57,11 @@ public class AdminController {
                     .body(Collections.singletonMap("error", "Failed to fetch files: " + e.getMessage()));
         }
     }
-    // public List<Map<String, Object>> getFiles() {
-    //     List<UserFile> files = userFileRepository.findAll();
-    //     List<Map<String, Object>> result = new ArrayList<>();
-    //     for (UserFile file : files) {
-    //         Map<String, Object> map = new HashMap<>();
-    //         map.put("id", file.getId());
-    //         map.put("filename", file.getFilename());
-    //         result.add(map);
-    //     }
-    //     return result;
-    // }
 
     @DeleteMapping("/files/{filename}")
     public ResponseEntity<?> deleteFile(@PathVariable String filename) {
         try {
-            RestTemplate  restTemplate = new RestTemplate();
+            RestTemplate restTemplate = new RestTemplate();
             String pythonApiUrl = "http://localhost:5001/delete-document";
 
             Map<String, String> request = new HashMap<>();
@@ -87,29 +72,20 @@ public class AdminController {
             return ResponseEntity.ok(Collections.singletonMap("status", "deleted"));
         } catch (Exception e) {
             return ResponseEntity.status(500)
-                    .body(Collections.singletonMap("error", "Failed to deete: " + e.getMessage()));
+                    .body(Collections.singletonMap("error", "Failed to delete: " + e.getMessage()));
         }
     }
 
     @GetMapping("/users")
     public List<User> getUsers() {
-
         List<User> users = userRepository.findByStatus("ACTIVE");
-//        List<Map<String, Object>> result = new ArrayList<>();
-//        for (User user : users) {
-//            Map<String, Object> map = new HashMap<>();
-//            map.put("id", user.getId());
-//            map.put("email", user.getEmail());
-//            map.put("role", user.getRole());
-//            result.add(map);
-//        }
         return users;
     }
-	
-	@GetMapping("/users/{id}")
-	public Optional<User> getUserById(@PathVariable Long id) {
-		return userRepository.findById(id);
-	}
+
+    @GetMapping("/users/{id}")
+    public Optional<User> getUserById(@PathVariable Long id) {
+        return userRepository.findById(id);
+    }
 
     @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody Map<String, String> updates) {
@@ -153,7 +129,7 @@ public class AdminController {
             return ResponseEntity.notFound().build();
 
         User user = optionalUser.get();
-        String action = body.get("action"); // "accept" or "decline"
+        String action = body.get("action");
 
         if ("accept".equalsIgnoreCase(action)) {
             user.setStatus("ACTIVE");
@@ -170,31 +146,38 @@ public class AdminController {
 
     @PostMapping("/upload-file")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
-    	System.out.println("📥 uploadFile() method entered");
+        System.out.println("📥 uploadFile() method entered");
 
         if (file.getSize() > 5 * 1024 * 1024) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "File size exceeds limit"));
         }
 
         String contentType = file.getContentType();
-        if(contentType == null || !Arrays.asList("image/png", "image/jpeg", "application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/plain").contains(contentType)) {
-            return ResponseEntity.status(400).body(Collections.singletonMap("error", "Invalid file type. Only PNG, JPEG, PDF, DOCX, and XLSX are allowed."));
+        if (contentType == null || !Arrays.asList("image/png", "image/jpeg", "application/pdf",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "text/plain").contains(contentType)) {
+            return ResponseEntity.status(400).body(Collections.singletonMap("error",
+                    "Invalid file type. Only PNG, JPEG, PDF, DOCX, XLSX, and TXT are allowed."));
         }
-        
+
         try {
             String tempDir = "/home/ekanthsai/Desktop/P3_LLM/temp_uploads/";
             Path path = Paths.get(tempDir + file.getOriginalFilename());
             Files.write(path, file.getBytes());
+
             RestTemplate restTemplate = new RestTemplate();
             String pythonApiUrl = "http://localhost:5001/process-document";
             HashMap<String, String> request = new HashMap<>();
             request.put("file_path", path.toString());
+
             ResponseEntity<String> response = restTemplate.postForEntity(pythonApiUrl, request, String.class);
 
             return ResponseEntity.ok(Collections.singletonMap("status", "uploaded and processing started"));
         } catch (Exception e) {
-        	e.printStackTrace(); 
-            return ResponseEntity.status(500).body(Collections.singletonMap("error", "Upload failed: " + e.getMessage()));
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .body(Collections.singletonMap("error", "Upload failed: " + e.getMessage()));
         }
     }
 
@@ -211,22 +194,4 @@ public class AdminController {
                 .header("Content-Disposition", "attachment; filename=\"" + filename + "\"")
                 .body(userFile.getData());
     }
-    
-    // @DeleteMapping("/files/{filename}")
-    // public ResponseEntity<?> deleteFile(@PathVariable String filename) {
-    //     try {
-    //         RestTemplate restTemplate = new RestTemplate();
-    //         String pythonApiUrl = "http://localhost:5001/delete-document";
-
-    //         Map<String, String> request = new HashMap<>();
-    //         request.put("filename", filename);
-
-    //         ResponseEntity<String> response = restTemplate.postForEntity(pythonApiUrl, request, String.class);
-
-    //         return ResponseEntity.ok(Collections.singletonMap("status", "deleted"));
-    //     } catch (Exception e) {
-    //         return ResponseEntity.status(500).body(Collections.singletonMap("error", "Failed to delete: " + e.getMessage()));
-    //     }
-    // }
 }
-
