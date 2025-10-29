@@ -196,5 +196,59 @@
         "query": "What is the Dhan.pdf about?",
         "response": "Based on the provided context, it appears that the Dhan.pdf document is an overview of AIML (Artificial Intelligence for Machine Learning) models used by Dhan, a stock brokerage application. The document discusses various machine learning models and techniques that Dhan might be using, such as collaborative filtering, content-based scoring, sequencing models, production ensembles, GB trees, parametric models, GARCH, and more.\n\nThe document also provides suggestions on how to \"beat\" Dhan's AIML models by ranking them, applying contextualization, building probabilistic forecasts, implementing corporate events estimation, fine-tuning sentiment analysis, and quantifying uncertainty using Bayesian Neural Networks or deep ensembles.\n\nIt does not appear that the document is specifically focused on a particular topic or industry, but rather provides an overview of machine learning models and techniques used in general.",
         "timestamp": "2025-10-28T16:22:18.984532+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "hi",
+        "response": "I cannot find any information related to your query \"hi\" in the provided context. The context only consists of repetitive document chunks with contact information, copyright information, and a brief description of assisting software development, debugging, and testing. There is no mention of \"hi\" or any other greeting-related content.",
+        "timestamp": "2025-10-29T06:35:39.505804+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "hi",
+        "response": "I'm happy to help! Based on the provided context (Document Chunks 1-5), I can see that it appears to be a personal profile or bio of Ekanth Sai Yellanki. However, since there is no specific information provided in response to your query \"hi\", I'll assume you're asking for general assistance.\n\nUnfortunately, without more specific information about what you need help with, I'm limited in what I can provide. If you could provide more context or a specific question, I'd be happy to try and assist you further!",
+        "timestamp": "2025-10-29T06:47:11.496456+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "tell me about ekantha sai ",
+        "response": "Based on the provided context, I can answer your query as follows:\n\nAccording to Document Chunks 1-2, Ekanth Sai's contact information includes his email address (@ekanthsaiy@gmail.com) and phone number (+9198859 87512). Additionally, it appears that he is associated with a GitHub account (github.com/Ekanth-Sai).\n\nDocument Chunks 3-4 suggest that Yellanki Ekantha Sai Sundar may be the full name of the individual.\n\nFinally, Document Chunk 5 indicates that Ekanth Sai was enrolled in the Gokaraju Rangaraju Institute of Engineering and Technology from January to May 2024.\n\nPlease note that this information is based solely on the provided context, and I have not found any additional details beyond what is mentioned.",
+        "timestamp": "2025-10-29T06:48:17.719375+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "what is his current role ",
+        "response": "Based on the provided context (Document Chunks 1-4), there isn't any specific information about the person's current role. The documents primarily discuss the tasks and skills related to software development, debugging, testing, web-application development, machine learning, and cloud services.\n\nHowever, if we look at Document Chunk 5, it seems like the person is currently working on application development, specifically with databases, APIs, and cloud services.\n\nPlease note that I'm only providing information based on the provided context; if more details are needed, please provide additional context.",
+        "timestamp": "2025-10-29T06:52:43.808693+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "hi ",
+        "response": "Hi! It seems like there's not much information provided about \"hi\" in the given context. I'd be happy to help you with anything related to software development, debugging, testing, or Spring Boot Micro Services, though! What would you like to know?",
+        "timestamp": "2025-10-29T06:52:58.337905+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "who is ekantha sai ",
+        "response": "Based on the provided context, I found that Ekantha Sai's name appears in Document Chunk 3 and Document Chunk 4 as \"Yellanki Ekantha Sai Sundar\". Additionally, his email address and GitHub handle are mentioned in Document Chunk 1. It seems that he is a student at Gokaraju Rangaraju Institute of Engineering and Technology from January to May 2024, according to Document Chunk 5.\n\nTherefore, based on the available information, Ekantha Sai appears to be an individual with the name Yellanki Ekantha Sai Sundar.",
+        "timestamp": "2025-10-29T06:56:18.162477+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "hi ",
+        "response": "Hello!\n\nIt seems like there's no specific information provided that answers your query. The context only includes personal details and a few general descriptions of assistance in software development. I couldn't find any relevant information related to your query.\n\nIf you could provide more context or specify what you're looking for, I'd be happy to help!",
+        "timestamp": "2025-10-29T06:56:31.124014+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "hi",
+        "response": "Hello! I'm happy to help. Based on the context provided, it seems that this is a GitHub profile or something similar, with information about Ekanth Sai Yellanki's contact details and some brief descriptions of his work. The specific chunks of information are:\n\n* Document Chunk 1-2: Contact information including email address, phone number, and GitHub handle.\n* Document Chunk 3-4: A brief description of Ekanth Sai's role or responsibilities, which seems to involve software development, debugging, and testing.\n* Document Chunk 5: A mention of using Spring Boot Micro Services to create an API in Postman for data manipulation.\n\nAs your query is just a simple \"hi\", I'm not finding any specific information that answers your question. If you have a more specific question or topic in mind, feel free to ask!",
+        "timestamp": "2025-10-29T07:00:50.428887+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "hi",
+        "response": "Hi! Based on the provided context, I can see that there are five document chunks, but they seem to be identical. There is no information that directly answers your greeting. However, I can tell you that the context seems to be related to software development and testing, as mentioned in Document Chunk 3 and 4. If you have a specific question or topic related to software development, I'd be happy to help!",
+        "timestamp": "2025-10-29T07:02:26.279913+00:00"
     }
 ]

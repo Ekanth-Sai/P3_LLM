@@ -14,7 +14,6 @@ import { DocumentService } from '../services/document.service';
   styleUrls: ['./bot-usage.css'],
   providers: [HistoryService, AdminService, DocumentService] 
 })
-  
 export class BotUsageComponent implements OnInit {
   private http = inject(HttpClient);
   private historyService = inject(HistoryService);
@@ -33,14 +32,8 @@ export class BotUsageComponent implements OnInit {
   deleteMessage: string | null = null;
   deleteSuccess: boolean = false;
 
-  // ngOnInit() {
-  //   const username = localStorage.getItem('email');
-  //   if (username) {
-  //     this.adminService.isAdmin(username).subscribe(response => {
-  //       this.isAdmin = response.is_admin;
-  //     });
-  //   }
-  // }
+  /** 👇 NEW STATE for loader animation */
+  isGeneratingResponse: boolean = false;
 
   ngOnInit() {
     const email = localStorage.getItem('email');
@@ -50,25 +43,37 @@ export class BotUsageComponent implements OnInit {
       this.adminService.isAdmin(email).subscribe(response => {
         this.isAdmin = response.is_admin;
       });
-    } 
+    }
   }
 
+  /** 👇 UPDATED sendMessage() */
   sendMessage() {
     if (this.newMessage.trim() === '') return;
 
-    this.messages.push({ text: this.newMessage, isUser: true });
+    const userInput = this.newMessage;
+    this.messages.push({ text: userInput, isUser: true });
+    this.newMessage = '';
+    this.isGeneratingResponse = true; // show loader
 
     const username = localStorage.getItem('email');
     if (!username) {
       alert('Error: User not logged in.');
+      this.isGeneratingResponse = false;
       return;
     }
-    this.http.post('http://localhost:5001/query', { username, query: this.newMessage })
-      .subscribe((response: any) => {
-        this.messages.push({ text: response.response, isUser: false });
-      });
 
-    this.newMessage = '';
+    this.http.post('http://localhost:5001/query', { username, query: userInput })
+      .subscribe({
+        next: (response: any) => {
+          this.messages.push({ text: response.response, isUser: false });
+          this.isGeneratingResponse = false; // hide loader
+        },
+        error: (err) => {
+          console.error('Error fetching response:', err);
+          this.messages.push({ text: '⚠️ Something went wrong. Try again later.', isUser: false });
+          this.isGeneratingResponse = false; // hide loader
+        }
+      });
   }
 
   showHistory() {
@@ -89,10 +94,6 @@ export class BotUsageComponent implements OnInit {
     this.activeTab = 'documents';
     this.loadingDocuments = true;
     this.deleteMessage = null;
-
-    // this.documentService.getDocuments().subscribe(documents => {
-    //   this.documents = documents;
-    // });
 
     this.http.get<any[]>('http://localhost:8080/admin/files').subscribe({
       next: (files) => {
@@ -116,16 +117,13 @@ export class BotUsageComponent implements OnInit {
       next: () => {
         this.deleteMessage = `Successfully deleted "${filename}" from the knowledge base.`;
         this.deleteSuccess = true;
-
         this.showDocuments();
-
         setTimeout(() => this.deleteMessage = null, 3000);
       },
       error: (err) => {
         console.error('Error deleting document: ', err);
         this.deleteMessage = `Failed to delete "${filename}".`;
         this.deleteSuccess = false;
-
         setTimeout(() => this.deleteMessage = null, 3000);
       }
     });

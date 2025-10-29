@@ -24,7 +24,18 @@
                         [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
                         <div class="message-bubble">{{ message.text }}</div>
                     </div>
+
+                    <div *ngIf="isGeneratingResponse" class="message bot-message">
+                        <div class="message-bubble typing-bubble">
+                          <div class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </div>
+                        </div>
+                      </div>
                 </div>
+
 
                 <div class="bot-welcome" *ngIf="messages.length === 0">
                     <div class="bot-icon">🤖</div>
@@ -34,11 +45,20 @@
                     </p>
                 </div>
 
-                <div class="chat-input">
-                    <input type="text" placeholder="Ask me to explain the project" [(ngModel)]="newMessage"
-                        (keydown.enter)="sendMessage()">
-                    <button class="send-btn" (click)="sendMessage()">📨</button>
-                </div>
+                  <div class="chat-input">
+                    <input
+                      type="text"
+                      [placeholder]="isGeneratingResponse ? '🤖 Generating response...' : 'Ask me to explain the project'"
+                      [(ngModel)]="newMessage"
+                      (keydown.enter)="sendMessage()"
+                      [disabled]="isGeneratingResponse">
+                    
+                    <button class="send-btn"
+                            (click)="sendMessage()"
+                            [disabled]="isGeneratingResponse">
+                      {{ isGeneratingResponse ? '⏳' : '📨' }}
+                    </button>
+                  </div>
             </div>
 
             <div class="history-body" *ngIf="activeTab === 'history'">
