@@ -1,8 +1,12 @@
 <div class="admin-container">
-    <nav class="navbar">
-        <div class="nav-left">Admin Dashboard</div>
-        <div class="nav-right" (click)="goBackToDashboard()" style="cursor:pointer">Home</div>
-    </nav>
+  <nav class="navbar">
+    <div class="nav-left">Admin Dashboard</div>
+  
+    <div class="nav-right-container">
+      <div class="nav-right" (click)="goBackToDashboard()" style="cursor:pointer">Home</div>
+      <button class="logout-btn" (click)="onLogout()">Sign Out</button>
+    </div>
+  </nav>
 
     <div class="dashboard-content" *ngIf="view==='dashboard'">
         <section class="section-features" id="features" data-aos="fade-up">

@@ -13,11 +13,23 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/login`, credentials);
   }
 
-
-  loginWithBasicAuth(email: string, password: string): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: 'Basic ' + btoa(`${email}:${password}`), // Base64 encode email:password
-    });
-    return this.http.get('http://localhost:8080/admin/users', { headers });
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('email');
   }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const expiry = payload.exp * 1000; // convert to milliseconds
+    return Date.now() > expiry;
+  }
+
 }

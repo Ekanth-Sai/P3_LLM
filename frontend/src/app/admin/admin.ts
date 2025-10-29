@@ -40,6 +40,7 @@ export class AdminComponent implements OnInit {
     setTimeout(() => this.message = null, 5000);
   }
 
+
   navigateTo(page: string) {
     if (page === 'pending') {
       this.view = 'pending';
@@ -61,7 +62,13 @@ export class AdminComponent implements OnInit {
   loadPendingUsers() {
     this.adminService.getPendingUsers().subscribe((data: any[]) => this.pendingUsers = data);
   }
-
+  onLogout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('email');
+    this.router.navigate(['/login']);
+  }
+  
   updateUser(user: any) {
     this.adminService.updateUser(user.id, { email: user.email, role: user.role }).subscribe(
         () => this.showMessage('User updated successfully!'),

@@ -130,5 +130,23 @@
         "query": "What was the duration of internship of Ekanth at p3 solutions? When did it start?",
         "response": "Based on Document Chunks 1, 2, I can provide information about Ekanth's internship.\n\nAccording to the documents, Ekanth had an internship as a Software Developer at Platform 3 Solutions Pvt. Ltd. with the following details:\n\n* Duration: Not explicitly mentioned in the provided context.\n* Start date: May 2025\n\nUnfortunately, the starting date is not specified earlier than May 2025, so I cannot provide more information on when it started.",
         "timestamp": "2025-10-21T15:50:02.321262+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "what is what2wear ?",
+        "response": "I apologize, but I cannot find any information about \"what2wear\" in the provided context. The documents only mention software development, debugging, testing, web-applications, databases, APIs, cloud services, machine learning, LLM's, artificial intelligence, and specific technologies like Spring Boot and Angular. There is no mention of \"what2wear\".",
+        "timestamp": "2025-10-28T16:19:26.927059+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "what it the current role of harsha ",
+        "response": "According to the provided context (Document Chunks 1-3), Harsha Venkat K is currently a Software Developer Intern at Platform 3 Solutions, working since July 2025.",
+        "timestamp": "2025-10-28T16:20:34.157961+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "can you explain more about his role ",
+        "response": "Based on the provided context (Document Chunks 1-4), I can summarize the person's role as:\n\n* Assisting in software development, debugging, and testing\n* Developing and maintaining web applications using front-end and back-end technologies\n* Working with databases, APIs, and cloud services for application development\n* Working on machine learning applications, LLMs, artificial intelligence, Spring Boot, and Angular\n\nIt does not seem to mention anything specific about their role in NLP (Natural Language Processing) or related topics, which is the focus of Assignment-1.",
+        "timestamp": "2025-10-28T16:22:18.757590+00:00"
     }
 ]

@@ -1,18 +1,22 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
 
 export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem('token');
-
-  // Skip login and signup routes
-  if (req.url.includes('/login') || req.url.includes('/create-user')) {
-    return next(req);
-  }
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const token = authService.getToken();
 
   if (token) {
+    if (authService.isTokenExpired()) {
+      authService.logout();
+      router.navigate(['/login']);
+      return next(req); // stop request after logout
+    }
+
     const cloned = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
+      setHeaders: { Authorization: `Bearer ${token}` }
     });
     return next(cloned);
   }

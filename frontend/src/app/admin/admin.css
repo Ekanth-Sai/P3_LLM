@@ -21,25 +21,57 @@
     left: 0;
     right: 0;
     z-index: 10;
-    background-color: #06c;
+    background-color: #0066cc; /* Same as #06c, clearer */
     color: white;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   
-  .navbar a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
+  /* Left title */
+  .nav-left {
+    font-weight: 600;
+    font-size: 1.25rem;
   }
   
-  .navbar-brand {
-    font-weight: bold;
-    font-size: 1.2rem;
+  /* Right section container */
+  .nav-right-container {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem; /* spacing between Home and Sign Out */
   }
+  
+  /* Right-side items (Home text) */
+  .nav-right {
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+  }
+  
+  .nav-right:hover {
+    opacity: 0.8;
+  }
+  
+  /* Sign Out button */
+  .logout-btn {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+  
+  .logout-btn:hover {
+    background-color: #c5c0c0;
+    transform: scale(1.05);
+  }
+  
   
   /* ============================
      Dashboard Content
