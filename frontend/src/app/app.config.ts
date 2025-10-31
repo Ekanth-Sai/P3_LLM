@@ -7,8 +7,8 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(
-      withFetch(),
-      withInterceptors([TokenInterceptor])
+      withFetch(),                         
+      withInterceptors([TokenInterceptor])  
     ),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),

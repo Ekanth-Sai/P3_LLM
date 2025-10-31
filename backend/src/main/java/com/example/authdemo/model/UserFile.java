@@ -12,6 +12,8 @@ public class UserFile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String filename;
+    private String path;
+    private String project;
 
     @Lob
     private byte[] data;
@@ -35,4 +37,20 @@ public class UserFile {
     public void setData(byte[] data) {
         this.data = data;
     }
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public String getProject() {
+		return project;
+	}
+
+	public void setProject(String project) {
+		this.project = project;
+	}
 }

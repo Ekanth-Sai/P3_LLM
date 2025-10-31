@@ -123,22 +123,38 @@
         </table>
     </div>
 
-   <div class ="file-upload-container">
-    <h4> 📤 File Upload </h4>
-    <div *ngIf="message" [ngClass]="{
-      'message-success': messageType === 'success',
-      'message-error': messageType === 'error'
-    }">
-    {{ message }}
-  </div>
-    <form (submit)="onFileUpload($event)">
+    <div class="file-upload-container">
+      <h4>📤 File Upload</h4>
+    
+      <div *ngIf="message" [ngClass]="{
+          'message-success': messageType === 'success',
+          'message-error': messageType === 'error'
+        }">
+        {{ message }}
+      </div>
+    
+      <form (submit)="onFileUpload($event)">
         <input type="file" (change)="onFileSelected($event)" />
         <button type="submit">Upload File</button>
-    </form>
-    </div>  
-
-    <div *ngFor="let file of files">
+      </form>
+    
+      <div *ngFor="let file of files">
         <span>{{file.filename}}</span>
         <button (click)="downloadFile(file)">Download File</button>
+      </div>
     </div>
+    
+    <!-- Modal Window for Project Name -->
+    <div class="modal-backdrop" *ngIf="showProjectModal">
+      <div class="modal">
+        <h3>Enter Project Name</h3>
+        <input type="text" [(ngModel)]="projectName" placeholder="e.g. Fintech_AI_Pipeline" />
+        <div class="modal-buttons">
+          <button (click)="confirmUpload()">Confirm</button>
+          <button class="cancel-btn" (click)="cancelUpload()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+
 </div>

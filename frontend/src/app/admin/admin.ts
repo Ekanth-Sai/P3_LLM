@@ -107,31 +107,52 @@ export class AdminComponent implements OnInit {
     this.view = 'dashboard';
     this.selectedOption = '';
   }
-
   selectedFile: File | null = null;
-
+  showProjectModal: boolean = false;
+  projectName: string = '';
+  
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
-
+  
   onFileUpload(event: Event) {
     event.preventDefault();
-    if (!this.selectedFile) return;
-
+    if (!this.selectedFile) {
+      this.showMessage('Please select a file first.', 'error');
+      return;
+    }
+  
+    // show modal to ask for project name
+    this.showProjectModal = true;
+  }
+  
+  cancelUpload() {
+    this.showProjectModal = false;
+    this.projectName = '';
+  }
+  
+  confirmUpload() {
+    if (!this.projectName.trim()) {
+      this.showMessage('Please enter a valid project name.', 'error');
+      return;
+    }
+  
     const formData = new FormData();
-    formData.append('file', this.selectedFile);
-
-    this.http.post('http://localhost:8080/admin/upload-file', formData, { responseType: 'text' })
-    .subscribe({
-      next: (res) => {
-        console.log('✅ Upload response:', res);
-        this.showMessage('File uploaded!');
-      },
-      error: (err) => {
-        console.error('❌ Upload error:', err);
-        this.showMessage('Upload failed', 'error');
-      }
-    });
+    formData.append('file', this.selectedFile!);
+    formData.append('projectName', this.projectName.trim());
+  
+    this.http.post('http://localhost:8080/admin/upload-file', formData)
+      .subscribe({
+        next: () => {
+          this.showMessage('File uploaded successfully!');
+          this.showProjectModal = false;
+          this.projectName = '';
+        },
+        error: () => {
+          this.showMessage('Upload failed.', 'error');
+          this.showProjectModal = false;
+        }
+      });
   }
 
   downloadFile(fileId: number) {
