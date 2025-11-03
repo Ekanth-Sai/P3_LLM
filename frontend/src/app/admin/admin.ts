@@ -168,46 +168,30 @@ export class AdminComponent implements OnInit {
     this.selectedOption = '';
   }
 
+  selectedFile: File | null = null;
+
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
-
+  
   onFileUpload(event: Event) {
     event.preventDefault();
-    if (!this.selectedFile) {
-      this.showMessage('Please select a file', 'error');
-      return;
-    }
-
-    const projectName = prompt('Enter the project name for this document:');
-    if (!projectName) {
-      this.showMessage('Project name is required', 'error');
-      return;
-    }
+    if (!this.selectedFile) return;
 
     const formData = new FormData();
     formData.append('file', this.selectedFile);
-    formData.append('project', projectName);
-    formData.append('department', this.selectedDepartment);
-    formData.append('sensitivity', this.selectedSensitivity);
 
     this.http.post('http://localhost:8080/admin/upload-file', formData, { responseType: 'text' })
-      .subscribe({
-        next: (res) => {
-          console.log('✅ Upload response:', res);
-          this.showMessage(`File uploaded to ${projectName} knowledge base!`, 'success');
-          this.selectedFile = null;
-          // Clear the file input
-          const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-          if (fileInput) fileInput.value = '';
-          // Reload documents list
-          this.loadDocuments();
-        },
-        error: (err) => {
-          console.error('❌ Upload error:', err);
-          this.showMessage('Upload failed', 'error');
-        }
-      });
+    .subscribe({
+      next: (res) => {
+        console.log('✅ Upload response:', res);
+        this.showMessage('File uploaded!');
+      },
+      error: (err) => {
+        console.error('❌ Upload error:', err);
+        this.showMessage('Upload failed', 'error');
+      }
+    });
   }
 
   downloadFile(fileId: number) {

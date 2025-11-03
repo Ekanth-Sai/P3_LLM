@@ -137,51 +137,22 @@
     </table>
   </div>
 
-  <!-- Documents View -->
-  <div class="documents-section" *ngIf="view==='documents'">
-    <div class="documents-header">
-      <h3>📁 Knowledge Base Documents</h3>
-      <p class="subtitle">Manage files used by the LLM for answering queries</p>
-    </div>
-
+  <div class ="file-upload-container">
+    <h4> 📤 File Upload </h4>
     <div *ngIf="message" [ngClass]="{
-            'message-success': messageType === 'success',
-            'message-error': messageType === 'error'
-        }">
-      {{ message }}
-    </div>
-
-    <!-- File Upload Section -->
-    <div class="file-upload-container">
-      <h4>📤 Upload New Document</h4>
-      <form (submit)="onFileUpload($event)">
+      'message-success': messageType === 'success',
+      'message-error': messageType === 'error'
+    }">
+    {{ message }}
+  </div>
+    <form (submit)="onFileUpload($event)">
         <input type="file" (change)="onFileSelected($event)" />
         <button type="submit">Upload File</button>
-      </form>
-    </div>
+    </form>
+    </div>  
 
-    <!-- Loading Spinner -->
-    <div *ngIf="loadingDocuments" class="loading-spinner">
-      <div class="spinner"></div>
-      <p>Loading documents...</p>
+    <div *ngFor="let file of files">
+        <span>{{file.filename}}</span>
+        <button (click)="downloadFile(file)">Download File</button>
     </div>
-
-    <!-- No Documents -->
-    <div *ngIf="!loadingDocuments && documents.length === 0" class="no-documents">
-      <p>📭 No documents in knowledge base</p>
-    </div>
-
-    <!-- Documents List -->
-    <div *ngIf="!loadingDocuments && documents.length > 0" class="documents-list">
-      <div *ngFor="let doc of documents" class="document-item">
-        <div class="doc-info">
-          <span class="doc-icon">📄</span>
-          <span class="doc-name">{{ doc.filename }}</span>
-        </div>
-        <button class="delete-doc-btn" (click)="deleteDocument(doc.filename)">
-          🗑️ Delete
-        </button>
-      </div>
-    </div>
-  </div>
 </div>

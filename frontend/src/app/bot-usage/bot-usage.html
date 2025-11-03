@@ -1,9 +1,15 @@
+imports: [FormsModule, CommonModule, HttpClientModule],
 <div class="bot-usage-container">
-    <header class="top-bar">
-        <span class="logo">LLM Chatbot</span>
-        <a href="/" class="home-link">Home</a>
-    </header>
 
+    <nav class="navbar">
+        <div class="nav-left">Chatbot</div>
+      
+        <div class="nav-right-container">
+          <div class="nav-right" (click)="goBackToDashboard()" style="cursor:pointer">Home</div>
+          <button class="logout-btn" (click)="onLogout()">Sign Out</button>
+        </div>
+      </nav>
+    
     <main class="main-content">
         <h1 class="welcome-text">Welcome {{ username }}</h1>
         <p class="subtext">
@@ -76,37 +82,48 @@
 
             <div class="documents-body" *ngIf="activeTab === 'documents' && isAdmin">
                 <div class="documents-header">
-                    <h3>Knowledge Base Documents</h3>
-                    <p class="subtitle">Manage files used by the LLM</p>
+                  <h3>Knowledge Base Documents</h3>
+                  <p class="subtitle">Manage files used by the LLM, grouped by project</p>
                 </div>
-
+              
                 <div *ngIf="loadingDocuments" class="loading-spinner">
-                    <div class="spinner"></div>
-                    <p>Loading documents...</p>
+                  <div class="spinner"></div>
+                  <p>Loading documents...</p>
                 </div>
-
-                <div *ngIf="!loadingDocuments && documents.length === 0" class="no-documents">
-                    <p>📭 No documents in knowledge base</p>
+              
+                <div *ngIf="!loadingDocuments && projectNames.length === 0" class="no-documents">
+                  <p>📭 No documents in knowledge base</p>
                 </div>
-
-                <div *ngIf="!loadingDocuments && documents.length > 0" class="documents-list">
-                    <div *ngFor="let doc of documents" class="document-item">
-                        <div class="doc-info">
-                            <span class="doc-icon">📄</span>
-                            <span class="doc-name">{{ doc.filename }}</span>
-                        </div>
-                        <button class="delete-doc-btn" (click)="deleteDocument(doc.filename)">
-                            🗑️ Delete
-                        </button>
+              
+                <div *ngIf="!loadingDocuments && projectNames.length > 0" class="documents-list">
+                  <div *ngFor="let project of projectNames" class="project-section">
+                    <div class="project-header" (click)="toggleProject(project)">
+                      <span class="project-name">🗂️ {{ project }}</span>
+                      <span class="arrow">{{ expandedProjects[project] ? '▼' : '▶' }}</span>
                     </div>
+              
+                    <div class="project-files" *ngIf="expandedProjects[project]">
+                      <div *ngFor="let doc of groupedFiles[project]" class="document-item">
+                        <div class="doc-info">
+                          <span class="doc-icon">📄</span>
+                          <span class="doc-name">{{ doc.filename }}</span>
+                        </div>
+                        <div class="doc-actions">
+                          <button class="download-doc-btn" (click)="downloadFile(doc)">📥 Download</button>
+                          <button class="delete-doc-btn" (click)="deleteDocument(doc.filename)">🗑️ Delete</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
+              
                 <!-- Delete confirmation message -->
                 <div *ngIf="deleteMessage" class="delete-message"
-                    [ngClass]="{'success': deleteSuccess, 'error': !deleteSuccess}">
-                    {{ deleteMessage }}
+                     [ngClass]="{'success': deleteSuccess, 'error': !deleteSuccess}">
+                  {{ deleteMessage }}
                 </div>
-            </div>
+              </div>
+              
         </div>
     </main>
 </div>

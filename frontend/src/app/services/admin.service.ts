@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,11 @@ export class AdminService {
   private javaApiUrl = 'http://localhost:8080/admin'; // Java backend for user management
   private pythonApiUrl = 'http://localhost:5001'; // Python backend for role checks
 
-  isAdmin(username: string): Observable<{ is_admin: boolean }> {
-    return this.http.get<{ is_admin: boolean }>(`${this.pythonApiUrl}/is-admin?username=${username}`);
+  isAdmin(email: string): Observable<any> {
+    const params = { email }; 
+    const headers = new HttpHeaders(); 
+    return this.http.get<any>(`${this.javaApiUrl}/is-admin?email=${email}`);
   }
-
   getExistingUsers(): Observable<any[]> {
     return this.http.get<any[]>(`${this.javaApiUrl}/users`);
   }

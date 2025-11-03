@@ -7,7 +7,7 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const token = authService.getToken();
-
+  //console.log(`[TokenInterceptor] ${req.url}`, 'token?', !!token);
   if (token) {
     if (authService.isTokenExpired()) {
       authService.logout();

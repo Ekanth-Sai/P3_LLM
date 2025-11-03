@@ -4,12 +4,13 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HistoryService } from '../services/history.service';
 import { AdminService } from '../services/admin.service';
+import { Router } from '@angular/router';
 import { DocumentService } from '../services/document.service';
 
 @Component({
   selector: 'app-bot-usage',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './bot-usage.html',
   styleUrls: ['./bot-usage.css'],
   providers: [HistoryService, AdminService, DocumentService] 
@@ -18,6 +19,8 @@ export class BotUsageComponent implements OnInit {
   private http = inject(HttpClient);
   private historyService = inject(HistoryService);
   private adminService = inject(AdminService);
+  private router = inject(Router);
+
   // private documentService = inject(DocumentService);
 
   messages: { text: string, isUser: boolean }[] = [];
@@ -38,15 +41,31 @@ export class BotUsageComponent implements OnInit {
   ngOnInit() {
     const email = localStorage.getItem('email');
     this.username = email || 'User';
-
+  
     if (email) {
-      this.adminService.isAdmin(email).subscribe(response => {
-        this.isAdmin = response.is_admin;
+
+      this.adminService.isAdmin(email).subscribe({
+        next: (response) => {
+          this.isAdmin = response.is_admin;
+          console.log('Admin check:', response); 
+        },
+        error: (err) => {
+          console.error('Admin check failed:', err);
+        }
       });
     }
   }
+  onLogout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('email');
+    this.router.navigate(['/login']);
+  }
 
-  /** 👇 UPDATED sendMessage() */
+  goBackToDashboard() {
+    this.router.navigate(['/admin']);
+  }
+
   sendMessage() {
     if (this.newMessage.trim() === '') return;
 
@@ -88,32 +107,44 @@ export class BotUsageComponent implements OnInit {
     });
   }
 
+  
+
+  groupedFiles: { [project: string]: any[] } = {};
+  projectNames: string[] = [];
+  expandedProjects: { [project: string]: boolean } = {};
+
   showDocuments() {
     if (!this.isAdmin) return;
-    
+
     this.activeTab = 'documents';
     this.loadingDocuments = true;
-    this.deleteMessage = null;
 
-    this.http.get<any[]>('http://localhost:8080/admin/files').subscribe({
-      next: (files) => {
-        this.documents = files;
+    this.http.get<{ [project: string]: any[] }>('http://localhost:8080/admin/files').subscribe({
+      next: (data) => {
+        this.groupedFiles = data;
+        this.projectNames = Object.keys(data);
+        this.expandedProjects = this.projectNames.reduce((acc, p) => ({ ...acc, [p]: false }), {});
         this.loadingDocuments = false;
       },
       error: (err) => {
-        console.error('Error loading documents: ', err);
+        console.error('Error loading documents:', err);
         this.loadingDocuments = false;
-        this.documents = [];
       }
     });
   }
+
+  toggleProject(project: string) {
+    this.expandedProjects[project] = !this.expandedProjects[project];
+  }
+
+
 
   deleteDocument(filename: string) {
     if (!confirm(`Are you sure you want to delete "${filename}" from the knowledge base?`)) {
       return;
     }
-
-    this.http.delete(`http://localhost:8080/admin/files/${filename}`).subscribe({
+  
+    this.http.delete(`http://localhost:8080/admin/deleteFileByName/${filename}`).subscribe({
       next: () => {
         this.deleteMessage = `Successfully deleted "${filename}" from the knowledge base.`;
         this.deleteSuccess = true;
@@ -121,13 +152,45 @@ export class BotUsageComponent implements OnInit {
         setTimeout(() => this.deleteMessage = null, 3000);
       },
       error: (err) => {
-        console.error('Error deleting document: ', err);
+        console.error('Error deleting document:', err);
         this.deleteMessage = `Failed to delete "${filename}".`;
         this.deleteSuccess = false;
         setTimeout(() => this.deleteMessage = null, 3000);
       }
     });
   }
+
+  downloadFile(file: any) {
+    const filename = file.filename || file; 
+  
+    this.http.get(`http://localhost:8080/admin/download-file/${filename}`, {
+      responseType: 'blob',
+      observe: 'response'
+    }).subscribe({
+      next: (response) => {
+        const contentDisposition = response.headers.get('content-disposition');
+        const nameFromHeader = contentDisposition
+          ? contentDisposition.split('filename=')[1]?.replace(/"/g, '')
+          : filename;
+  
+        const blob = response.body;
+        if (blob) {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = nameFromHeader || 'downloaded_file';
+          a.click();
+          window.URL.revokeObjectURL(url);
+        }
+      },
+      error: (err) => {
+        console.error('❌ Error downloading file:', err);
+        alert('Download failed. Please try again later.');
+      }
+    });
+  }
+  
+  
 
   showChat() {
     this.activeTab = 'chat';
