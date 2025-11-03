@@ -40,13 +40,17 @@ def process_document():
     file_path = data.get('file_path')
     department = data.get('department', 'General')
     sensitivity = data.get('sensitivity', 'Public')
+    project_name = data.get('project')
 
-    if not file_path:
-        return jsonify({'error': 'file_path is required'}), 400
+    if not project_name:
+        return jsonify({'error': 'project name is required'}), 400
+
+        # if not file_path:
+        #     return jsonify({'error': 'file_path is required'}), 400
     
     try:
-        system.process_and_add_document(file_path, department, sensitivity)
-        return jsonify({'message': f"Successfully processed {file_path}"})
+        system.process_and_add_document(file_path, department, sensitivity, project_name)
+        return jsonify({'message': f"Document added to {project_name} knowledge base"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -102,6 +106,7 @@ def query():
             'username': username,
             'query': query_text,
             'response': response,
+            'project': get_user_project(username),
             'timestamp': datetime.now(timezone.utc).isoformat()
         })
 

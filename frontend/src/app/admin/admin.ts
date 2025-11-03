@@ -20,6 +20,7 @@ export class AdminComponent implements OnInit {
   users: any[] = [];
   pendingUsers: any[] = [];
   documents: any[] = [];
+  projects: string[] = [];
   view: 'dashboard' | 'existing' | 'pending' | 'documents' = 'dashboard';
 
   decliningUser: any = null;
@@ -30,6 +31,9 @@ export class AdminComponent implements OnInit {
 
   loadingDocuments: boolean = false;
   selectedFile: File | null = null;
+
+  selectedDepartment: string = 'General';
+  selectedSensitivity: string = 'Public';
 
   constructor(private router: Router, private http: HttpClient) { }
 
@@ -66,6 +70,21 @@ export class AdminComponent implements OnInit {
 
   loadPendingUsers() {
     this.adminService.getPendingUsers().subscribe((data: any[]) => this.pendingUsers = data);
+  }
+
+  loadProjects() {
+    this.http.get<string[]>('http://localhost:8080/admin/projects')
+      .subscribe(projects => {
+        this.projects = projects;
+      });
+  }
+
+  createNewProject(projectName: string) {
+    this.http.post('http://localhost:8080/admin/projects', { name: projectName })
+      .subscribe(() => {
+        this.showMessage(`Project ${projectName} created`, 'success');
+        this.loadProjects();
+      });
   }
 
   loadDocuments() {
@@ -160,14 +179,23 @@ export class AdminComponent implements OnInit {
       return;
     }
 
+    const projectName = prompt('Enter the project name for this document:');
+    if (!projectName) {
+      this.showMessage('Project name is required', 'error');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('file', this.selectedFile);
+    formData.append('project', projectName);
+    formData.append('department', this.selectedDepartment);
+    formData.append('sensitivity', this.selectedSensitivity);
 
     this.http.post('http://localhost:8080/admin/upload-file', formData, { responseType: 'text' })
       .subscribe({
         next: (res) => {
           console.log('✅ Upload response:', res);
-          this.showMessage('File uploaded successfully!', 'success');
+          this.showMessage(`File uploaded to ${projectName} knowledge base!`, 'success');
           this.selectedFile = null;
           // Clear the file input
           const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;

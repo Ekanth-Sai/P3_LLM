@@ -1,8 +1,8 @@
-# main.py
-
 import os
 from pathlib import Path
 from typing import List, Dict, Any
+import psycopg2
+from psycopg2.extras import RealDictCursor
 
 from document_processor.factory import DocumentProcessorFactory
 from embedding_manager import EmbeddingManager
@@ -12,6 +12,39 @@ from auth import AccessManager
 
 PROCESSED_FILES_LOG = os.path.join("chroma_db", "processed_files.log")
 
+DB_CONFIG = {
+    'host': 'localhost',
+    'database': 'p3_db',
+    'user': 'test',
+    'password': 'admin',
+    'port': 5432
+}
+
+def fetch_user_from_db(username: str) -> Dict[str, Any]:
+    try:
+        conn = psycopg2.connect(**DB_CONFIG)
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        
+        query = "SELECT * FROM users WHERE email = %s"
+        cursor.execute(query, (username,))
+        user = cursor.fetchone()
+        
+        cursor.close()
+        conn.close()
+        
+        if user:
+            return dict(user)
+        else:
+            print(f"Warning: User {username} not found in database")
+            return {'project': 'General'}  # Default fallback
+            
+    except Exception as e:
+        print(f"Error fetching user from database: {e}")
+        return {'project': 'General'}  # Default fallback
+
+def get_user_project(username: str) -> str:
+    user_data = fetch_user_from_db(username)
+    return user_data.get('project', 'General')
 class DocQASystem:
     def __init__(self):
         self.access_manager = AccessManager()
@@ -19,12 +52,8 @@ class DocQASystem:
         self.vector_db_manager = VectorDBManager()
         self.llm_qa_manager = LLM_QAManager()
 
-    def process_and_add_document(self, file_path: str, department: str, sensitivity: str):
-        """
-        Processes a single document, extracts text/images, embeds them,
-        and adds to the vector database with associated metadata.
-        """
-        print(f"\nProcessing file: {file_path}")
+    def process_and_add_document(self, file_path: str, department: str, sensitivity: str, project_name: str):
+        print(f"\nProcessing file for project '{project_name}' : {file_path}")
         try:
             processor = DocumentProcessorFactory.get_processor(file_path)
             
@@ -94,7 +123,7 @@ class DocQASystem:
                 metadatas.append(metadata)
 
             # Add documents with pre-generated embeddings
-            self.vector_db_manager.add_documents(processed_chunks, chunk_embeddings, metadatas)
+            self.vector_db_manager.add_documents(processed_chunks, chunk_embeddings, metadatas, project_name=project_name)
             print(f"Successfully processed and added chunks from {file_path} to DB.")
 
             # Log the processed file
@@ -142,17 +171,20 @@ class DocQASystem:
 
 
     def query_system(self, username: str, query: str) -> str:
-        """
-        Handles a user query, applying role-based access control.
-        """
-        print(f"\n--- User '{username}' Query: '{query}' ---")
+        user = self.get_user_by_email(username)
+        user_project = user.get('project')
+
+        if not user_project:
+            return "Error: User not assigned to any project"
+
+        print(f"\n--- User '{username}' querying project: '{user_project}' sending a query: {query} ---")
         
         # 1. Get allowed metadata filters for the user
         allowed_filters = self.access_manager.get_allowed_metadata_filters(username)
-        print(f"User '{username}' allowed filters: {allowed_filters}")
+        # print(f"User '{username}' allowed filters: {allowed_filters}")
 
         # 2. Convert allowed filters into ChromaDB's 'where' clause format
-        chroma_filter = {}
+        chroma_filter = self._build_chroma_filter(allowed_filters)
         if "department" in allowed_filters:
             if len(allowed_filters["department"]) == 1:
                 chroma_filter["department"] = allowed_filters["department"][0]
@@ -186,9 +218,10 @@ class DocQASystem:
 
         # 3. Query vector database with the user's query embedding and the applied filters
         retrieved_results = self.vector_db_manager.query_documents(
-            query_embedding=query_embedding, # Pass the generated query embedding
+            query_embedding=query_embedding,
+            project_name = user_project, # Pass the generated query embedding
             n_results=5, # Get top 5 relevant chunks
-            where_filter=final_filter if final_filter else None
+            where_filter= chroma_filter
         )
 
         # 4. Extract relevant document chunks to form the context for the LLM
