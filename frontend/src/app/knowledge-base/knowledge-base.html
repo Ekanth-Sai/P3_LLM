@@ -1,0 +1,192 @@
+<div class="knowledge-base-container">
+  <nav class="navbar">
+    <div class="nav-left">📚 Knowledge Base</div>
+    <button class="btn-nav" (click)="goBackToDashboard()">🏠 Back to Dashboard</button>
+  </nav>
+
+  <div
+    *ngIf="message"
+    [ngClass]="{
+      'message-success': messageType === 'success',
+      'message-error': messageType === 'error'
+    }"
+    class="message"
+  >
+    {{ message }}
+  </div>
+
+  <!-- Upload Card -->
+  <section class="card upload-card">
+    <h3 class="section-title">📤 Upload File</h3>
+
+    <form (submit)="onFileUpload($event)" class="upload-form">
+      <div class="form-row">
+        <label class="form-label">Select File</label>
+        <input type="file" class="file-input" (change)="onFileSelected($event)" />
+      </div>
+
+      <!-- Department Dropdown -->
+      <div class="form-row">
+        <label class="form-label">Select Department</label>
+        <select
+          [(ngModel)]="selectedDepartment"
+          name="departmentSelect"
+          class="select-input"
+          (change)="onDepartmentChange()"
+        >
+          <option value="">-- Choose Department --</option>
+          <option *ngFor="let d of departments" [value]="d">{{ d }}</option>
+          <option value="__new__">➕ Create New Department</option>
+        </select>
+      </div>
+
+      <div *ngIf="selectedDepartment === '__new__'" class="form-row">
+        <label class="form-label">New Department Name</label>
+        <input
+          type="text"
+          [(ngModel)]="newDepartmentName"
+          name="newDepartmentName"
+          placeholder="Enter new Department name"
+          class="text-input"
+        />
+      </div>
+
+      <!-- Project Dropdown -->
+      <div class="form-row">
+        <label class="form-label">Select Project</label>
+        <select [(ngModel)]="selectedProject" name="projectSelect" class="select-input">
+          <option value="">-- Choose Project --</option>
+          <option *ngFor="let p of projects" [value]="p">{{ p }}</option>
+          <option value="__new__">➕ Create New Project</option>
+        </select>
+      </div>
+
+      <div *ngIf="selectedProject === '__new__'" class="form-row">
+        <label class="form-label">New Project Name</label>
+        <input
+          type="text"
+          [(ngModel)]="newProjectName"
+          name="newProjectName"
+          placeholder="Enter new project name"
+          class="text-input"
+        />
+      </div>
+
+      <div class="button-row">
+        <button type="submit" class="btn-primary">Upload</button>
+      </div>
+    </form>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Department -> Project -> Files Section -->
+  <section class="card project-card">
+    <h3 class="section-title">📂 Departments & Projects</h3>
+
+    <div *ngIf="loadingDocuments" class="loading-spinner">
+      <p>Loading documents...</p>
+    </div>
+
+    <div
+      *ngIf="!loadingDocuments && Object.keys(groupedFiles).length === 0"
+      class="no-documents"
+    >
+      <p>📭 No files uploaded yet</p>
+    </div>
+
+    <div *ngIf="!loadingDocuments && Object.keys(groupedFiles).length > 0">
+      <div *ngFor="let department of Object.keys(groupedFiles)" class="department-block">
+        <div class="department-header" (click)="toggleDepartment(department)">
+          <span class="department-title">{{ department }}</span>
+          <span class="toggle-icon">
+            {{ expandedDepartments[department] ? '▼' : '▶' }}
+          </span>
+        </div>
+
+        <div *ngIf="expandedDepartments[department]" class="department-projects">
+          <div
+            *ngFor="let project of Object.keys(groupedFiles[department])"
+            class="project-block"
+          >
+            <div
+              class="project-header"
+              (click)="toggleProject(department, project)"
+            >
+              <span class="project-title">{{ project }}</span>
+              <span class="file-count"
+                >{{ groupedFiles[department][project].length }} files</span
+              >
+              <span class="toggle-icon">
+                {{ expandedProjects[department + '_' + project] ? '▼' : '▶' }}
+              </span>
+            </div>
+
+            <div
+              *ngIf="expandedProjects[department + '_' + project]"
+              class="project-files"
+            >
+              <div
+                *ngFor="let file of groupedFiles[department][project]"
+                class="file-item"
+              >
+                <span>📄 {{ file.filename }}</span>
+                <div class="file-actions">
+                  <button class="btn-secondary" (click)="downloadFile(file)">
+                    Download
+                  </button>
+                  <button
+                    class="btn-danger"
+                    (click)="deleteDocument(file.filename)"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+        <!-- <div class="table-card" *ngIf="view==='pending'">
+            <h3>Pending User Requests</h3>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Name</th>
+                        <th>Designation</th>
+                        <th>Department</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of pendingUsers">
+                        <td>{{user.id}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{ (user.firstName || user.lastName) ? (user.firstName || '') + ' ' + (user.lastName || '') : 'Not Provided' }}</td>
+                        <td>{{user.designation || "Not Provided"}}</td>
+                        <td>{{user.department || "Not Provided"}}</td>
+                        <td class="action-btn">
+                            <button class="accept-btn" (click)="handlePending(user, 'accept')">Accept</button>
+                            <button class="decline-btn" (click)="handlePending(user, 'decline')">Decline</button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="decliningUser">
+                        <td colspan="3">
+                            <div>
+                                <textarea [(ngModel)]="declineReason" placeholder="Reason for declining {{decliningUser.email}}..."></textarea>
+                                <button (click)="confirmDecline()">Confirm Decline</button>
+                                <button (click)="cancelDecline()">Cancel</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> -->

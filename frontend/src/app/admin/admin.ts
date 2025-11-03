@@ -30,16 +30,15 @@ export class AdminComponent implements OnInit {
 
   constructor(private router: Router, private http: HttpClient) { }
 
-  ngOnInit() {
-    this.view = 'dashboard';
-  }
+  // ngOnInit() {
+  //   this.view = 'dashboard';
+  // }
 
   showMessage(msg: string, type: 'success' | 'error' = 'success') {
     this.message = msg;
     this.messageType = type;
     setTimeout(() => this.message = null, 5000);
   }
-
 
   navigateTo(page: string) {
     if (page === 'pending') {
@@ -50,6 +49,8 @@ export class AdminComponent implements OnInit {
       this.loadUsers();
     } else if (page === 'bot-usage') {
       this.router.navigate(['/bot-usage']);
+    } else if (page === 'knowledge-base') {
+      this.router.navigate(['/knowledge-base']);
     } else {
       this.view = 'dashboard';
     }
@@ -115,45 +116,46 @@ export class AdminComponent implements OnInit {
     this.selectedFile = event.target.files[0];
   }
   
-  onFileUpload(event: Event) {
-    event.preventDefault();
-    if (!this.selectedFile) {
-      this.showMessage('Please select a file first.', 'error');
-      return;
-    }
   
-    // show modal to ask for project name
-    this.showProjectModal = true;
-  }
+  // onFileUpload(event: Event) {
+  //   event.preventDefault();
+  //   if (!this.selectedFile) {
+  //     this.showMessage('Please select a file first.', 'error');
+  //     return;
+  //   }
   
-  cancelUpload() {
-    this.showProjectModal = false;
-    this.projectName = '';
-  }
+  //   // show modal to ask for project name
+  //   this.showProjectModal = true;
+  // }
   
-  confirmUpload() {
-    if (!this.projectName.trim()) {
-      this.showMessage('Please enter a valid project name.', 'error');
-      return;
-    }
+  // cancelUpload() {
+  //   this.showProjectModal = false;
+  //   this.projectName = '';
+  // }
   
-    const formData = new FormData();
-    formData.append('file', this.selectedFile!);
-    formData.append('projectName', this.projectName.trim());
+  // confirmUpload() {
+  //   if (!this.projectName.trim()) {
+  //     this.showMessage('Please enter a valid project name.', 'error');
+  //     return;
+  //   }
   
-    this.http.post('http://localhost:8080/admin/upload-file', formData)
-      .subscribe({
-        next: () => {
-          this.showMessage('File uploaded successfully!');
-          this.showProjectModal = false;
-          this.projectName = '';
-        },
-        error: () => {
-          this.showMessage('Upload failed.', 'error');
-          this.showProjectModal = false;
-        }
-      });
-  }
+  //   const formData = new FormData();
+  //   formData.append('file', this.selectedFile!);
+  //   formData.append('projectName', this.projectName.trim());
+  
+  //   this.http.post('http://localhost:8080/admin/upload-file', formData)
+  //     .subscribe({
+  //       next: () => {
+  //         this.showMessage('File uploaded successfully!');
+  //         this.showProjectModal = false;
+  //         this.projectName = '';
+  //       },
+  //       error: () => {
+  //         this.showMessage('Upload failed.', 'error');
+  //         this.showProjectModal = false;
+  //       }
+  //     });
+  // }
 
   downloadFile(fileId: number) {
     this.http.get(`http://localhost:8080/admin/download-file/${fileId}`, { responseType: 'blob', observe: 'response' })
@@ -176,4 +178,57 @@ export class AdminComponent implements OnInit {
   loadFiles() {
     this.http.get<any[]>('http://localhost:8080/admin/files').subscribe(data => this.files = data);
   }
+
+  projects: string[] = [];             
+selectedProject: string = '';        
+newProjectName: string = '';         
+
+ngOnInit() {
+  this.loadProjects();
+}
+
+// fetch all existing project names
+loadProjects() {
+  this.http.get<string[]>('http://localhost:8080/admin/projects').subscribe({
+    next: (data) => this.projects = data,
+    error: (err) => console.error('Failed to load projects:', err)
+  });
+}
+
+onFileUpload(event: Event) {
+  event.preventDefault();
+  if (!this.selectedFile) {
+    this.showMessage('Please select a file first.', 'error');
+    return;
+  }
+
+  // Determine final project name
+  const project = this.selectedProject === '__new__'
+    ? this.newProjectName.trim()
+    : this.selectedProject;
+
+  if (!project) {
+    this.showMessage('Please choose or enter a project name.', 'error');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', this.selectedFile);
+  formData.append('projectName', project);
+
+  this.http.post('http://localhost:8080/admin/upload-file', formData).subscribe({
+    next: () => this.showMessage(`File uploaded to "${project}"!`, 'success'),
+    error: (err) => {
+      console.error('Upload failed:', err);
+      this.showMessage('Upload failed. Please try again.', 'error');
+    }
+  });
+}
+
+// showMessage(text: string, type: 'success' | 'error') {
+//   this.message = text;
+//   this.messageType = type;
+//   setTimeout(() => this.message = '', 3000);
+// }
+
 }

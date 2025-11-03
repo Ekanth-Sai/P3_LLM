@@ -1,8 +1,10 @@
 package com.example.authdemo.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Stack;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -13,17 +15,32 @@ import com.example.authdemo.repository.UserFileRepository;
 @Service
 public class UserFileService {
 	private final UserFileRepository userFileRepository;
+	//private Stack<String> projectList = new Stack<>();
 
 	public UserFileService(UserFileRepository userFileRepository) {
 		super();
 		this.userFileRepository = userFileRepository;
 	}
+//	public void addProject(String project) {
+//		projectList.add(project);
+//	}
+	public List<String> getProjects(){		
+		return userFileRepository.findDistinctProjects();
+	}
 	
-    public boolean createUserFile(String fileName,String path,String project) {
+	public List<String> getDepartments(){		
+		return userFileRepository.findDistinctDepartments();
+	}
+	
+	public List<String> getProjectByDepartment(String department){		
+		return userFileRepository.findDistinctProjectsByDepartment(department);
+	}
+    public boolean createUserFile(String fileName,String path,String project,String department) {
         UserFile userFile = new UserFile();
         userFile.setFilename(fileName);
         userFile.setPath(path);
         userFile.setProject(project);
+        userFile.setDepartment(department);
 
         return saveUserFile(userFile);
     }

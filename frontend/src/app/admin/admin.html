@@ -46,6 +46,18 @@
       </div>
     </div>
   </div>
+
+
+    <!-- knowledge base -->
+    <div class="div-block feature">
+      <img src="assets/images/file-upload.png" alt="knowledge base" class="feature-image">
+      <div class="w-layout-blockcontainer feature-description-wrapper w-container">
+        <h3>Knowledge Base</h3>
+        <div class="w-layout-blockcontainer feature-buttons w-container">
+          <button (click)="navigateTo('knowledge-base')" class="view-button w-button">Manage Files</button>
+        </div>
+      </div>
+    </div>
   
       
             </div>
@@ -124,37 +136,49 @@
     </div>
 
     <div class="file-upload-container">
-      <h4>📤 File Upload</h4>
+      <h4>📤 Upload File to Project</h4>
     
+      <!-- success/error message -->
       <div *ngIf="message" [ngClass]="{
-          'message-success': messageType === 'success',
-          'message-error': messageType === 'error'
-        }">
+        'message-success': messageType === 'success',
+        'message-error': messageType === 'error'
+      }">
         {{ message }}
       </div>
     
       <form (submit)="onFileUpload($event)">
-        <input type="file" (change)="onFileSelected($event)" />
-        <button type="submit">Upload File</button>
+        <!-- File input -->
+        <div class="upload-field">
+          <label for="fileInput">Select file:</label>
+          <input id="fileInput" type="file" (change)="onFileSelected($event)" />
+        </div>
+    
+        <!-- Project dropdown -->
+        <div class="upload-field">
+          <label for="projectSelect">Choose or add a project:</label>
+          <select id="projectSelect" [(ngModel)]="selectedProject" name="project">
+            <option value="" disabled selected>Select a project</option>
+            <option *ngFor="let p of projects" [value]="p">{{ p }}</option>
+            <option value="__new__">➕ Add New Project</option>
+          </select>
+        </div>
+    
+        <!-- New project input (shown only if user chose 'Add New Project') -->
+        <div class="upload-field" *ngIf="selectedProject === '__new__'">
+          <label for="newProjectName">Enter new project name:</label>
+          <input id="newProjectName" type="text" [(ngModel)]="newProjectName" name="newProjectName" placeholder="e.g. Marketing Data Analysis" />
+        </div>
+    
+        <button type="submit" class="upload-btn">Upload File</button>
       </form>
     
-      <div *ngFor="let file of files">
-        <span>{{file.filename}}</span>
-        <button (click)="downloadFile(file)">Download File</button>
+      <!-- Existing files -->
+      <div *ngFor="let file of files" class="uploaded-file-item">
+        <span>{{ file.filename }}</span>
+        <button (click)="downloadFile(file)">Download</button>
       </div>
     </div>
-    
-    <!-- Modal Window for Project Name -->
-    <div class="modal-backdrop" *ngIf="showProjectModal">
-      <div class="modal">
-        <h3>Enter Project Name</h3>
-        <input type="text" [(ngModel)]="projectName" placeholder="e.g. Fintech_AI_Pipeline" />
-        <div class="modal-buttons">
-          <button (click)="confirmUpload()">Confirm</button>
-          <button class="cancel-btn" (click)="cancelUpload()">Cancel</button>
-        </div>
-      </div>
-    </div>
+
 
 
 </div>

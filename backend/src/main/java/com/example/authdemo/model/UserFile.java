@@ -13,7 +13,9 @@ public class UserFile {
     private Long id;
     private String filename;
     private String path;
+    private String department;
     private String project;
+   
 
     @Lob
     private byte[] data;
@@ -52,5 +54,13 @@ public class UserFile {
 
 	public void setProject(String project) {
 		this.project = project;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
 	}
 }

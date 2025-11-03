@@ -120,7 +120,7 @@ public class AdminController {
     }
 
     @PostMapping("/upload-file")
-    public ResponseEntity<?> uploadFile(@RequestParam String projectName,@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadFile(@RequestParam String departmentName,@RequestParam String projectName,@RequestParam("file") MultipartFile file) {
 
         if (file.getSize() > 5 * 1024 * 1024) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "File size exceeds limit"));
@@ -133,7 +133,7 @@ public class AdminController {
         
         try {
             String tempDir = "/Users/harshakuppala/Desktop/P3_LLM/temp_uploads/";
-            String folderPathString = tempDir+projectName;
+            String folderPathString = tempDir+departmentName+"/"+projectName;
             LocalDateTime dateTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss");
             String currentDateTime = dateTime.format(formatter);
@@ -141,6 +141,7 @@ public class AdminController {
             String fileNameWithoutExt = originalFileName;
             String extension = "";
             Path folderPath = Paths.get(folderPathString);
+            
           try {
               //will create all non-existent parent directories too
               Files.createDirectories(folderPath);
@@ -161,7 +162,7 @@ public class AdminController {
             Path path = Paths.get(folderPath+"/"+finalName );
             try {
                 Files.write(path, file.getBytes());
-                userFileService.createUserFile(finalName,folderPath+"/"+finalName,projectName);
+                userFileService.createUserFile(finalName,folderPath+"/"+finalName,projectName,departmentName);
                // System.err.println(" created file: " + path.toAbsolutePath());
             } catch (IOException e) {
                // System.err.println("❌ Failed to create file: " + e.getMessage());
@@ -179,6 +180,32 @@ public class AdminController {
         }
     }
     
+    @GetMapping("/projects")
+    public ResponseEntity<List<String>> getAllProjects() {
+        List<String> projects = userFileService.getProjects();
+        if (projects.isEmpty()) {
+            return ResponseEntity.noContent().build(); 
+        }
+        return ResponseEntity.ok(projects); 
+    }
+    @GetMapping("/projects/{department}")
+    public ResponseEntity<List<String>> getProjectsByDepartment(@PathVariable String department) {
+        List<String> projects = userFileService.getProjectByDepartment(department);
+        if (projects.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(projects);
+    }
+
+   
+    @GetMapping("/departments")
+    public ResponseEntity<List<String>> getAllDepartments() {
+        List<String> departments = userFileService.getDepartments();
+        if (departments.isEmpty()) {
+            return ResponseEntity.noContent().build(); 
+        }
+        return ResponseEntity.ok(departments); 
+    }
 //
 //    @GetMapping("/download-file/{id}")
 //    public ResponseEntity<byte[]> downloadFile(@PathVariable Long id) {
@@ -192,26 +219,53 @@ public class AdminController {
 //            .header("Content-Disposition", "attachment; filename=\"" + filename + "\"")
 //            .body(userFile.getData());
 //    }
+//    
+//    @GetMapping("/files")
+//    public ResponseEntity<Map<String, List<Map<String, Object>>>> getFiles() {
+//        List<UserFile> files = userFileRepository.findAll();
+//
+//        Map<String, List<Map<String, Object>>> grouped = files.stream()
+//            .collect(Collectors.groupingBy(
+//                file -> {
+//                    String project = file.getProject();
+//                    return (project != null && !project.isBlank()) ? project : "Unassigned";
+//                },
+//                LinkedHashMap::new,  // preserve insertion order (optional)
+//                Collectors.mapping(file -> {
+//                    Map<String, Object> map = new HashMap<>();
+//                    map.put("id", file.getId());
+//                    map.put("filename", file.getFilename());
+//                    map.put("path", file.getPath());
+//                    return map;
+//                }, Collectors.toList())
+//            ));
+//
+//        return ResponseEntity.ok(grouped);
+//    }
     
     @GetMapping("/files")
-    public ResponseEntity<Map<String, List<Map<String, Object>>>> getFiles() {
+    public ResponseEntity<Map<String, Map<String, List<Map<String, Object>>>>> getFiles() {
         List<UserFile> files = userFileRepository.findAll();
 
-        Map<String, List<Map<String, Object>>> grouped = files.stream()
-            .collect(Collectors.groupingBy(
-                file -> {
-                    String project = file.getProject();
-                    return (project != null && !project.isBlank()) ? project : "Unassigned";
-                },
-                LinkedHashMap::new,  // preserve insertion order (optional)
-                Collectors.mapping(file -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("id", file.getId());
-                    map.put("filename", file.getFilename());
-                    map.put("path", file.getPath());
-                    return map;
-                }, Collectors.toList())
-            ));
+        Map<String, Map<String, List<Map<String, Object>>>> grouped = new LinkedHashMap<>();
+
+        for (UserFile file : files) {
+            String department = (file.getDepartment() != null && !file.getDepartment().isBlank())
+                    ? file.getDepartment()
+                    : "Unassigned Department";
+            String project = (file.getProject() != null && !file.getProject().isBlank())
+                    ? file.getProject()
+                    : "Unassigned Project";
+
+            grouped
+                .computeIfAbsent(department, d -> new LinkedHashMap<>())
+                .computeIfAbsent(project, p -> new ArrayList<>())
+                .add(Map.of(
+                    "id", file.getId(),
+                    "filename", file.getFilename(),
+                    "path", file.getPath()
+                ));
+        }
 
         return ResponseEntity.ok(grouped);
     }
