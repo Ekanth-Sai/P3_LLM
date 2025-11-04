@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login';
 import { SignupComponent } from './signup/signup';
 import { BotUsageComponent } from './bot-usage/bot-usage';
 import { SignupConfirmationComponent } from './signup-confirmation/signup-confirmation';
+import { KnowledgeBaseComponent } from './knowledge-base/knowledge-base';
 import { AdminComponent } from './admin/admin';
 
 export const routes: Routes = [
@@ -13,6 +14,7 @@ export const routes: Routes = [
     { path: 'bot-usage', component: BotUsageComponent },
     { path: 'admin', component: AdminComponent },
     // { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'knowledge-base', component: KnowledgeBaseComponent },
     { path: 'signup-confirmation', component: SignupConfirmationComponent },
     { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

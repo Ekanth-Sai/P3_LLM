@@ -19,9 +19,8 @@ export class AdminComponent implements OnInit {
 
   users: any[] = [];
   pendingUsers: any[] = [];
-  documents: any[] = [];
-  projects: string[] = [];
-  view: 'dashboard' | 'existing' | 'pending' | 'documents' = 'dashboard';
+  files: any[] = [];
+  view: 'dashboard' | 'existing' | 'pending' = 'dashboard';
 
   decliningUser: any = null;
   declineReason: string = '';
@@ -29,17 +28,11 @@ export class AdminComponent implements OnInit {
   message: string | null = null;
   messageType: 'success' | 'error' = 'success';
 
-  loadingDocuments: boolean = false;
-  selectedFile: File | null = null;
-
-  selectedDepartment: string = 'General';
-  selectedSensitivity: string = 'Public';
-
   constructor(private router: Router, private http: HttpClient) { }
 
-  ngOnInit() {
-    this.view = 'dashboard';
-  }
+  // ngOnInit() {
+  //   this.view = 'dashboard';
+  // }
 
   showMessage(msg: string, type: 'success' | 'error' = 'success') {
     this.message = msg;
@@ -54,11 +47,10 @@ export class AdminComponent implements OnInit {
     } else if (page === 'users') {
       this.view = 'existing';
       this.loadUsers();
-    } else if (page === 'documents') {
-      this.view = 'documents';
-      this.loadDocuments();
     } else if (page === 'bot-usage') {
       this.router.navigate(['/bot-usage']);
+    } else if (page === 'knowledge-base') {
+      this.router.navigate(['/knowledge-base']);
     } else {
       this.view = 'dashboard';
     }
@@ -71,57 +63,6 @@ export class AdminComponent implements OnInit {
   loadPendingUsers() {
     this.adminService.getPendingUsers().subscribe((data: any[]) => this.pendingUsers = data);
   }
-
-  loadProjects() {
-    this.http.get<string[]>('http://localhost:8080/admin/projects')
-      .subscribe(projects => {
-        this.projects = projects;
-      });
-  }
-
-  createNewProject(projectName: string) {
-    this.http.post('http://localhost:8080/admin/projects', { name: projectName })
-      .subscribe(() => {
-        this.showMessage(`Project ${projectName} created`, 'success');
-        this.loadProjects();
-      });
-  }
-
-  loadDocuments() {
-    this.loadingDocuments = true;
-    this.message = null;
-    
-    this.http.get<any[]>('http://localhost:8080/admin/files').subscribe({
-      next: (files) => {
-        this.documents = files;
-        this.loadingDocuments = false;
-      },
-      error: (err) => {
-        console.error('Error loading documents:', err);
-        this.showMessage('Failed to load documents', 'error');
-        this.loadingDocuments = false;
-        this.documents = [];
-      }
-    });
-  }
-
-  deleteDocument(filename: string) {
-    if (!confirm(`Are you sure you want to delete "${filename}" from the knowledge base?`)) {
-      return;
-    }
-
-    this.http.delete(`http://localhost:8080/admin/files/${filename}`).subscribe({
-      next: () => {
-        this.showMessage(`Successfully deleted "${filename}"`, 'success');
-        this.loadDocuments(); // Reload the list
-      },
-      error: (err) => {
-        console.error('Error deleting document:', err);
-        this.showMessage(`Failed to delete "${filename}"`, 'error');
-      }
-    });
-  }
-
   onLogout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
@@ -131,8 +72,8 @@ export class AdminComponent implements OnInit {
   
   updateUser(user: any) {
     this.adminService.updateUser(user.id, { email: user.email, role: user.role }).subscribe(
-      () => this.showMessage('User updated successfully!'),
-      () => this.showMessage('Failed to update user.', 'error')
+        () => this.showMessage('User updated successfully!'),
+        () => this.showMessage('Failed to update user.', 'error')
     );
   }
 
@@ -167,50 +108,127 @@ export class AdminComponent implements OnInit {
     this.view = 'dashboard';
     this.selectedOption = '';
   }
-
   selectedFile: File | null = null;
-
+  showProjectModal: boolean = false;
+  projectName: string = '';
+  
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
   
-  onFileUpload(event: Event) {
-    event.preventDefault();
-    if (!this.selectedFile) return;
-
-    const formData = new FormData();
-    formData.append('file', this.selectedFile);
-
-    this.http.post('http://localhost:8080/admin/upload-file', formData, { responseType: 'text' })
-    .subscribe({
-      next: (res) => {
-        console.log('✅ Upload response:', res);
-        this.showMessage('File uploaded!');
-      },
-      error: (err) => {
-        console.error('❌ Upload error:', err);
-        this.showMessage('Upload failed', 'error');
-      }
-    });
-  }
+  
+  // onFileUpload(event: Event) {
+  //   event.preventDefault();
+  //   if (!this.selectedFile) {
+  //     this.showMessage('Please select a file first.', 'error');
+  //     return;
+  //   }
+  
+  //   // show modal to ask for project name
+  //   this.showProjectModal = true;
+  // }
+  
+  // cancelUpload() {
+  //   this.showProjectModal = false;
+  //   this.projectName = '';
+  // }
+  
+  // confirmUpload() {
+  //   if (!this.projectName.trim()) {
+  //     this.showMessage('Please enter a valid project name.', 'error');
+  //     return;
+  //   }
+  
+  //   const formData = new FormData();
+  //   formData.append('file', this.selectedFile!);
+  //   formData.append('projectName', this.projectName.trim());
+  
+  //   this.http.post('http://localhost:8080/admin/upload-file', formData)
+  //     .subscribe({
+  //       next: () => {
+  //         this.showMessage('File uploaded successfully!');
+  //         this.showProjectModal = false;
+  //         this.projectName = '';
+  //       },
+  //       error: () => {
+  //         this.showMessage('Upload failed.', 'error');
+  //         this.showProjectModal = false;
+  //       }
+  //     });
+  // }
 
   downloadFile(fileId: number) {
-    this.http.get(`http://localhost:8080/admin/download-file/${fileId}`, { 
-      responseType: 'blob', 
-      observe: 'response' 
-    }).subscribe(response => {
-      const contentDisposition = response.headers.get('content-disposition');
-      const filename = contentDisposition?.split(';')[1].split('filename=')[1].split('"')[1] || 'downloaded_file';
+    this.http.get(`http://localhost:8080/admin/download-file/${fileId}`, { responseType: 'blob', observe: 'response' })
+      .subscribe(response => {
+        const contentDisposition = response.headers.get('content-disposition');
+        const filename = contentDisposition?.split(';')[1].split('filename=')[1].split('"')[1] || 'downloaded_file';
 
-      const blob = response.body;
-      if (blob) {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
-    });
+        const blob = response.body;
+        if (blob) {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+      });
   }
+
+  loadFiles() {
+    this.http.get<any[]>('http://localhost:8080/admin/files').subscribe(data => this.files = data);
+  }
+
+  projects: string[] = [];             
+selectedProject: string = '';        
+newProjectName: string = '';         
+
+ngOnInit() {
+  this.loadProjects();
+}
+
+// fetch all existing project names
+loadProjects() {
+  this.http.get<string[]>('http://localhost:8080/admin/projects').subscribe({
+    next: (data) => this.projects = data,
+    error: (err) => console.error('Failed to load projects:', err)
+  });
+}
+
+onFileUpload(event: Event) {
+  event.preventDefault();
+  if (!this.selectedFile) {
+    this.showMessage('Please select a file first.', 'error');
+    return;
+  }
+
+  // Determine final project name
+  const project = this.selectedProject === '__new__'
+    ? this.newProjectName.trim()
+    : this.selectedProject;
+
+  if (!project) {
+    this.showMessage('Please choose or enter a project name.', 'error');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', this.selectedFile);
+  formData.append('projectName', project);
+
+  this.http.post('http://localhost:8080/admin/upload-file', formData).subscribe({
+    next: () => this.showMessage(`File uploaded to "${project}"!`, 'success'),
+    error: (err) => {
+      console.error('Upload failed:', err);
+      this.showMessage('Upload failed. Please try again.', 'error');
+    }
+  });
+}
+
+// showMessage(text: string, type: 'success' | 'error') {
+//   this.message = text;
+//   this.messageType = type;
+//   setTimeout(() => this.message = '', 3000);
+// }
+
 }

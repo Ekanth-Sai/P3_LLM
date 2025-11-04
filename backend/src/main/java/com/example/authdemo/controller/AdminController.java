@@ -28,85 +28,39 @@ import java.util.stream.Collectors;
 @RequestMapping("/admin")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AdminController {
-
-
     private UserRepository userRepository;
     private UserFileRepository userFileRepository;
+    private UserFileService userFileService;
     
-    public AdminController(UserRepository userRepository, UserFileRepository userFileRepository) {
+    public AdminController(UserRepository userRepository, UserFileRepository userFileRepository,UserFileService userFileService) {
 		super();
 		this.userRepository = userRepository;
 		this.userFileRepository = userFileRepository;
+		this.userFileService = userFileService;
 	}
 
 
-    // @GetMapping("/files")
-    // public ResponseEntity<?> getFiles() {
-    //     try {
-    //         RestTemplate restTemplate = new RestTemplate();
-    //         String pythonApiUrl = "http://localhost:5001/processed-documents";
 
-    //         ResponseEntity<String[]> response = restTemplate.getForEntity(pythonApiUrl, String[].class);
-
-    //         List<Map<String, String>> filesList = new ArrayList<>();
-
-    //         if(response.getBody() != null) {
-    //             for(String filepath : response.getBody()) {
-    //                 Map<String, String> fileMap = new HashMap<>();
-
-    //                 String filename = filepath.substring(filepath.lastIndexOf('/') + 1);
-    //                 fileMap.put("filename", filename);
-    //                 fileMap.put("path", filepath);
-    //                 filesList.add(fileMap);
-    //             }
-    //         }
-
-    //         return ResponseEntity.ok(filesList);
-    //     } catch (Exception e) {
-    //         return ResponseEntity.status(500)
-    //                 .body(Collections.singletonMap("error", "Failed to fetch files: " + e.getMessage()));
-    //     }
-    // }
-    // public List<Map<String, Object>> getFiles() {
-    //     List<UserFile> files = userFileRepository.findAll();
-    //     List<Map<String, Object>> result = new ArrayList<>();
-    //     for (UserFile file : files) {
-    //         Map<String, Object> map = new HashMap<>();
-    //         map.put("id", file.getId());
-    //         map.put("filename", file.getFilename());
-    //         result.add(map);
-    //     }
-    //     return result;
-    // }
-
-    @DeleteMapping("/files/{filename}")
-    public ResponseEntity<?> deleteFile(@PathVariable String filename) {
-        try {
-            RestTemplate  restTemplate = new RestTemplate();
-            String pythonApiUrl = "http://localhost:5001/delete-document";
-
-            Map<String, String> request = new HashMap<>();
-            request.put("filename", filename);
-
-            ResponseEntity<String> response = restTemplate.postForEntity(pythonApiUrl, request, String.class);
-
-            return ResponseEntity.ok(Collections.singletonMap("status", "deleted"));
-        } catch (Exception e) {
-            return ResponseEntity.status(500)
-                    .body(Collections.singletonMap("error", "Failed to deete: " + e.getMessage()));
-        }
-    }
 
     @GetMapping("/users")
     public List<User> getUsers() {
+
         List<User> users = userRepository.findByStatus("ACTIVE");
+//        List<Map<String, Object>> result = new ArrayList<>();
+//        for (User user : users) {
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("id", user.getId());
+//            map.put("email", user.getEmail());
+//            map.put("role", user.getRole());
+//            result.add(map);
+//        }
         return users;
     }
-
-    @GetMapping("/users/{id}")
-    public Optional<User> getUserById(@PathVariable Long id) {
-        return userRepository.findById(id);
-    }
+	
+	@GetMapping("/users/{id}")
+	public Optional<User> getUserById(@PathVariable Long id) {
+		return userRepository.findById(id);
+	}
 
     @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody Map<String, String> updates) {
@@ -150,7 +104,7 @@ public class AdminController {
             return ResponseEntity.notFound().build();
 
         User user = optionalUser.get();
-        String action = body.get("action");
+        String action = body.get("action"); // "accept" or "decline"
 
         if ("accept".equalsIgnoreCase(action)) {
             user.setStatus("ACTIVE");
@@ -166,40 +120,92 @@ public class AdminController {
     }
 
     @PostMapping("/upload-file")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
-    	System.out.println("📥 uploadFile() method entered");
+    public ResponseEntity<?> uploadFile(@RequestParam String departmentName,@RequestParam String projectName,@RequestParam("file") MultipartFile file) {
 
         if (file.getSize() > 5 * 1024 * 1024) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "File size exceeds limit"));
         }
         
         String contentType = file.getContentType();
-        if (contentType == null || !Arrays.asList("image/png", "image/jpeg", "application/pdf",
-                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                "text/plain").contains(contentType)) {
-            return ResponseEntity.status(400).body(Collections.singletonMap("error",
-                    "Invalid file type. Only PNG, JPEG, PDF, DOCX, XLSX, and TXT are allowed."));
+        if(contentType == null || !Arrays.asList("image/png", "image/jpeg", "application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/plain").contains(contentType)) {
+            return ResponseEntity.status(400).body(Collections.singletonMap("error", "Invalid file type. Only PNG, JPEG, PDF, DOCX, and XLSX are allowed."));
         }
-
+        
         try {
-            String tempDir = "/home/ekanthsai/Desktop/P3_LLM/temp_uploads/";
-            Path path = Paths.get(tempDir + file.getOriginalFilename());
-            Files.write(path, file.getBytes());
+            String tempDir = "/Users/harshakuppala/Desktop/P3_LLM/temp_uploads/";
+            String folderPathString = tempDir+departmentName+"/"+projectName;
+            LocalDateTime dateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss");
+            String currentDateTime = dateTime.format(formatter);
+            String originalFileName = file.getOriginalFilename();
+            String fileNameWithoutExt = originalFileName;
+            String extension = "";
+            Path folderPath = Paths.get(folderPathString);
+            
+          try {
+              //will create all non-existent parent directories too
+              Files.createDirectories(folderPath);
+             // System.out.println("✅ Folder created at: " + folderPath.toAbsolutePath());
+          } catch (IOException e) {
+              System.err.println("❌ Failed to create folder: " + e.getMessage());
+          }
+
+
+            if (originalFileName != null) {
+                int dotIndex = originalFileName.lastIndexOf('.');
+                if (dotIndex != -1 && dotIndex < originalFileName.length() - 1) {
+                    fileNameWithoutExt = originalFileName.substring(0, dotIndex);
+                    extension = originalFileName.substring(dotIndex + 1);
+                }
+            }
+            String finalName =  fileNameWithoutExt+" d&t-"+currentDateTime+"."+extension;
+            Path path = Paths.get(folderPath+"/"+finalName );
+            try {
+                Files.write(path, file.getBytes());
+                userFileService.createUserFile(finalName,folderPath+"/"+finalName,projectName,departmentName);
+               // System.err.println(" created file: " + path.toAbsolutePath());
+            } catch (IOException e) {
+               // System.err.println("❌ Failed to create file: " + e.getMessage());
+            }
+
             RestTemplate restTemplate = new RestTemplate();
             String pythonApiUrl = "http://localhost:5001/process-document";
             HashMap<String, String> request = new HashMap<>();
             request.put("file_path", path.toString());
-
             ResponseEntity<String> response = restTemplate.postForEntity(pythonApiUrl, request, String.class);
             return ResponseEntity.ok(Collections.singletonMap("status", "uploaded and processing started"));
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500)
-                    .body(Collections.singletonMap("error", "Upload failed: " + e.getMessage()));
+        	e.printStackTrace(); 
+            return ResponseEntity.status(500).body(Collections.singletonMap("error", "Upload failed: " + e.getMessage()));
         }
     }
     
+    @GetMapping("/projects")
+    public ResponseEntity<List<String>> getAllProjects() {
+        List<String> projects = userFileService.getProjects();
+        if (projects.isEmpty()) {
+            return ResponseEntity.noContent().build(); 
+        }
+        return ResponseEntity.ok(projects); 
+    }
+    @GetMapping("/projects/{department}")
+    public ResponseEntity<List<String>> getProjectsByDepartment(@PathVariable String department) {
+        List<String> projects = userFileService.getProjectByDepartment(department);
+        if (projects.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(projects);
+    }
+
+   
+    @GetMapping("/departments")
+    public ResponseEntity<List<String>> getAllDepartments() {
+        List<String> departments = userFileService.getDepartments();
+        if (departments.isEmpty()) {
+            return ResponseEntity.noContent().build(); 
+        }
+        return ResponseEntity.ok(departments); 
+    }
 //
 //    @GetMapping("/download-file/{id}")
 //    public ResponseEntity<byte[]> downloadFile(@PathVariable Long id) {
@@ -213,26 +219,53 @@ public class AdminController {
 //            .header("Content-Disposition", "attachment; filename=\"" + filename + "\"")
 //            .body(userFile.getData());
 //    }
+//    
+//    @GetMapping("/files")
+//    public ResponseEntity<Map<String, List<Map<String, Object>>>> getFiles() {
+//        List<UserFile> files = userFileRepository.findAll();
+//
+//        Map<String, List<Map<String, Object>>> grouped = files.stream()
+//            .collect(Collectors.groupingBy(
+//                file -> {
+//                    String project = file.getProject();
+//                    return (project != null && !project.isBlank()) ? project : "Unassigned";
+//                },
+//                LinkedHashMap::new,  // preserve insertion order (optional)
+//                Collectors.mapping(file -> {
+//                    Map<String, Object> map = new HashMap<>();
+//                    map.put("id", file.getId());
+//                    map.put("filename", file.getFilename());
+//                    map.put("path", file.getPath());
+//                    return map;
+//                }, Collectors.toList())
+//            ));
+//
+//        return ResponseEntity.ok(grouped);
+//    }
     
     @GetMapping("/files")
-    public ResponseEntity<Map<String, List<Map<String, Object>>>> getFiles() {
+    public ResponseEntity<Map<String, Map<String, List<Map<String, Object>>>>> getFiles() {
         List<UserFile> files = userFileRepository.findAll();
 
-        Map<String, List<Map<String, Object>>> grouped = files.stream()
-            .collect(Collectors.groupingBy(
-                file -> {
-                    String project = file.getProject();
-                    return (project != null && !project.isBlank()) ? project : "Unassigned";
-                },
-                LinkedHashMap::new,  // preserve insertion order (optional)
-                Collectors.mapping(file -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("id", file.getId());
-                    map.put("filename", file.getFilename());
-                    map.put("path", file.getPath());
-                    return map;
-                }, Collectors.toList())
-            ));
+        Map<String, Map<String, List<Map<String, Object>>>> grouped = new LinkedHashMap<>();
+
+        for (UserFile file : files) {
+            String department = (file.getDepartment() != null && !file.getDepartment().isBlank())
+                    ? file.getDepartment()
+                    : "Unassigned Department";
+            String project = (file.getProject() != null && !file.getProject().isBlank())
+                    ? file.getProject()
+                    : "Unassigned Project";
+
+            grouped
+                .computeIfAbsent(department, d -> new LinkedHashMap<>())
+                .computeIfAbsent(project, p -> new ArrayList<>())
+                .add(Map.of(
+                    "id", file.getId(),
+                    "filename", file.getFilename(),
+                    "path", file.getPath()
+                ));
+        }
 
         return ResponseEntity.ok(grouped);
     }
@@ -243,25 +276,63 @@ public class AdminController {
         Path path = Paths.get(userFile.get().getPath());
         Resource resource = new UrlResource(path.toUri());
         return ResponseEntity.ok()
-                .header("Content-Disposition", "attachment; filename=\"" + filename + "\"")
-                .body(userFile.getData());
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+            .body(resource);
+    }
+
+//    List<UserFile> files = userFileRepository.findAll();
+//    Map<String, List<UserFile>> grouped = files.stream()
+//        .collect(Collectors.groupingBy(UserFile::getProject));
+//    return ResponseEntity.ok(grouped);
+//    @GetMapping("/admin/files")
+//    public ResponseEntity<?> getAllFiles() {
+//        try {
+//            List<UserFile> userFilesList = userFileService.getAllFiles();
+//            System.out.println("files called");
+//            if (userFilesList.isEmpty()) {
+//                return ResponseEntity.status(204).body("⚠️ No files found");
+//            }
+//
+//            return ResponseEntity.ok(userFilesList);
+//        } catch (Exception e) {
+//            return ResponseEntity.internalServerError()
+//                    .body(" Failed to fetch files: " + e.getMessage());
+//        }
+//    }
+    
+    @DeleteMapping("/deleteFileByName/{fileName}")
+    public ResponseEntity<?> deleteFileByName(@PathVariable String fileName) {
+        try {
+        	Optional<UserFile> userFile=userFileService.findFileByFilename(fileName);
+        	Path path = Paths.get(userFile.get().getPath());
+            boolean deleted = Files.deleteIfExists(path);
+            if (deleted) {
+            	userFileRepository.delete(userFile.get());
+                //System.out.println("✅ File deleted successfully: " + path);
+                return ResponseEntity.ok(Collections.singletonMap("message", "✅ File deleted successfully: " + path));
+            } else {
+               // System.out.println("⚠️ File not found: " + path);
+                return ResponseEntity.status(404).body("⚠️ File not found: " + path);
+            }
+        } catch (Exception e) {
+            //System.err.println("❌ Error deleting file: " + e.getMessage());
+            return ResponseEntity.internalServerError()
+                    .body("❌ Error deleting file: " + e.getMessage());
+        }
     }
     
-    // @DeleteMapping("/files/{filename}")
-    // public ResponseEntity<?> deleteFile(@PathVariable String filename) {
-    //     try {
-    //         RestTemplate restTemplate = new RestTemplate();
-    //         String pythonApiUrl = "http://localhost:5001/delete-document";
+    @GetMapping("/is-admin")
+    public ResponseEntity<Map<String, Boolean>> isAdmin(@RequestParam String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        boolean isAdmin = optionalUser.isPresent() &&
+                          optionalUser.get().getRole().equalsIgnoreCase("admin");
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("is_admin", isAdmin);
+        return ResponseEntity.ok(response);
+    }
 
-    //         Map<String, String> request = new HashMap<>();
-    //         request.put("filename", filename);
+    
+    
+  
 
-    //         ResponseEntity<String> response = restTemplate.postForEntity(pythonApiUrl, request, String.class);
-
-    //         return ResponseEntity.ok(Collections.singletonMap("status", "deleted"));
-    //     } catch (Exception e) {
-    //         return ResponseEntity.status(500).body(Collections.singletonMap("error", "Failed to delete: " + e.getMessage()));
-    //     }
-    // }
 }
-
