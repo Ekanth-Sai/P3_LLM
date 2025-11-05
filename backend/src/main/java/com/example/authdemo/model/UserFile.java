@@ -15,7 +15,6 @@ public class UserFile {
     private String path;
     private String department;
     private String project;
-   
 
     @Lob
     private byte[] data;

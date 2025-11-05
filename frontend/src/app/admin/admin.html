@@ -1,184 +1,146 @@
 <div class="admin-container">
+
   <nav class="navbar">
-    <div class="nav-left">Admin Dashboard</div>
-  
+    <div class="nav-left">
+      <img src="assets/images/logo.png" (click)="goBackToDashboard()" alt="P3 Logo" class="logo"
+        style="cursor:pointer;" />
+      <span class="title">Admin Dashboard</span>
+    </div>
+
     <div class="nav-right-container">
       <div class="nav-right" (click)="goBackToDashboard()" style="cursor:pointer">Home</div>
       <button class="logout-btn" (click)="onLogout()">Sign Out</button>
     </div>
   </nav>
 
-    <div class="dashboard-content" *ngIf="view==='dashboard'">
-        <section class="section-features" id="features" data-aos="fade-up">
-          <div class="w-layout-blockcontainer features-wrapper w-container">
-            <h2 class="heading-4">Available Actions</h2>
-            <div class="w-layout-blockcontainer container1 w-container">
-      
-<!-- Pending Requests -->
-<div class="div-block feature">
-    <img src="assets/images/pending_users.png" alt="Pending Requests" class="feature-image">
-    <div class="w-layout-blockcontainer feature-description-wrapper w-container">
-      <h3>Pending Requests</h3>
-      <div class="w-layout-blockcontainer feature-buttons w-container">
-        <button (click)="navigateTo('pending')" class="view-button w-button">View Requests</button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Existing Users -->
-  <div class="div-block feature">
-    <img src="assets/images/existing_users.png" alt="Existing Users" class="feature-image">
-    <div class="w-layout-blockcontainer feature-description-wrapper w-container">
-      <h3>Existing Users</h3>
-      <div class="w-layout-blockcontainer feature-buttons w-container">
-        <button (click)="navigateTo('users')" class="view-button w-button">View Users</button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Bot Usage -->
-  <div class="div-block feature">
-    <img src="assets/images/chatbot.png" alt="Bot Usage" class="feature-image">
-    <div class="w-layout-blockcontainer feature-description-wrapper w-container">
-      <h3>Bot Usage</h3>
-      <div class="w-layout-blockcontainer feature-buttons w-container">
-        <button (click)="navigateTo('bot-usage')" class="view-button w-button">Chat with LLM</button>
-      </div>
-    </div>
-  </div>
+  <div class="dashboard-content" *ngIf="view==='dashboard'">
+    <section class="section-features" id="features" data-aos="fade-up">
+      <div class="w-layout-blockcontainer features-wrapper w-container">
+        <h2 class="heading-4">Available Actions</h2>
+        <div class="w-layout-blockcontainer container1 w-container">
 
-
-    <!-- knowledge base -->
-    <div class="div-block feature">
-      <img src="assets/images/file-upload.png" alt="knowledge base" class="feature-image">
-      <div class="w-layout-blockcontainer feature-description-wrapper w-container">
-        <h3>Knowledge Base</h3>
-        <div class="w-layout-blockcontainer feature-buttons w-container">
-          <button (click)="navigateTo('knowledge-base')" class="view-button w-button">Manage Files</button>
-        </div>
-      </div>
-    </div>
-  
-      
+          <!-- Pending Requests -->
+          <div class="div-block feature">
+            <img src="assets/images/pending_users.png" alt="Pending Requests" class="feature-image">
+            <div class="w-layout-blockcontainer feature-description-wrapper w-container">
+              <h3>Pending Requests</h3>
+              <div class="w-layout-blockcontainer feature-buttons w-container">
+                <button (click)="navigateTo('pending')" class="view-button w-button">View Requests</button>
+              </div>
             </div>
           </div>
-        </section>
-      </div>
-    <div class="section-divider"></div>
 
-    <div class="table-card" *ngIf="view==='existing'">
-        <h3>Existing Users</h3>
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Email</th>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Role</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let user of users">
-                    <td>{{user.id}}</td>
-                    <td><input [(ngModel)]="user.email" /></td>
-                    <td>{{ (user.firstName || user.lastName) ? (user.firstName || '') + ' ' + (user.lastName || '') : 'Not Provided' }}</td>
-                    <td><input [(ngModel)]="user.department" /></td>
-                    <td>
-                        <select [(ngModel)]="user.role">
-                            <option value="USER">USER</option>
-                            <option value="ADMIN">ADMIN</option>
-                        </select>
-                    </td>
-                    <td><button (click)="updateUser(user)">Update</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+          <!-- Existing Users -->
+          <div class="div-block feature">
+            <img src="assets/images/existing_users.png" alt="Existing Users" class="feature-image">
+            <div class="w-layout-blockcontainer feature-description-wrapper w-container">
+              <h3>Existing Users</h3>
+              <div class="w-layout-blockcontainer feature-buttons w-container">
+                <button (click)="navigateTo('users')" class="view-button w-button">View Users</button>
+              </div>
+            </div>
+          </div>
 
-    <div class="table-card" *ngIf="view==='pending'">
-        <h3>Pending User Requests</h3>
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Email</th>
-                    <th>Name</th>
-                    <th>Designation</th>
-                    <th>Department</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let user of pendingUsers">
-                    <td>{{user.id}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{ (user.firstName || user.lastName) ? (user.firstName || '') + ' ' + (user.lastName || '') : 'Not Provided' }}</td>
-                    <td>{{user.designation || "Not Provided"}}</td>
-                    <td>{{user.department || "Not Provided"}}</td>
-                    <td class="action-btn">
-                        <button class="accept-btn" (click)="handlePending(user, 'accept')">Accept</button>
-                        <button class="decline-btn" (click)="handlePending(user, 'decline')">Decline</button>
-                    </td>
-                </tr>
-                <tr *ngIf="decliningUser">
-                    <td colspan="3">
-                        <div>
-                            <textarea [(ngModel)]="declineReason" placeholder="Reason for declining {{decliningUser.email}}..."></textarea>
-                            <button (click)="confirmDecline()">Confirm Decline</button>
-                            <button (click)="cancelDecline()">Cancel</button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+          <!-- Bot Usage -->
+          <div class="div-block feature">
+            <img src="assets/images/chatbot.png" alt="Bot Usage" class="feature-image">
+            <div class="w-layout-blockcontainer feature-description-wrapper w-container">
+              <h3>Bot Usage</h3>
+              <div class="w-layout-blockcontainer feature-buttons w-container">
+                <button (click)="navigateTo('bot-usage')" class="view-button w-button">Chat with LLM</button>
+              </div>
+            </div>
+          </div>
 
-    <div class="file-upload-container">
-      <h4>📤 Upload File to Project</h4>
-    
-      <!-- success/error message -->
-      <div *ngIf="message" [ngClass]="{
-        'message-success': messageType === 'success',
-        'message-error': messageType === 'error'
-      }">
-        {{ message }}
-      </div>
-    
-      <form (submit)="onFileUpload($event)">
-        <!-- File input -->
-        <div class="upload-field">
-          <label for="fileInput">Select file:</label>
-          <input id="fileInput" type="file" (change)="onFileSelected($event)" />
+
+          <!-- knowledge base -->
+          <div class="div-block feature">
+            <img src="assets/images/file-upload.png" alt="knowledge base" class="feature-image">
+            <div class="w-layout-blockcontainer feature-description-wrapper w-container">
+              <h3>Knowledge Base</h3>
+              <div class="w-layout-blockcontainer feature-buttons w-container">
+                <button (click)="navigateTo('knowledge-base')" class="view-button w-button">Manage Files</button>
+              </div>
+            </div>
+          </div>
+
+
         </div>
-    
-        <!-- Project dropdown -->
-        <div class="upload-field">
-          <label for="projectSelect">Choose or add a project:</label>
-          <select id="projectSelect" [(ngModel)]="selectedProject" name="project">
-            <option value="" disabled selected>Select a project</option>
-            <option *ngFor="let p of projects" [value]="p">{{ p }}</option>
-            <option value="__new__">➕ Add New Project</option>
-          </select>
-        </div>
-    
-        <!-- New project input (shown only if user chose 'Add New Project') -->
-        <div class="upload-field" *ngIf="selectedProject === '__new__'">
-          <label for="newProjectName">Enter new project name:</label>
-          <input id="newProjectName" type="text" [(ngModel)]="newProjectName" name="newProjectName" placeholder="e.g. Marketing Data Analysis" />
-        </div>
-    
-        <button type="submit" class="upload-btn">Upload File</button>
-      </form>
-    
-      <!-- Existing files -->
-      <div *ngFor="let file of files" class="uploaded-file-item">
-        <span>{{ file.filename }}</span>
-        <button (click)="downloadFile(file)">Download</button>
       </div>
-    </div>
+    </section>
+  </div>
+  <div class="section-divider"></div>
 
+  <div class="table-card" *ngIf="view==='existing'">
+    <h3>Existing Users</h3>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Role</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{user.id}}</td>
+          <td><input [(ngModel)]="user.email" /></td>
+          <td>{{ (user.firstName || user.lastName) ? (user.firstName || '') + ' ' + (user.lastName || '') : 'Not
+            Provided' }}</td>
+          <td><input [(ngModel)]="user.department" /></td>
+          <td>
+            <select [(ngModel)]="user.role">
+              <option value="USER">USER</option>
+              <option value="ADMIN">ADMIN</option>
+            </select>
+          </td>
+          <td><button (click)="updateUser(user)">Update</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
+  <div class="table-card" *ngIf="view==='pending'">
+    <h3>Pending User Requests</h3>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Name</th>
+          <th>Designation</th>
+          <th>Department</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of pendingUsers">
+          <td>{{user.id}}</td>
+          <td>{{user.email}}</td>
+          <td>{{ (user.firstName || user.lastName) ? (user.firstName || '') + ' ' + (user.lastName || '') : 'Not
+            Provided' }}</td>
+          <td>{{user.designation || "Not Provided"}}</td>
+          <td>{{user.department || "Not Provided"}}</td>
+          <td class="action-btn">
+            <button class="accept-btn" (click)="handlePending(user, 'accept')">Accept</button>
+            <button class="decline-btn" (click)="handlePending(user, 'decline')">Decline</button>
+          </td>
+        </tr>
+        <tr *ngIf="decliningUser">
+          <td colspan="3">
+            <div>
+              <textarea [(ngModel)]="declineReason"
+                placeholder="Reason for declining {{decliningUser.email}}..."></textarea>
+              <button (click)="confirmDecline()">Confirm Decline</button>
+              <button (click)="cancelDecline()">Cancel</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
 </div>

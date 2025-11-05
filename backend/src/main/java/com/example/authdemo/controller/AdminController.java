@@ -120,7 +120,7 @@ public class AdminController {
     }
 
     @PostMapping("/upload-file")
-    public ResponseEntity<?> uploadFile(@RequestParam String departmentName,@RequestParam String projectName,@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadFile(@RequestParam String departmentName, @RequestParam String projectName, @RequestParam("file") MultipartFile file) {
 
         if (file.getSize() > 5 * 1024 * 1024) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "File size exceeds limit"));
@@ -162,7 +162,7 @@ public class AdminController {
             Path path = Paths.get(folderPath+"/"+finalName );
             try {
                 Files.write(path, file.getBytes());
-                userFileService.createUserFile(finalName,folderPath+"/"+finalName,projectName,departmentName);
+                userFileService.createUserFile(finalName, folderPath+"/"+finalName,projectName,departmentName);
                // System.err.println(" created file: " + path.toAbsolutePath());
             } catch (IOException e) {
                // System.err.println("❌ Failed to create file: " + e.getMessage());
@@ -197,7 +197,6 @@ public class AdminController {
         return ResponseEntity.ok(projects);
     }
 
-   
     @GetMapping("/departments")
     public ResponseEntity<List<String>> getAllDepartments() {
         List<String> departments = userFileService.getDepartments();

@@ -208,4 +208,10 @@ export class KnowledgeBaseComponent implements OnInit {
   goBackToDashboard() {
     this.router.navigate(['/admin']);
   }
+  onLogout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('email');
+    this.router.navigate(['/login']);
+  }
 }

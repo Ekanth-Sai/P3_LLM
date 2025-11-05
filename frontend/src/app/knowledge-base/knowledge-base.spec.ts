@@ -22,6 +22,7 @@ describe('KnowledgeBaseComponent', () => {
   afterEach(() => {
     httpMock.verify();
   });
+  
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
@@ -113,4 +114,3 @@ describe('KnowledgeBaseComponent', () => {
     expect(component.projects.length).toBe(0);
   }));
 });
-

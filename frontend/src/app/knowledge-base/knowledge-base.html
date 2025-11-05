@@ -1,17 +1,22 @@
 <div class="knowledge-base-container">
+
   <nav class="navbar">
-    <div class="nav-left">📚 Knowledge Base</div>
-    <button class="btn-nav" (click)="goBackToDashboard()">🏠 Back to Dashboard</button>
+    <div class="nav-left">
+      <img src="assets/images/logo.png" (click)="goBackToDashboard()" alt="P3 Logo" class="logo"
+        style="cursor:pointer;" />
+      <span class="title">Knowledge Base</span>
+    </div>
+
+    <div class="nav-right-container">
+      <div class="nav-right" (click)="goBackToDashboard()" style="cursor:pointer">Home</div>
+      <button class="logout-btn" (click)="onLogout()">Sign Out</button>
+    </div>
   </nav>
 
-  <div
-    *ngIf="message"
-    [ngClass]="{
+  <div *ngIf="message" [ngClass]="{
       'message-success': messageType === 'success',
       'message-error': messageType === 'error'
-    }"
-    class="message"
-  >
+    }" class="message">
     {{ message }}
   </div>
 
@@ -28,12 +33,8 @@
       <!-- Department Dropdown -->
       <div class="form-row">
         <label class="form-label">Select Department</label>
-        <select
-          [(ngModel)]="selectedDepartment"
-          name="departmentSelect"
-          class="select-input"
-          (change)="onDepartmentChange()"
-        >
+        <select [(ngModel)]="selectedDepartment" name="departmentSelect" class="select-input"
+          (change)="onDepartmentChange()">
           <option value="">-- Choose Department --</option>
           <option *ngFor="let d of departments" [value]="d">{{ d }}</option>
           <option value="__new__">➕ Create New Department</option>
@@ -42,13 +43,8 @@
 
       <div *ngIf="selectedDepartment === '__new__'" class="form-row">
         <label class="form-label">New Department Name</label>
-        <input
-          type="text"
-          [(ngModel)]="newDepartmentName"
-          name="newDepartmentName"
-          placeholder="Enter new Department name"
-          class="text-input"
-        />
+        <input type="text" [(ngModel)]="newDepartmentName" name="newDepartmentName"
+          placeholder="Enter new Department name" class="text-input" />
       </div>
 
       <!-- Project Dropdown -->
@@ -63,13 +59,8 @@
 
       <div *ngIf="selectedProject === '__new__'" class="form-row">
         <label class="form-label">New Project Name</label>
-        <input
-          type="text"
-          [(ngModel)]="newProjectName"
-          name="newProjectName"
-          placeholder="Enter new project name"
-          class="text-input"
-        />
+        <input type="text" [(ngModel)]="newProjectName" name="newProjectName" placeholder="Enter new project name"
+          class="text-input" />
       </div>
 
       <div class="button-row">
@@ -88,10 +79,7 @@
       <p>Loading documents...</p>
     </div>
 
-    <div
-      *ngIf="!loadingDocuments && Object.keys(groupedFiles).length === 0"
-      class="no-documents"
-    >
+    <div *ngIf="!loadingDocuments && Object.keys(groupedFiles).length === 0" class="no-documents">
       <p>📭 No files uploaded yet</p>
     </div>
 
@@ -105,40 +93,23 @@
         </div>
 
         <div *ngIf="expandedDepartments[department]" class="department-projects">
-          <div
-            *ngFor="let project of Object.keys(groupedFiles[department])"
-            class="project-block"
-          >
-            <div
-              class="project-header"
-              (click)="toggleProject(department, project)"
-            >
+          <div *ngFor="let project of Object.keys(groupedFiles[department])" class="project-block">
+            <div class="project-header" (click)="toggleProject(department, project)">
               <span class="project-title">{{ project }}</span>
-              <span class="file-count"
-                >{{ groupedFiles[department][project].length }} files</span
-              >
+              <span class="file-count">{{ groupedFiles[department][project].length }} files</span>
               <span class="toggle-icon">
                 {{ expandedProjects[department + '_' + project] ? '▼' : '▶' }}
               </span>
             </div>
 
-            <div
-              *ngIf="expandedProjects[department + '_' + project]"
-              class="project-files"
-            >
-              <div
-                *ngFor="let file of groupedFiles[department][project]"
-                class="file-item"
-              >
+            <div *ngIf="expandedProjects[department + '_' + project]" class="project-files">
+              <div *ngFor="let file of groupedFiles[department][project]" class="file-item">
                 <span>📄 {{ file.filename }}</span>
                 <div class="file-actions">
                   <button class="btn-secondary" (click)="downloadFile(file)">
                     Download
                   </button>
-                  <button
-                    class="btn-danger"
-                    (click)="deleteDocument(file.filename)"
-                  >
+                  <button class="btn-danger" (click)="deleteDocument(file.filename)">
                     Delete
                   </button>
                 </div>
@@ -153,7 +124,7 @@
 
 
 
-        <!-- <div class="table-card" *ngIf="view==='pending'">
+<!-- <div class="table-card" *ngIf="view==='pending'">
             <h3>Pending User Requests</h3>
             <table class="admin-table">
                 <thead>
