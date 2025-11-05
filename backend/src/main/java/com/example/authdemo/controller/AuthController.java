@@ -106,7 +106,7 @@ public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
             "message", "Invalid credentials"
         )));
 }
- 
+
     @GetMapping("/me")
     public Map<String, String> getLoggedInUser(Principal principal) {
         if (principal != null) {

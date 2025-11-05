@@ -1,6 +1,8 @@
 package com.example.authdemo.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -21,6 +23,12 @@ public class User {
     private String department;
     private String designation;
     private String manager;
+
+    @Column(columnDefinition = "text[]")
+    private String[] allowedProjects;
+
+    @Column(columnDefinition = "text[]")
+    private String[] allowedSensitivity;
 
     // Getters and Setters
     public Long getId() {
@@ -103,11 +111,53 @@ public class User {
         this.manager = manager;
     }
 
-	public String getDepartment() {
-		return department;
-	}
+    public String getDepartment() {
+    	return department;
+    }
 
-	public void setDepartment(String department) {
-		this.department = department;
-	}
+    public void setDepartment(String department) {
+    	this.department = department;
+    }
+
+    public String[] getAllowedProjects() {
+        return allowedProjects != null ? allowedProjects : new String[]{};
+    }
+
+    public void setAllowedProjects(String[] allowedProjects) {
+        this.allowedProjects = allowedProjects;
+    }
+
+    public String[] getAllowedSensitivity() {
+        return allowedSensitivity != null ? allowedSensitivity : new String[] { "Public" };
+    }
+
+    public void setAllowedSensitivity(String[] allowedSensitivity) {
+        this.allowedSensitivity = allowedSensitivity;
+    }
+
+    public List<String> getAllowedProjectsList() {
+        String[] projects = getAllowedProjects();
+        List<String> list = new ArrayList<>();
+
+        for (String p : projects) {
+            if (p != null && !p.trim().isEmpty()) {
+                list.add(p);
+            }
+        }
+
+        return list;
+    }
+
+    public List<String> getAllowedSensitivityList() {
+        String[] sens = getAllowedSensitivity();
+        List<String> list = new ArrayList<>();
+
+        for (String s : sens) {
+            if (s != null && !s.trim().isEmpty()) {
+                list.add(s);
+            }
+        }
+
+        return list;
+    }
 }
