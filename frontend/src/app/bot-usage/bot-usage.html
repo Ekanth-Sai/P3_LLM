@@ -2,7 +2,10 @@ imports: [FormsModule, CommonModule, HttpClientModule],
 <div class="bot-usage-container">
 
     <nav class="navbar">
-        <div class="nav-left">Chatbot</div>
+        <div class="nav-left"  >
+          <img src="assets/images/logo.png" (click)="goBackToDashboard()" alt="P3 Logo" class="logo" style="cursor:pointer;"/>
+          <span class="title">Chat Bot</span>
+        </div>
       
         <div class="nav-right-container">
           <div class="nav-right" (click)="goBackToDashboard()" style="cursor:pointer">Home</div>
@@ -26,12 +29,37 @@ imports: [FormsModule, CommonModule, HttpClientModule],
 
             <div class="chat-body" *ngIf="activeTab === 'chat'">
                 <div class="message-area">
-                    <div *ngFor="let message of messages" class="message"
-                        [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
-                        <div class="message-bubble">{{ message.text }}</div>
-                    </div>
+                    <div *ngFor="let message of messages" 
+                    class="message-row" 
+                    [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
+               
+                 <!-- Avatar -->
+                 <img 
+                   *ngIf="!message.isUser" 
+                   src="assets/images/bot-avatar.png" 
+                   alt="Bot" 
+                   class="avatar bot-avatar"
+                 />
+               
+                 <div class="message-bubble">{{ message.text }}</div>
+               
+                 <img 
+                   *ngIf="message.isUser" 
+                   src="assets/images/user-avatar.png" 
+                   alt="You" 
+                   class="avatar user-avatar"
+                 />
+               
+               </div>
+               
 
                     <div *ngIf="isGeneratingResponse" class="message bot-message">
+                            <!-- Avatar -->
+                            <img 
+                            src="assets/images/bot-avatar.png" 
+                            alt="Bot" 
+                            class="avatar bot-avatar"
+                        />
                         <div class="message-bubble typing-bubble">
                           <div class="typing-dots">
                             <span></span>
@@ -44,7 +72,12 @@ imports: [FormsModule, CommonModule, HttpClientModule],
 
 
                 <div class="bot-welcome" *ngIf="messages.length === 0">
-                    <div class="bot-icon">🤖</div>
+                 <!-- Avatar -->
+                 <img 
+                 src="assets/images/bot-avatar.png" 
+                 alt="Bot" 
+                 class="bot-hello"
+               />
                     <p class="bot-title">Welcome to LLM ChatBot</p>
                     <p class="bot-description">
                         Ask me anything about your documentation, and I'll help you find the answers.
@@ -81,9 +114,10 @@ imports: [FormsModule, CommonModule, HttpClientModule],
             </div>
 
             <div class="documents-body" *ngIf="activeTab === 'documents' && isAdmin">
+
                 <div class="documents-header">
-                  <h3>Knowledge Base Documents</h3>
-                  <p class="subtitle">Manage files used by the LLM, grouped by project</p>
+                  <h3>Knowledge Base</h3>
+                  <p class="subtitle"></p>
                 </div>
               
                 <div *ngIf="loadingDocuments" class="loading-spinner">
@@ -91,38 +125,47 @@ imports: [FormsModule, CommonModule, HttpClientModule],
                   <p>Loading documents...</p>
                 </div>
               
-                <div *ngIf="!loadingDocuments && projectNames.length === 0" class="no-documents">
-                  <p>📭 No documents in knowledge base</p>
+                <div *ngIf="!loadingDocuments && departmentNames.length === 0" class="no-documents">
+                  <p>📭 No documents uploaded yet</p>
                 </div>
               
-                <div *ngIf="!loadingDocuments && projectNames.length > 0" class="documents-list">
-                  <div *ngFor="let project of projectNames" class="project-section">
-                    <div class="project-header" (click)="toggleProject(project)">
-                      <span class="project-name">🗂️ {{ project }}</span>
-                      <span class="arrow">{{ expandedProjects[project] ? '▼' : '▶' }}</span>
+                <div *ngIf="!loadingDocuments && departmentNames.length > 0" class="documents-list">
+                    
+                  <div *ngFor="let dept of departmentNames" class="department-section">
+                    <div class="project-header" (click)="toggleDepartment(dept)">
+                      <span class="project-name">🏢 {{ dept }}</span>
+                      <span class="arrow">{{ expandedDepartments[dept] ? '▼' : '▶' }}</span>
                     </div>
               
-                    <div class="project-files" *ngIf="expandedProjects[project]">
-                      <div *ngFor="let doc of groupedFiles[project]" class="document-item">
-                        <div class="doc-info">
-                          <span class="doc-icon">📄</span>
-                          <span class="doc-name">{{ doc.filename }}</span>
+                    <div *ngIf="expandedDepartments[dept]">
+                      <div *ngFor="let project of Object.keys(groupedFiles[dept])" class="project-section">
+                        
+                        <div class="project-header level-2" (click)="toggleProject(dept, project)">
+                          <span class="project-name">🗂️ {{ project }}</span>
+                          <span class="arrow">{{ expandedProjects[dept][project] ? '▼' : '▶' }}</span>
                         </div>
-                        <div class="doc-actions">
-                          <button class="download-doc-btn" (click)="downloadFile(doc)">📥 Download</button>
-                          <button class="delete-doc-btn" (click)="deleteDocument(doc.filename)">🗑️ Delete</button>
+              
+                        <div class="project-files" *ngIf="expandedProjects[dept][project]">
+                          <div *ngFor="let file of groupedFiles[dept][project]" class="document-item">
+                            <div class="doc-info">
+                              <span class="doc-icon">📄</span>
+                              <span class="doc-name">{{ file.filename }}</span>
+                            </div>
+                            <div class="doc-actions">
+                              <button class="download-doc-btn" (click)="downloadFile(file)"> Download</button>
+                              <button class="delete-doc-btn" (click)="deleteDocument(file.filename)"> Delete</button>
+                            </div>
+                          </div>
                         </div>
+              
                       </div>
                     </div>
-                  </div>
-                </div>
               
-                <!-- Delete confirmation message -->
-                <div *ngIf="deleteMessage" class="delete-message"
-                     [ngClass]="{'success': deleteSuccess, 'error': !deleteSuccess}">
-                  {{ deleteMessage }}
+                  </div>
+              
                 </div>
               </div>
+              
               
         </div>
     </main>

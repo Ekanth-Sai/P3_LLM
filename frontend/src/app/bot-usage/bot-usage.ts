@@ -20,6 +20,7 @@ export class BotUsageComponent implements OnInit {
   private historyService = inject(HistoryService);
   private adminService = inject(AdminService);
   private router = inject(Router);
+  Object = Object;
 
   // private documentService = inject(DocumentService);
 
@@ -35,7 +36,6 @@ export class BotUsageComponent implements OnInit {
   deleteMessage: string | null = null;
   deleteSuccess: boolean = false;
 
-  /** 👇 NEW STATE for loader animation */
   isGeneratingResponse: boolean = false;
 
   ngOnInit() {
@@ -109,34 +109,47 @@ export class BotUsageComponent implements OnInit {
 
   
 
-  groupedFiles: { [project: string]: any[] } = {};
-  projectNames: string[] = [];
-  expandedProjects: { [project: string]: boolean } = {};
-
+  groupedFiles: { [department: string]: { [project: string]: any[] } } = {};
+  departmentNames: string[] = [];
+  expandedDepartments: { [department: string]: boolean } = {};
+  expandedProjects: { [department: string]: { [project: string]: boolean } } = {};
+  
   showDocuments() {
     if (!this.isAdmin) return;
-
+  
     this.activeTab = 'documents';
     this.loadingDocuments = true;
-
-    this.http.get<{ [project: string]: any[] }>('http://localhost:8080/admin/files').subscribe({
-      next: (data) => {
-        this.groupedFiles = data;
-        this.projectNames = Object.keys(data);
-        this.expandedProjects = this.projectNames.reduce((acc, p) => ({ ...acc, [p]: false }), {});
-        this.loadingDocuments = false;
-      },
-      error: (err) => {
-        console.error('Error loading documents:', err);
-        this.loadingDocuments = false;
-      }
-    });
+  
+    this.http.get<{ [department: string]: { [project: string]: any[] } }>('http://localhost:8080/admin/files')
+      .subscribe({
+        next: (data) => {
+          this.groupedFiles = data;
+          this.departmentNames = Object.keys(data);
+  
+          // Build expand states
+          this.expandedDepartments = this.departmentNames.reduce((acc, dept) => ({ ...acc, [dept]: false }), {});
+          this.expandedProjects = this.departmentNames.reduce((acc, dept) => ({
+            ...acc, 
+            [dept]: Object.keys(data[dept]).reduce((p, proj) => ({ ...p, [proj]: false }), {})
+          }), {});
+  
+          this.loadingDocuments = false;
+        },
+        error: (err) => {
+          console.error('Error loading documents:', err);
+          this.loadingDocuments = false;
+        }
+      });
   }
-
-  toggleProject(project: string) {
-    this.expandedProjects[project] = !this.expandedProjects[project];
+  
+  toggleDepartment(dept: string) {
+    this.expandedDepartments[dept] = !this.expandedDepartments[dept];
   }
-
+  
+  toggleProject(dept: string, proj: string) {
+    this.expandedProjects[dept][proj] = !this.expandedProjects[dept][proj];
+  }
+  
 
 
   deleteDocument(filename: string) {

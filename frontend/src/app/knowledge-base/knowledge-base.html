@@ -1,9 +1,17 @@
 <div class="knowledge-base-container">
-  <nav class="navbar">
-    <div class="nav-left">📚 Knowledge Base</div>
-    <button class="btn-nav" (click)="goBackToDashboard()">🏠 Back to Dashboard</button>
-  </nav>
 
+  <nav class="navbar">
+    <div class="nav-left"  >
+      <img src="assets/images/logo.png" (click)="goBackToDashboard()" alt="P3 Logo" class="logo" style="cursor:pointer;"/>
+      <span class="title">Knowledge Base</span>
+    </div>
+  
+    <div class="nav-right-container">
+      <div class="nav-right" (click)="goBackToDashboard()" style="cursor:pointer">Home</div>
+      <button class="logout-btn" (click)="onLogout()">Sign Out</button>
+    </div>
+  </nav>
+  
   <div
     *ngIf="message"
     [ngClass]="{

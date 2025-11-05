@@ -24,10 +24,19 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   
-  /* Left title */
+  .logo {
+    height: 36px;
+    width: auto;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
   .nav-left {
+    display: flex;
+    align-items: center;
+    font-size: 1.15rem;
     font-weight: 600;
-    font-size: 1.25rem;
+    color: white;
   }
   
   /* Right section container */
@@ -39,7 +48,7 @@
   
   /* Right-side items (Home text) */
   .nav-right {
-    cursor: pointer;
+   
     font-weight: 500;
     transition: opacity 0.2s ease;
   }
@@ -64,6 +73,8 @@
     background-color: #c5c0c0;
     transform: scale(1.05);
   }
+  
+  
 
 .main-content {
     padding: 30px;
@@ -177,9 +188,13 @@
     align-items: center;
 }
 
-.bot-icon {
-    font-size: 32px;
-}
+               
+.bot-hello {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
 
 .bot-title {
     font-weight: bold;
@@ -513,5 +528,79 @@
   
   .delete-doc-btn {
     color: #d9534f;
+  }
+  
+  /* Avatar Styling */
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  /* Message Row Layout */
+  .message-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  
+  /* Bot message alignment (left) */
+  .bot-message {
+    justify-content: flex-start;
+  }
+  
+  /* User message alignment (right) */
+  .user-message {
+    justify-content: flex-end;
+  }
+  
+  /* Ensure bubble stays in correct order */
+  .user-message .message-bubble {
+    order: 1;
+    background-color: #06c;
+    color: white;
+  }
+  
+  .user-avatar {
+    order: 2;
+  }
+  
+  .bot-message .message-bubble {
+    order: 2;
+    background-color: #e5e5ea;
+    color: black;
+  }
+  
+  .bot-avatar {
+    order: 1;
+  }
+  
+  .department-section, .project-section {
+    margin-top: 0.8rem;
+    border-radius: 8px;
+    background: #f9f9f9;
+    border: 1px solid #dce6ff;
+  }
+  
+  .level-2 {
+    background: #f2f6ff !important;
+    padding-left: 2rem !important;
+  }
+  
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #e7f0ff;
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+  .project-files {
+    padding: 0.8rem 2rem;
+    background: white;
   }
   

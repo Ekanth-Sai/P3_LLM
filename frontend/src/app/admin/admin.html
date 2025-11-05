@@ -1,6 +1,10 @@
 <div class="admin-container">
+
   <nav class="navbar">
-    <div class="nav-left">Admin Dashboard</div>
+    <div class="nav-left"  >
+      <img src="assets/images/logo.png" (click)="goBackToDashboard()" alt="P3 Logo" class="logo" style="cursor:pointer;"/>
+      <span class="title">Admin Dashboard</span>
+    </div>
   
     <div class="nav-right-container">
       <div class="nav-right" (click)="goBackToDashboard()" style="cursor:pointer">Home</div>
@@ -134,51 +138,5 @@
             </tbody>
         </table>
     </div>
-
-    <div class="file-upload-container">
-      <h4>📤 Upload File to Project</h4>
-    
-      <!-- success/error message -->
-      <div *ngIf="message" [ngClass]="{
-        'message-success': messageType === 'success',
-        'message-error': messageType === 'error'
-      }">
-        {{ message }}
-      </div>
-    
-      <form (submit)="onFileUpload($event)">
-        <!-- File input -->
-        <div class="upload-field">
-          <label for="fileInput">Select file:</label>
-          <input id="fileInput" type="file" (change)="onFileSelected($event)" />
-        </div>
-    
-        <!-- Project dropdown -->
-        <div class="upload-field">
-          <label for="projectSelect">Choose or add a project:</label>
-          <select id="projectSelect" [(ngModel)]="selectedProject" name="project">
-            <option value="" disabled selected>Select a project</option>
-            <option *ngFor="let p of projects" [value]="p">{{ p }}</option>
-            <option value="__new__">➕ Add New Project</option>
-          </select>
-        </div>
-    
-        <!-- New project input (shown only if user chose 'Add New Project') -->
-        <div class="upload-field" *ngIf="selectedProject === '__new__'">
-          <label for="newProjectName">Enter new project name:</label>
-          <input id="newProjectName" type="text" [(ngModel)]="newProjectName" name="newProjectName" placeholder="e.g. Marketing Data Analysis" />
-        </div>
-    
-        <button type="submit" class="upload-btn">Upload File</button>
-      </form>
-    
-      <!-- Existing files -->
-      <div *ngFor="let file of files" class="uploaded-file-item">
-        <span>{{ file.filename }}</span>
-        <button (click)="downloadFile(file)">Download</button>
-      </div>
-    </div>
-
-
 
 </div>

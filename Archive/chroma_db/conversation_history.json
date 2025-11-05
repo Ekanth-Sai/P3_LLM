@@ -280,5 +280,71 @@
         "query": "tell me about ekanth ",
         "response": "Based on the provided context, I can answer your query. The information you're looking for is present in Document Chunk 1.\n\nAccording to Document Chunk 1, Ekanth Sai's email address is @ekanthsaiy@gmail.com and his phone number is +9198859 87512.",
         "timestamp": "2025-10-29T17:56:34.046450+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "hi",
+        "response": "Hi!\n\nIt seems like you're looking for information related to the provided document chunks. Unfortunately, I didn't find any specific answers or details about the topic you're interested in within these chunks. If you could provide more context or clarify what you'd like to know, I'll do my best to help!",
+        "timestamp": "2025-11-05T06:03:43.901814+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "hi]",
+        "response": "Based on the provided context, I can provide some answers. Since there is no specific question asked in the query \"hi\", I will summarize the information that can be gathered from the document chunks:\n\n* The main theme of the documents appears to be assisting software development, debugging, and testing.\n* There is no specific information about Yellanki Ekantha Sai Sundar's role or expertise.\n\nIf you have a specific question related to software development, debugging, or testing, I'll do my best to provide helpful answers based on the provided context.",
+        "timestamp": "2025-11-05T06:22:55.565053+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "Hi",
+        "response": "Hello! I'm happy to help. Based on the provided context, I don't see any specific information related to your query. It appears to be a series of document chunks with contact information, location, and some generic job descriptions or skills listed. If you'd like to ask a question or provide more context about what you're looking for, I'll do my best to assist you.",
+        "timestamp": "2025-11-05T06:28:14.881485+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "hi",
+        "response": "Hi! Based on the provided context (Documents Chunks 1-4), I can't find any information that answers your greeting. However, if you're looking for assistance with software development, debugging, or testing, I can refer to Document Chunk 3, which mentions my capabilities in those areas. Additionally, Document Chunk 5 touches upon Spring Boot Micro Services and creating an API using Postman, but it doesn't seem directly related to your greeting. If you have a specific query or question, feel free to ask, and I'll do my best to help!",
+        "timestamp": "2025-11-05T06:28:59.594532+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "Hi",
+        "response": "I'm happy to help! However, since the provided context doesn't contain any information that directly answers your query \"Hi\", I'd like to clarify what you're looking for. Could you please rephrase or ask a specific question? I'll do my best to provide a helpful response based on the available chunks.",
+        "timestamp": "2025-11-05T06:29:39.532640+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "Who  is ekantha sai ]",
+        "response": "Based on the provided context, it appears that \"Ekanth-Sai Yellanki\" is the name mentioned in Document Chunk 3 and Document Chunk 4. It seems to be a person's name, but without more information, I cannot provide further details about this individual. The other documents appear to contain contact information and a GitHub link, which does not directly answer the question of who Ekantha Sai is.",
+        "timestamp": "2025-11-05T06:30:07.361491+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "hi",
+        "response": "Hi!",
+        "timestamp": "2025-11-05T06:36:23.715837+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "hi",
+        "response": "Hi! It seems you're trying to reach out or initiate a conversation. I'm happy to help, but I need more context or information about what's on your mind. Unfortunately, based on the provided chunks, there isn't any specific topic or question that I can address. Can you please provide more details or clarify what you'd like to discuss?",
+        "timestamp": "2025-11-05T06:52:32.082766+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "tell me about ekanth ",
+        "response": "Based on the provided context, I can find some information related to \"Ekanth\". Specifically, in Document Chunk 1 and 2, it appears that the email address is \"@ekanthsaiy@gmail.com\" and the phone number is \"+919885987512\", both belonging to someone named Ekanth Sai.\n\nAdditionally, in Document Chunks 3 and 4, I found the name \"Yellanki Ekantha Sai Sundar\". It seems that this person's full name includes the given name \"Ekanth\".\n\nFinally, in Document Chunk 5, it appears that a student named Ekanth is enrolled at Gokaraju Rangaraju Institute of Engineering and Technology from January to May 2024.\n\nPlease note that these are the only pieces of information related to \"Ekanth\" found within the provided context. If you're looking for more specific or detailed information, I'd be happy to help if it's available in the context!",
+        "timestamp": "2025-11-05T06:54:03.753720+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "Hi",
+        "response": "Hi! I'm happy to help. However, since your query is just a simple \"hi\", it's not possible for me to find any specific information in the provided context. Could you please provide more context or ask a specific question?",
+        "timestamp": "2025-11-05T06:56:06.525723+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "Tell me about my current project ",
+        "response": "Based on the provided context (Document Chunks 1-5), I can tell you that your current project's code name is \"Phoenix\" and the deadline is December 15th. Additionally, according to Document Chunk 4, this project involves developing and maintaining web-applications using front-end and back-end technologies, working with databases, APIs, and cloud services for application development, as well as working on machine learning applications, LLM's, artificial intelligence, Spring Boot, and Angular.",
+        "timestamp": "2025-11-05T06:56:55.801641+00:00"
     }
 ]
