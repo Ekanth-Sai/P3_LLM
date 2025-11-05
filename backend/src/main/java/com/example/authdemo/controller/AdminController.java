@@ -132,7 +132,7 @@ public class AdminController {
         }
         
         try {
-            String tempDir = "/Users/harshakuppala/Desktop/P3_LLM/temp_uploads/";
+            String tempDir = "../temp_uploads/";
             String folderPathString = tempDir+departmentName+"/"+projectName;
             LocalDateTime dateTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss");
@@ -142,13 +142,13 @@ public class AdminController {
             String extension = "";
             Path folderPath = Paths.get(folderPathString);
             
-          try {
+        try {
               //will create all non-existent parent directories too
-              Files.createDirectories(folderPath);
+            Files.createDirectories(folderPath);
              // System.out.println("✅ Folder created at: " + folderPath.toAbsolutePath());
-          } catch (IOException e) {
-              System.err.println("❌ Failed to create folder: " + e.getMessage());
-          }
+        } catch (IOException e) {
+            System.err.println("❌ Failed to create folder: " + e.getMessage());
+        }
 
 
             if (originalFileName != null) {
@@ -257,14 +257,15 @@ public class AdminController {
                     ? file.getProject()
                     : "Unassigned Project";
 
+            Map<String, Object> fileData = new HashMap<>();
+            fileData.put("id", file.getId());
+            fileData.put("filename", file.getFilename());
+            fileData.put("path", file.getPath());
+
             grouped
                 .computeIfAbsent(department, d -> new LinkedHashMap<>())
                 .computeIfAbsent(project, p -> new ArrayList<>())
-                .add(Map.of(
-                    "id", file.getId(),
-                    "filename", file.getFilename(),
-                    "path", file.getPath()
-                ));
+                .add(fileData);
         }
 
         return ResponseEntity.ok(grouped);
@@ -325,14 +326,9 @@ public class AdminController {
     public ResponseEntity<Map<String, Boolean>> isAdmin(@RequestParam String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         boolean isAdmin = optionalUser.isPresent() &&
-                          optionalUser.get().getRole().equalsIgnoreCase("admin");
+                        optionalUser.get().getRole().equalsIgnoreCase("admin");
         Map<String, Boolean> response = new HashMap<>();
         response.put("is_admin", isAdmin);
         return ResponseEntity.ok(response);
     }
-
-    
-    
-  
-
 }
