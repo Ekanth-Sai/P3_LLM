@@ -17,15 +17,22 @@ export class SignupComponent {
   firstName = '';
   lastName = '';
   email = '';
-  project = '';
   designation = '';
-  department='';
   manager = '';
   password = '';   // <-- add this
   termsAccepted = false;
+  departments: string[] = [];
+  selectedDepartment = '';
+  newDepartmentName = '';
+
+  projects: string[] = [];
+  selectedProject = '';
+  newProjectName = '';
 
   constructor(private router: Router, private http: HttpClient) { }
-
+  ngOnInit() {
+    this.loadDepartments();
+  }
   onSignupSubmit(): void {
     if (!this.termsAccepted) {
       alert('You must accept the terms and conditions');
@@ -37,13 +44,13 @@ export class SignupComponent {
       lastName: this.lastName,
       email: this.email,
       password: this.password,    // <-- include password
-      project: this.project,
-      department:this.department,
+      project: this.selectedProject,
+      department:this.selectedDepartment,
       designation: this.designation,
       manager: this.manager
     };
 
-    this.http.post('http://localhost:8080/create-user', signupData).subscribe({
+    this.http.post('http://localhost:8080/signup/create-user', signupData).subscribe({
       next: (res: any) => {
         alert('Signup successful. Status: ' + res.message);
         this.router.navigate(['/login']);
@@ -54,5 +61,39 @@ export class SignupComponent {
         alert('Signup failed');
       }
     });
+  }
+
+  loadDepartments() {
+    this.http.get<string[]>('http://localhost:8080/signup/departments').subscribe({
+      next: (data) => (this.departments = data),
+      error: (err) => {
+        console.error('Failed to load departments:', err);
+        this.departments = [];
+      }
+    });
+  }
+
+  loadProjects() {
+    if (!this.selectedDepartment) return;
+    this.http
+      .get<string[]>(`http://localhost:8080/signup/projects/${this.selectedDepartment}`)
+      .subscribe({
+        next: (data) => (this.projects = data),
+        error: (err) => {
+          console.error('Failed to load projects:', err);
+          this.projects = [];
+        }
+      });
+  }
+
+
+  onDepartmentChange() {
+    this.selectedProject = '';
+    //this.newProjectName = '';
+    if (this.selectedDepartment) {
+      setTimeout(() => this.loadProjects(), 0);
+    } else {
+      this.projects = [];
+    }
   }
 }
