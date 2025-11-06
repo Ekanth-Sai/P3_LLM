@@ -40,6 +40,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+
             .authorizeHttpRequests(auth -> auth
             	.requestMatchers("/api/auth/login").permitAll()  
             	.requestMatchers("/signup/**").permitAll()
@@ -48,6 +49,8 @@ public class SecurityConfig {
 //            .formLogin(AbstractHttpConfigurer::disable)
 //            .httpBasic(AbstractHttpConfigurer::disable);
            .addFilterBefore(jwtFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+
+
 
         return http.build();
     }
