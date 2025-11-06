@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,19 +12,75 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './signup.html',
   styleUrls: ['./signup.css']
 })
-  
-export class SignupComponent {
+export class SignupComponent implements OnInit {
   firstName = '';
   lastName = '';
   email = '';
   project = '';
   designation = '';
-  department='';
+  department = '';
   manager = '';
-  password = '';   // <-- add this
+  password = '';
   termsAccepted = false;
 
-  constructor(private router: Router, private http: HttpClient) { }
+  // Dynamic lists
+  departments: string[] = [];
+  projects: string[] = [];
+  filteredProjects: string[] = [];
+
+  constructor(private router: Router, private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.loadDepartments();
+    this.loadAllProjects();
+  }
+
+  loadDepartments(): void {
+    this.http.get<string[]>('http://localhost:8080/signup/departments').subscribe({
+      next: (data) => {
+        this.departments = data;
+      },
+      error: (err) => {
+        console.error('Failed to load departments:', err);
+        this.departments = [];
+      }
+    });
+  }
+
+  loadAllProjects(): void {
+    this.http.get<string[]>('http://localhost:8080/signup/projects').subscribe({
+      next: (data) => {
+        this.projects = data;
+        this.filteredProjects = data;
+      },
+      error: (err) => {
+        console.error('Failed to load projects:', err);
+        this.projects = [];
+        this.filteredProjects = [];
+      }
+    });
+  }
+
+  onDepartmentChange(): void {
+    this.project = ''; // Reset project selection
+    
+    if (!this.department) {
+      this.filteredProjects = this.projects;
+      return;
+    }
+
+    // Filter projects by selected department
+    this.http.get<string[]>(`http://localhost:8080/signup/projects/${this.department}`)
+      .subscribe({
+        next: (data) => {
+          this.filteredProjects = data;
+        },
+        error: (err) => {
+          console.error('Failed to filter projects:', err);
+          this.filteredProjects = this.projects;
+        }
+      });
+  }
 
   onSignupSubmit(): void {
     if (!this.termsAccepted) {
@@ -32,26 +88,35 @@ export class SignupComponent {
       return;
     }
 
+    if (!this.department) {
+      alert('Please select a department');
+      return;
+    }
+
+    if (!this.project) {
+      alert('Please select a project');
+      return;
+    }
+
     const signupData = {
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
-      password: this.password,    // <-- include password
+      password: this.password,
       project: this.project,
-      department:this.department,
+      department: this.department,
       designation: this.designation,
       manager: this.manager
     };
 
-    this.http.post('http://localhost:8080/create-user', signupData).subscribe({
+    this.http.post('http://localhost:8080/signup', signupData).subscribe({
       next: (res: any) => {
-        alert('Signup successful. Status: ' + res.message);
-        this.router.navigate(['/login']);
-      }
-      ,
-      error: (err: any) => {
+        alert('Signup successful. Awaiting admin approval.');
+        this.router.navigate(['/signup-confirmation']);
+      },
+      error: (err) => {
         console.error(err);
-        alert('Signup failed');
+        alert('Signup failed: ' + (err.error?.message || 'Unknown error'));
       }
     });
   }
