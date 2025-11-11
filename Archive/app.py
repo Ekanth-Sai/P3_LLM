@@ -19,7 +19,15 @@ def process_document():
     department = data.get('department', 'General')
     sensitivity = data.get('sensitivity', 'Internal')
     project_name = data.get('project', 'General')
-    allowed_roles = data.get('allowed_roles', '').split(',') if data.get('allowed_roles') else []
+    
+    # Handle allowed_roles - can be comma-separated string or list
+    allowed_roles_raw = data.get('allowed_roles', '')
+    if isinstance(allowed_roles_raw, list):
+        allowed_roles = allowed_roles_raw
+    elif isinstance(allowed_roles_raw, str) and allowed_roles_raw:
+        allowed_roles = [r.strip() for r in allowed_roles_raw.split(',') if r.strip()]
+    else:
+        allowed_roles = ['CEO']  # Default to CEO only
 
     if not file_path:
         return jsonify({'error': 'file_path is required'}), 400
@@ -44,6 +52,8 @@ def process_document():
         })
     except Exception as e:
         print(f"Process error: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
 @app.route('/query', methods=['POST'])
@@ -82,6 +92,8 @@ def query():
         return jsonify({'response': response, 'status': 'success'})
     except Exception as e:
         print(f"Query error: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
 @app.route('/history', methods=['GET'])
@@ -150,5 +162,5 @@ def get_processed_documents():
     return jsonify(files)
 
 if __name__ == '__main__':
-    print("Starting Flask server with Hybrid RBAC...") #Delete after test
+    print("Starting Flask server with RBAC Hierarchy...")
     app.run(host='0.0.0.0', port=5001, debug=True)

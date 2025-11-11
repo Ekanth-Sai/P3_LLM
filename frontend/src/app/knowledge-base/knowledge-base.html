@@ -63,6 +63,35 @@
           class="text-input" />
       </div>
 
+      <!-- NEW: Allowed Roles Multi-Select -->
+      <div class="form-row">
+        <label class="form-label">Select Allowed Roles (Minimum Required)</label>
+        <select multiple [(ngModel)]="selectedRoles" name="roleSelect" class="select-input" size="6"
+          style="height: auto;">
+          <option *ngFor="let role of availableRoles" [value]="role.roleName">
+            {{ role.displayName }}
+          </option>
+        </select>
+        <small style="display: block; margin-top: 0.5rem; color: #666;">
+          💡 Hold Ctrl (Windows) or Cmd (Mac) to select multiple roles. Parent roles automatically inherit access.
+        </small>
+        <div *ngIf="selectedRoles.length > 0"
+          style="margin-top: 0.5rem; padding: 0.5rem; background: #e3f0ff; border-radius: 4px;">
+          <strong>Selected:</strong> {{ selectedRoles.join(', ') }}
+        </div>
+      </div>
+
+      <!-- NEW: Sensitivity Level Dropdown -->
+      <div class="form-row">
+        <label class="form-label">Select Sensitivity Level</label>
+        <select [(ngModel)]="selectedSensitivity" name="sensitivitySelect" class="select-input">
+          <option value="Public">📢 Public - Accessible to all</option>
+          <option value="Internal">🏢 Internal - Company employees only</option>
+          <option value="Confidential">🔒 Confidential - Restricted access</option>
+          <option value="Highly Confidential">🔐 Highly Confidential - Top secret</option>
+        </select>
+      </div>
+
       <div class="button-row">
         <button type="submit" class="btn-primary">Upload</button>
       </div>
@@ -115,68 +144,9 @@
                 </div>
               </div>
             </div>
-            <div class="form-row">
-              <label class="form-label">Select Allowed Roles</label>
-              <select [(ngModel)]="selectedRoles" name="roleSelect" class="select-input" multiple>
-                <option *ngFor="let role of availableRoles" [value]="role.roleName">
-                  {{ role.displayName }}
-                </option>
-              </select>
-              <small>Selection minimum role required. Parent roles will auto-inherit access.</small>
-            </div>
-
-            <div class="form-row">
-              <label class="form-label">Sensitivity Level</label>
-              <select [(ngModel)]="selectedSensitivity" name="sensitivity" class="select-input">
-                <option value="Public">Public</option>
-                <option value="Internal">Internal</option>
-                <option value="Confidential">Confidential</option>
-                <option value="Highly Confidential">Highly Confidential</option>
-              </select>
-            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 </div>
-
-
-
-<!-- <div class="table-card" *ngIf="view==='pending'">
-            <h3>Pending User Requests</h3>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Email</th>
-                        <th>Name</th>
-                        <th>Designation</th>
-                        <th>Department</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let user of pendingUsers">
-                        <td>{{user.id}}</td>
-                        <td>{{user.email}}</td>
-                        <td>{{ (user.firstName || user.lastName) ? (user.firstName || '') + ' ' + (user.lastName || '') : 'Not Provided' }}</td>
-                        <td>{{user.designation || "Not Provided"}}</td>
-                        <td>{{user.department || "Not Provided"}}</td>
-                        <td class="action-btn">
-                            <button class="accept-btn" (click)="handlePending(user, 'accept')">Accept</button>
-                            <button class="decline-btn" (click)="handlePending(user, 'decline')">Decline</button>
-                        </td>
-                    </tr>
-                    <tr *ngIf="decliningUser">
-                        <td colspan="3">
-                            <div>
-                                <textarea [(ngModel)]="declineReason" placeholder="Reason for declining {{decliningUser.email}}..."></textarea>
-                                <button (click)="confirmDecline()">Confirm Decline</button>
-                                <button (click)="cancelDecline()">Cancel</button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div> -->
