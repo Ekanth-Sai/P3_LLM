@@ -49,7 +49,7 @@ class DocQASystem:
         self.vector_db_manager = VectorDBManager()
         self.llm_qa_manager = LLM_QAManager()
 
-    def process_and_add_document(self, file_path: str, department: str, sensitivity: str, project_name: str):
+    def process_and_add_document(self, file_path: str, department: str, sensitivity: str, project_name: str, allowed_roles: List[str] = None):
         print(f"\nProcessing: {file_path}")
         print(f"Dept: {department} | Project: {project_name} | Sensitivity: {sensitivity}")
         
@@ -109,9 +109,16 @@ class DocQASystem:
                 metadata["project"] = project_name
                 metadata["chunk_id"] = i
                 metadata["source"] = f"{processor.filename}_chunk_{i}"
+                # metadatas.append(metadata)
+                
+                if allowed_roles:
+                    metadata["allowed_roles"] = allowed_roles
+                else:
+                    metadata["allowed_roles"] = ["CEO"]
+                
                 metadatas.append(metadata)
 
-            self.vector_db_manager.add_documents(processed_chunks, chunk_embeddings, metadatas, department=department,project_name=project_name)
+            self.vector_db_manager.add_documents(processed_chunks, chunk_embeddings, metadatas, department=department, project_name=project_name)
 
             with open(PROCESSED_FILES_LOG, "a") as f:
                 f.write(f"{file_path}\n")
@@ -125,6 +132,9 @@ class DocQASystem:
         print(f"\nQuery from {username}: {query}")
         
         user = fetch_user_from_db(username)
+        
+        user_roles = user.get('inherited_roles', [user.get('role', 'USER')])
+        
         if not user:
             return "User not found or unauthorized"
 
@@ -150,6 +160,7 @@ class DocQASystem:
             department=department,
             allowed_projects=allowed_projects,
             allowed_sensitivity=allowed_sensitivity,
+            allowed_roles = user_roles,
             n_results=5
         )
 

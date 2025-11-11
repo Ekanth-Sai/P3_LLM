@@ -24,6 +24,9 @@ export class KnowledgeBaseComponent implements OnInit {
   newProjectName = '';
 
   selectedFile: File | null = null;
+  selectedRoles: string[] = [];
+  availableRoles: any[] = [];
+  selectedSensitivity = 'Internal';
 
   groupedFiles: { [department: string]: { [project: string]: any[] } } = {};
   expandedDepartments: { [department: string]: boolean } = {};
@@ -38,6 +41,7 @@ export class KnowledgeBaseComponent implements OnInit {
   ngOnInit() {
     this.loadDepartments();
     this.loadDocuments();
+    this.loadRoles();
   }
 
   showMessage(text: string, type: 'success' | 'error') {
@@ -145,6 +149,8 @@ export class KnowledgeBaseComponent implements OnInit {
     formData.append('file', this.selectedFile);
     formData.append('departmentName', department);
     formData.append('projectName', project);
+    formData.append('sensitivity', this.selectedSensitivity || 'Internal');
+    formData.append('allowedRolesJson', this.selectedRoles.join(','));
 
     this.http.post('http://localhost:8080/admin/upload-file', formData).subscribe({
       next: () => {
@@ -213,5 +219,13 @@ export class KnowledgeBaseComponent implements OnInit {
     localStorage.removeItem('role');
     localStorage.removeItem('email');
     this.router.navigate(['/login']);
+  }
+
+  loadRoles() {
+    this.http.get<any[]>('http://localhost:8080/api/roles/all')
+      .subscribe({
+        next: (data) => this.availableRoles = data,
+        error: (err) => console.error('Failed to load roles:', err)
+      });
   }
 }

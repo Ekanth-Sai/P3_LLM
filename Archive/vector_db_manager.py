@@ -66,13 +66,17 @@ class VectorDBManager:
         collection.add(documents=documents, embeddings=embeddings, metadatas=metadatas, ids=ids)
         print(f"Added {len(documents)} chunks to {department}/{project_name} knowledge base")
 
-    def query_documents(self, query_embedding: List[float], department: str, allowed_projects: List[str], allowed_sensitivity: List[str], n_results: int = 5) -> List[Dict]:
+    def query_documents(self, query_embedding: List[float], department: str, allowed_projects: List[str], allowed_sensitivity: List[str], allowed_roles: List[str], n_results: int = 5) -> List[Dict]:
         collection = self.get_or_create_department_collection(department)
 
         where_filter = {
             "$and": [
                 {"project": {"$in": allowed_projects}},
-                {"sensitivity": {"$in": allowed_sensitivity}}
+                {"sensitivity": {"$in": allowed_sensitivity}},
+                {"$or": [
+                    {"allowed_roles": {"$in": allowed_roles}},
+                    {"allowed_roles": {"exists": False}}
+                ]}
             ]
         }
 
@@ -103,7 +107,7 @@ class VectorDBManager:
                 print("No results found with current filters")
             return processed_results
         except Exception as e:
-            print("Query error: {e}")
+            print(f"Query error: {e}")
             return []
     
     def list_collections(self) -> List[str]:
