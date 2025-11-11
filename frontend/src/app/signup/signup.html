@@ -38,35 +38,33 @@
             </div>
 
             <!-- Role -->
-            <label>Role</label>
-            <div class="input-group">
-                <span class="icon">💼</span>
-                <select [(ngModel)]="role" name="role" required>
-                    <option value="" disabled selected>Select Role</option>
-                    <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
-                </select>
+            <div class="form-row">
+                <label for="roleSelect">Select Role</label>
+                <select id="roleSelect" [(ngModel)]="role" name="role" required>
+                    <option value="">-- Choose Role --</option>
+                    <option *ngFor="let r of roles" [value]="r.roleName">
+                        {{ r.displayName }}
+                    </option>
+                </select>        
             </div>
 
             <!-- Department (Dynamic) -->
-            <label>Department</label>
-            <div class="input-group">
-                <span class="icon">🏢</span>
-                <select [(ngModel)]="department" name="department" required>
-                    <option value="" disabled selected>Select Department</option>
-                    <option *ngFor="let dept of departments" [value]="dept">{{ dept }}</option>
-                </select>
+            <div class="form-row">
+                <label for="departmentSelect">Select Department</label>
+                <select id="departmentSelect" [(ngModel)]="department" name="department" required>
+                    <option value="">-- Choose Department --</option>
+                    <option *ngFor="let d of departments" [value]="d">{{ d }}</option>
+                </select>        
             </div>
 
             <!-- Current Project (Dynamic) -->
-            <label>Current Project</label>
-            <div class="input-group">
-                <span class="icon">👥</span>
-                <select [(ngModel)]="project" name="project" required>
-                    <option value="" disabled selected>Select Project</option>
-                    <option *ngFor="let proj of projects" [value]="proj">{{ proj }}</option>
-                </select>
+            <div class="form-row">
+                <label for="projectSelect">Select Project</label>
+                <select id="projectSelect" [(ngModel)]="project" name="project" required>
+                    <option value="">-- Choose Project --</option>
+                    <option *ngFor="let p of projects" [value]="p">{{ p }}</option>
+                </select>        
             </div>
-
             <!-- Terms & Conditions -->
             <div class="terms">
                 <input type="checkbox" [(ngModel)]="termsAccepted" name="terms" required />

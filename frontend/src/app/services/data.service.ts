@@ -7,19 +7,24 @@ import { Observable } from 'rxjs';
 })
 export class DataService {
 
-  private baseUrl = 'http://localhost:8080/api/data';
+  private adminBase = 'http://localhost:8080/admin';
+  private rolesBase = 'http://localhost:8080/api/roles';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getDepartments(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.baseUrl}/departments`);
+    return this.http.get<string[]>(`${this.adminBase}/departments`);
   }
 
-  getProjects(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.baseUrl}/projects`);
+  getProjects(department?: string): Observable<string[]> {
+    if (department) {
+      return this.http.get<string[]>(`${this.adminBase}/projects/${department}`);
+    } else {
+      return this.http.get<string[]>(`${this.adminBase}/projects`);
+    }
   }
 
-  getRoles(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.baseUrl}/roles`);
+  getRoles(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.rolesBase}/all`);
   }
 }

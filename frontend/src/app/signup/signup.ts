@@ -25,7 +25,7 @@ export class SignupComponent implements OnInit {
   // Dynamic lists
   departments: string[] = [];
   projects: string[] = [];
-  roles: string[] = [];
+  roles: any[] = [];
 
   constructor(private router: Router, private http: HttpClient, private dataService: DataService) {}
 
@@ -34,9 +34,27 @@ export class SignupComponent implements OnInit {
   }
 
   loadDropdownData(): void {
-    this.dataService.getDepartments().subscribe(data => this.departments = data);
-    this.dataService.getProjects().subscribe(data => this.projects = data);
-    this.dataService.getRoles().subscribe(data => this.roles = data);
+    this.dataService.getDepartments().subscribe({
+      next: (data) => this.departments = data,
+      error: (err) => console.error('Error loading departments:', err)
+    });
+  
+    this.dataService.getRoles().subscribe({
+      next: (data) => {
+        console.log('Roles received:', data);
+        this.roles = data;
+      },
+      error: (err) => console.error('Error loading roles:', err)
+    });
+  }
+
+  onDepartmentChange(): void {
+    if (this.department) {
+      this.dataService.getProjects(this.department).subscribe({
+        next: (data) => this.projects = data,
+        error: (err) => console.error('Error loading projects:', err)
+      });
+    }
   }
 
   onSignupSubmit(): void {
