@@ -81,7 +81,7 @@ public class RBACService {
 
     public List<String> getAllChildRoles(Role role) {
         List<String> roles = new ArrayList<>();
-        collectChileRoles(role, roles);
+        collectChildRoles(role, roles);
 
         return roles;
     }

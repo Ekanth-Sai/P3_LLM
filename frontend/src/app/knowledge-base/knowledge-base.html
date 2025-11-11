@@ -115,6 +115,25 @@
                 </div>
               </div>
             </div>
+            <div class="form-row">
+              <label class="form-label">Select Allowed Roles</label>
+              <select [(ngModel)]="selectedRoles" name="roleSelect" class="select-input" multiple>
+                <option *ngFor="let role of availableRoles" [value]="role.roleName">
+                  {{ role.displayName }}
+                </option>
+              </select>
+              <small>Selection minimum role required. Parent roles will auto-inherit access.</small>
+            </div>
+
+            <div class="form-row">
+              <label class="form-label">Sensitivity Level</label>
+              <select [(ngModel)]="selectedSensitivity" name="sensitivity" class="select-input">
+                <option value="Public">Public</option>
+                <option value="Internal">Internal</option>
+                <option value="Confidential">Confidential</option>
+                <option value="Highly Confidential">Highly Confidential</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>

@@ -24,6 +24,14 @@ public class User {
     private String designation;
     private String manager;
 
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role userRole;
+
+    @ManyToOne
+    @JoinColumn(name = "sub_role_id")
+    private SubRole subRole;
+
     @Column(columnDefinition = "text[]")
     private String[] allowedProjects;
 
@@ -117,6 +125,33 @@ public class User {
 
     public void setDepartment(String department) {
     	this.department = department;
+    }
+
+    public Role getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(Role userRole) {
+        this.userRole = userRole;
+    }
+
+    public SubRole getSubRole() {
+        return subRole;
+    }
+
+    public void setSubRole(SubRole subRole) {
+        this.subRole = subRole;
+    }
+
+    public String getEffectiveRoleName() {
+        if (userRole != null) {
+            return userRole.getRoleName();
+        }
+        return role;
+    }
+
+    public boolean isAdmin() {
+        return "ADMIN".equalsIgnoreCase(getEffectiveRoleName());
     }
 
     public String[] getAllowedProjects() {

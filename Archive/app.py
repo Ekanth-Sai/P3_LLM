@@ -19,6 +19,7 @@ def process_document():
     department = data.get('department', 'General')
     sensitivity = data.get('sensitivity', 'Internal')
     project_name = data.get('project', 'General')
+    allowed_roles = data.get('allowed_roles', '').split(',') if data.get('allowed_roles') else []
 
     if not file_path:
         return jsonify({'error': 'file_path is required'}), 400
@@ -34,7 +35,8 @@ def process_document():
             file_path, 
             department, 
             sensitivity, 
-            project_name
+            project_name,
+            allowed_roles
         )
         return jsonify({
             'message': f"Document added to {department}/{project_name}",
