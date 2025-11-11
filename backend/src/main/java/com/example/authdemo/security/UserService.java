@@ -16,29 +16,16 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-//    private String firstName;
-//    private String lastName;
-//    private String email;
-//    private String password;
-//    private String role;
-//
-//    private String status;
-//
-//    private String project;
-//    private String designation;
-//    private String manager;
 
-    public User createUser(String email,String firstName,String lastName, String rawPassword,String project,String department,String designation,String manager) {
+    public User createUser(String email,String firstName,String lastName, String rawPassword,String project,String department,String role) {
         User user = new User();
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(rawPassword));  // Hashing the password here
-        user.setRole("ADMIN");
+        user.setRole(role);
         user.setStatus("PENDING");
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setDesignation(designation);
         user.setProject(project);
-        user.setManager(manager);
         user.setDepartment(department);
 
         return userRepository.save(user);

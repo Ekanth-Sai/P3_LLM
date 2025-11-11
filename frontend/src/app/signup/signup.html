@@ -37,42 +37,33 @@
                 <input type="password" placeholder="Enter password" [(ngModel)]="password" name="password" required />
             </div>
 
+            <!-- Role -->
+            <label>Role</label>
+            <div class="input-group">
+                <span class="icon">💼</span>
+                <select [(ngModel)]="role" name="role" required>
+                    <option value="" disabled selected>Select Role</option>
+                    <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+                </select>
+            </div>
+
             <!-- Department (Dynamic) -->
             <label>Department</label>
             <div class="input-group">
                 <span class="icon">🏢</span>
-                <select [(ngModel)]="department" name="department" (change)="onDepartmentChange()" required>
+                <select [(ngModel)]="department" name="department" required>
                     <option value="" disabled selected>Select Department</option>
                     <option *ngFor="let dept of departments" [value]="dept">{{ dept }}</option>
                 </select>
             </div>
 
-            <!-- Current Project (Dynamic, filtered by department) -->
+            <!-- Current Project (Dynamic) -->
             <label>Current Project</label>
             <div class="input-group">
                 <span class="icon">👥</span>
                 <select [(ngModel)]="project" name="project" required>
                     <option value="" disabled selected>Select Project</option>
-                    <option *ngFor="let proj of filteredProjects" [value]="proj">{{ proj }}</option>
-                </select>
-            </div>
-
-            <!-- Designation -->
-            <label>Designation</label>
-            <div class="input-group">
-                <span class="icon">💼</span>
-                <input type="text" placeholder="Enter your designation" [(ngModel)]="designation" name="designation"
-                    required />
-            </div>
-
-            <!-- Manager Name -->
-            <label>Manager Name</label>
-            <div class="input-group">
-                <span class="icon">👔</span>
-                <select [(ngModel)]="manager" name="manager" required>
-                    <option value="" disabled selected>Manager Name</option>
-                    <option>Manager 1</option>
-                    <option>Manager 2</option>
+                    <option *ngFor="let proj of projects" [value]="proj">{{ proj }}</option>
                 </select>
             </div>
 

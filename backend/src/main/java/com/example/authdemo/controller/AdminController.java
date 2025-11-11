@@ -60,7 +60,6 @@ public class AdminController {
             map.put("lastName", user.getLastName());
             map.put("department", user.getDepartment());
             map.put("project", user.getProject());
-            map.put("designation", user.getDesignation());
             map.put("role", user.getEffectiveRoleName());
 
             if (user.getUserRole() != null) {
@@ -123,7 +122,6 @@ public class AdminController {
             map.put("email", user.getEmail());
             map.put("firstName", user.getFirstName());
             map.put("lastName", user.getLastName());
-            map.put("designation", user.getDesignation());
             map.put("department", user.getDepartment());
             map.put("project", user.getProject());
             result.add(map);
@@ -233,33 +231,6 @@ public class AdminController {
             return ResponseEntity.status(500).body(
                     Collections.singletonMap("error", "Upload failed: " + e.getMessage()));
         }
-    }
-
-    @GetMapping("/projects")
-    public ResponseEntity<List<String>> getAllProjects() {
-        List<String> projects = userFileService.getProjects();
-        if (projects.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(projects);
-    }
-
-    @GetMapping("/projects/{department}")
-    public ResponseEntity<List<String>> getProjectsByDepartment(@PathVariable String department) {
-        List<String> projects = userFileService.getProjectByDepartment(department);
-        if (projects.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(projects);
-    }
-
-    @GetMapping("/departments")
-    public ResponseEntity<List<String>> getAllDepartments() {
-        List<String> departments = userFileService.getDepartments();
-        if (departments.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(departments);
     }
 
     @GetMapping("/files")

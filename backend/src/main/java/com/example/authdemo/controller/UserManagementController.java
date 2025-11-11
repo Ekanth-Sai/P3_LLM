@@ -28,7 +28,7 @@ public class UserManagementController {
     public ResponseEntity<?> createUser(@RequestBody User user) {
         User newUser = userService.createUser(user.getEmail(),user.getFirstName(),
 		        		user.getLastName(), user.getPassword(),user.getProject(),user.getDepartment(),
-		        		user.getDesignation(),user.getManager());
+		        		user.getRole());
         return ResponseEntity.ok(Map.of(
         	    "status", "success",
         	    "message", "User created with ID: " + newUser.getId()

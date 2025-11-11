@@ -2,8 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SignupService } from '../services/signup.service';
 import { HttpClient } from '@angular/common/http';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-signup',
@@ -17,84 +17,31 @@ export class SignupComponent implements OnInit {
   lastName = '';
   email = '';
   project = '';
-  designation = '';
+  role = '';
   department = '';
-  manager = '';
   password = '';
   termsAccepted = false;
 
   // Dynamic lists
   departments: string[] = [];
   projects: string[] = [];
-  filteredProjects: string[] = [];
+  roles: string[] = [];
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient, private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.loadDepartments();
-    this.loadAllProjects();
+    this.loadDropdownData();
   }
 
-  loadDepartments(): void {
-    this.http.get<string[]>('http://localhost:8080/signup/departments').subscribe({
-      next: (data) => {
-        this.departments = data;
-      },
-      error: (err) => {
-        console.error('Failed to load departments:', err);
-        this.departments = [];
-      }
-    });
-  }
-
-  loadAllProjects(): void {
-    this.http.get<string[]>('http://localhost:8080/signup/projects').subscribe({
-      next: (data) => {
-        this.projects = data;
-        this.filteredProjects = data;
-      },
-      error: (err) => {
-        console.error('Failed to load projects:', err);
-        this.projects = [];
-        this.filteredProjects = [];
-      }
-    });
-  }
-
-  onDepartmentChange(): void {
-    this.project = ''; // Reset project selection
-    
-    if (!this.department) {
-      this.filteredProjects = this.projects;
-      return;
-    }
-
-    // Filter projects by selected department
-    this.http.get<string[]>(`http://localhost:8080/signup/projects/${this.department}`)
-      .subscribe({
-        next: (data) => {
-          this.filteredProjects = data;
-        },
-        error: (err) => {
-          console.error('Failed to filter projects:', err);
-          this.filteredProjects = this.projects;
-        }
-      });
+  loadDropdownData(): void {
+    this.dataService.getDepartments().subscribe(data => this.departments = data);
+    this.dataService.getProjects().subscribe(data => this.projects = data);
+    this.dataService.getRoles().subscribe(data => this.roles = data);
   }
 
   onSignupSubmit(): void {
     if (!this.termsAccepted) {
       alert('You must accept the terms and conditions');
-      return;
-    }
-
-    if (!this.department) {
-      alert('Please select a department');
-      return;
-    }
-
-    if (!this.project) {
-      alert('Please select a project');
       return;
     }
 
@@ -105,8 +52,7 @@ export class SignupComponent implements OnInit {
       password: this.password,
       project: this.project,
       department: this.department,
-      designation: this.designation,
-      manager: this.manager
+      role: this.role
     };
 
     this.http.post('http://localhost:8080/signup', signupData).subscribe({

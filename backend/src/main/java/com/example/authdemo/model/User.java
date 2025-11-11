@@ -21,8 +21,6 @@ public class User {
 
     private String project;
     private String department;
-    private String designation;
-    private String manager;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -103,21 +101,7 @@ public class User {
         this.project = project;
     }
 
-    public String getDesignation() {
-        return designation;
-    }
 
-    public void setDesignation(String designation) {
-        this.designation = designation;
-    }
-
-    public String getManager() {
-        return manager;
-    }
-
-    public void setManager(String manager) {
-        this.manager = manager;
-    }
 
     public String getDepartment() {
     	return department;
