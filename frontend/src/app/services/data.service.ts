@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class DataService {
 
-  private adminBase = 'http://localhost:8080/admin';
+  private adminBase = 'http://localhost:8080/signup';
   private rolesBase = 'http://localhost:8080/api/roles';
 
   constructor(private http: HttpClient) {}

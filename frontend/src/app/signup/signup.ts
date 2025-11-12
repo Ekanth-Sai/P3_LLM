@@ -21,6 +21,7 @@ export class SignupComponent implements OnInit {
   department = '';
   password = '';
   termsAccepted = false;
+  filteredProjects: string[] = [];
 
   // Dynamic lists
   departments: string[] = [];
@@ -45,6 +46,20 @@ export class SignupComponent implements OnInit {
         this.roles = data;
       },
       error: (err) => console.error('Error loading roles:', err)
+    });
+  }
+
+  loadAllProjects(): void {
+    this.http.get<string[]>('http://localhost:8080/signup/projects').subscribe({
+      next: (data) => {
+        this.projects = data;
+        this.filteredProjects = data;
+      },
+      error: (err) => {
+        console.error('Failed to load projects:', err);
+        this.projects = [];
+        this.filteredProjects = [];
+      }
     });
   }
 

@@ -51,7 +51,7 @@
             <!-- Department (Dynamic) -->
             <div class="form-row">
                 <label for="departmentSelect">Select Department</label>
-                <select id="departmentSelect" [(ngModel)]="department" name="department" required>
+                <select id="departmentSelect" [(ngModel)]="department" name="department" (change)="onDepartmentChange()" required>
                     <option value="">-- Choose Department --</option>
                     <option *ngFor="let d of departments" [value]="d">{{ d }}</option>
                 </select>        
