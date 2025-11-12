@@ -20,7 +20,7 @@ import com.example.authdemo.security.UserService;
 import com.example.authdemo.service.UserFileService;
 
 @RestController
-@RequestMapping("/signup")
+//@RequestMapping("/signup")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserManagementController {
 

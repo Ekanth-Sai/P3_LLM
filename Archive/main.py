@@ -24,8 +24,25 @@ def fetch_user_from_db(username: str) -> Dict[str, Any]:
         conn = psycopg2.connect(**DB_CONFIG)
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         
+        # Query to get user with their role hierarchy
         query = """
-            SELECT email, department, project, role, allowed_projects, allowed_sensitivity FROM users WHERE email = %s AND status = 'ACTIVE'
+            SELECT 
+                u.email, 
+                u.department, 
+                u.project, 
+                u.role, 
+                u.allowed_projects, 
+                u.allowed_sensitivity,
+                r.role_name as user_role_name,
+                ARRAY_AGG(DISTINCT pr.role_name) FILTER (WHERE pr.role_name IS NOT NULL) as inherited_roles
+            FROM users u
+            LEFT JOIN roles r ON u.role_id = r.id
+            LEFT JOIN LATERAL (
+                SELECT * FROM get_parent_roles(u.role_id)
+            ) AS parent_roles(role_id, role_name) ON true
+            LEFT JOIN roles pr ON pr.id = parent_roles.role_id
+            WHERE u.email = %s AND u.status = 'ACTIVE'
+            GROUP BY u.email, u.department, u.project, u.role, u.allowed_projects, u.allowed_sensitivity, r.role_name
         """
         cursor.execute(query, (username,))
         user = cursor.fetchone()
@@ -34,13 +51,22 @@ def fetch_user_from_db(username: str) -> Dict[str, Any]:
         conn.close()
         
         if user:
-            return dict(user)
+            user_dict = dict(user)
+            # Convert inherited_roles array to list if it exists
+            if user_dict.get('inherited_roles') and isinstance(user_dict['inherited_roles'], list):
+                user_dict['inherited_roles'] = [r for r in user_dict['inherited_roles'] if r]
+            else:
+                # Fallback to legacy role field
+                user_dict['inherited_roles'] = [user_dict.get('role', 'USER')]
+            return user_dict
         else:
             print(f"User {username} not found or not active")
             return None
             
     except Exception as e:
         print(f"DB Error: {e}")
+        import traceback
+        traceback.print_exc()
         return None
 
 class DocQASystem:
@@ -49,9 +75,11 @@ class DocQASystem:
         self.vector_db_manager = VectorDBManager()
         self.llm_qa_manager = LLM_QAManager()
 
-    def process_and_add_document(self, file_path: str, department: str, sensitivity: str, project_name: str):
+    def process_and_add_document(self, file_path: str, department: str, sensitivity: str, 
+                                 project_name: str, allowed_roles: List[str] = None):
         print(f"\nProcessing: {file_path}")
         print(f"Dept: {department} | Project: {project_name} | Sensitivity: {sensitivity}")
+        print(f"Allowed Roles: {allowed_roles}")
         
         try:
             processor = DocumentProcessorFactory.get_processor(file_path)
@@ -109,17 +137,33 @@ class DocQASystem:
                 metadata["project"] = project_name
                 metadata["chunk_id"] = i
                 metadata["source"] = f"{processor.filename}_chunk_{i}"
+                
+                # CRITICAL FIX: Convert role list to comma-separated string
+                # ChromaDB doesn't support list/array in metadata
+                if allowed_roles and isinstance(allowed_roles, list):
+                    metadata["allowed_roles"] = ",".join(allowed_roles)  # Convert to string
+                else:
+                    metadata["allowed_roles"] = "CEO"  # Default
+                
                 metadatas.append(metadata)
 
-            self.vector_db_manager.add_documents(processed_chunks, chunk_embeddings, metadatas, department=department,project_name=project_name)
+            self.vector_db_manager.add_documents(
+                processed_chunks, 
+                chunk_embeddings, 
+                metadatas, 
+                department=department,
+                project_name=project_name
+            )
 
             with open(PROCESSED_FILES_LOG, "a") as f:
                 f.write(f"{file_path}\n")
 
-            print(f"Successfully processed {file_path}")
+            print(f"✅ Successfully processed {file_path}")
 
         except Exception as e:
-            print(f"Error processing {file_path}: {e}")
+            print(f"❌ Error processing {file_path}: {e}")
+            import traceback
+            traceback.print_exc()
 
     def query_system(self, username: str, query: str, filters: Dict = None) -> str:
         print(f"\nQuery from {username}: {query}")
@@ -137,9 +181,13 @@ class DocQASystem:
             allowed_projects = user.get('allowed_projects', [user.get('project', 'General')])
             allowed_sensitivity = user.get('allowed_sensitivity', ['Public', 'Internal'])
 
+        # Get user's role hierarchy for filtering
+        user_roles = user.get('inherited_roles', [user.get('role', 'USER')])
+        
         print(f"Dept: {department}")
         print(f"Projects: {allowed_projects}")
         print(f"Sensitivity: {allowed_sensitivity}")
+        print(f"User Roles: {user_roles}")
 
         query_embedding = self.embedding_manager.generate_embedding(query)
         if not query_embedding:
@@ -150,6 +198,7 @@ class DocQASystem:
             department=department,
             allowed_projects=allowed_projects,
             allowed_sensitivity=allowed_sensitivity,
+            user_roles=user_roles,  # Pass user's role hierarchy
             n_results=5
         )
 

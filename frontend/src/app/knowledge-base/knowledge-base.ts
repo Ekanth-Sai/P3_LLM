@@ -24,6 +24,9 @@ export class KnowledgeBaseComponent implements OnInit {
   newProjectName = '';
 
   selectedFile: File | null = null;
+  selectedRoles: string[] = [];
+  availableRoles: any[] = [];
+  selectedSensitivity = 'Internal';
 
   groupedFiles: { [department: string]: { [project: string]: any[] } } = {};
   expandedDepartments: { [department: string]: boolean } = {};
@@ -38,6 +41,7 @@ export class KnowledgeBaseComponent implements OnInit {
   ngOnInit() {
     this.loadDepartments();
     this.loadDocuments();
+    this.loadRoles();
   }
 
   showMessage(text: string, type: 'success' | 'error') {
@@ -68,7 +72,6 @@ export class KnowledgeBaseComponent implements OnInit {
         }
       });
   }
-
 
   onDepartmentChange() {
     this.selectedProject = '';
@@ -141,16 +144,22 @@ export class KnowledgeBaseComponent implements OnInit {
       return;
     }
 
+    // Expand roles to include parents before upload
+    const expandedRoles = this.expandRolesToIncludeParents(this.selectedRoles);
+
     const formData = new FormData();
     formData.append('file', this.selectedFile);
     formData.append('departmentName', department);
     formData.append('projectName', project);
+    formData.append('sensitivity', this.selectedSensitivity || 'Internal');
+    formData.append('allowedRolesJson', expandedRoles.join(','));
 
     this.http.post('http://localhost:8080/admin/upload-file', formData).subscribe({
       next: () => {
         this.showMessage(`File uploaded to ${department} / ${project}`, 'success');
         this.loadDocuments();
         this.selectedFile = null;
+        this.selectedRoles = [];
       },
       error: (err) => {
         console.error('Upload failed:', err);
@@ -208,10 +217,52 @@ export class KnowledgeBaseComponent implements OnInit {
   goBackToDashboard() {
     this.router.navigate(['/admin']);
   }
+
   onLogout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('email');
     this.router.navigate(['/login']);
+  }
+
+  loadRoles() {
+    this.http.get<any[]>('http://localhost:8080/api/roles/all')
+      .subscribe({
+        next: (data) => {
+          this.availableRoles = data;
+          console.log('✅ Loaded roles:', this.availableRoles);
+        },
+        error: (err) => console.error('Failed to load roles:', err)
+      });
+  }
+
+  /**
+   * Expand selected roles to include all parent roles
+   * For example: if "DEVELOPER" is selected, it will return ["DEVELOPER", "SENIOR_DEVELOPER", "TEAM_LEAD", "CTO", "CEO"]
+   */
+  expandRolesToIncludeParents(selectedRoles: string[]): string[] {
+    const roleHierarchyMap: Record<string, string[]> = {
+      'INTERN': ['INTERN', 'JUNIOR_DEVELOPER', 'DEVELOPER', 'SENIOR_DEVELOPER', 'TEAM_LEAD', 'CTO', 'CEO'],
+      'JUNIOR_DEVELOPER': ['JUNIOR_DEVELOPER', 'DEVELOPER', 'SENIOR_DEVELOPER', 'TEAM_LEAD', 'CTO', 'CEO'],
+      'DEVELOPER': ['DEVELOPER', 'SENIOR_DEVELOPER', 'TEAM_LEAD', 'CTO', 'CEO'],
+      'SENIOR_DEVELOPER': ['SENIOR_DEVELOPER', 'TEAM_LEAD', 'CTO', 'CEO'],
+      'TEAM_LEAD': ['TEAM_LEAD', 'CTO', 'CEO'],
+      'CTO': ['CTO', 'CEO'],
+      'PRODUCT_MANAGER': ['PRODUCT_MANAGER', 'CPO', 'CEO'],
+      'PROJECT_MANAGER': ['PROJECT_MANAGER', 'CPO', 'CEO'],
+      'CPO': ['CPO', 'CEO'],
+      'CFO': ['CFO', 'CEO'],
+      'HR': ['HR', 'CEO'],
+      'CEO': ['CEO']
+    };
+
+    const expandedRoles = new Set<string>();
+
+    for (const role of selectedRoles) {
+      const hierarchy = roleHierarchyMap[role] || [role];
+      hierarchy.forEach(r => expandedRoles.add(r));
+    }
+
+    return Array.from(expandedRoles);
   }
 }

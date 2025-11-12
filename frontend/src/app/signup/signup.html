@@ -30,13 +30,32 @@
                 <input type="email" placeholder="Enter email id" [(ngModel)]="email" name="email" required />
             </div>
 
+            <!-- Password -->
             <label>Password</label>
             <div class="input-group">
                 <span class="icon">🔒</span>
                 <input type="password" placeholder="Enter password" [(ngModel)]="password" name="password" required />
             </div>
 
+            <!-- Department (Dynamic) -->
+            <label>Department</label>
+            <div class="input-group">
+                <span class="icon">🏢</span>
+                <select [(ngModel)]="department" name="department" (change)="onDepartmentChange()" required>
+                    <option value="" disabled selected>Select Department</option>
+                    <option *ngFor="let dept of departments" [value]="dept">{{ dept }}</option>
+                </select>
+            </div>
 
+            <!-- Current Project (Dynamic, filtered by department) -->
+            <label>Current Project</label>
+            <div class="input-group">
+                <span class="icon">👥</span>
+                <select [(ngModel)]="project" name="project" required>
+                    <option value="" disabled selected>Select Project</option>
+                    <option *ngFor="let proj of filteredProjects" [value]="proj">{{ proj }}</option>
+                </select>
+            </div>
 
             <!-- Designation -->
             <label>Designation</label>
@@ -45,36 +64,13 @@
                 <input type="text" placeholder="Enter your designation" [(ngModel)]="designation" name="designation"
                     required />
             </div>
-           
-            <!-- Department Dropdown -->
-            <div class="form-row">
-                <label class="form-label">🏢 Department</label>
-                <select
-                [(ngModel)]="selectedDepartment"
-                name="departmentSelect"
-                class="select-input"
-                (change)="onDepartmentChange()"
-                >
-                <option value="">-- Choose Department --</option>
-                <option *ngFor="let d of departments" [value]="d">{{ d }}</option>
-                </select>
-            </div>
-
-            <!-- Current Project -->
-            <div class="form-row">
-                <label class="form-label">🗂️ Project</label>
-                <select [(ngModel)]="selectedProject" name="projectSelect" class="select-input">
-                  <option value="">-- Choose Project --</option>
-                  <option *ngFor="let p of projects" [value]="p">{{ p }}</option>
-                </select>
-              </div>
 
             <!-- Manager Name -->
             <label>Manager Name</label>
             <div class="input-group">
                 <span class="icon">👔</span>
                 <select [(ngModel)]="manager" name="manager" required>
-                    <option disabled selected>Manager Name</option>
+                    <option value="" disabled selected>Manager Name</option>
                     <option>Manager 1</option>
                     <option>Manager 2</option>
                 </select>

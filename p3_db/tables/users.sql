@@ -1,0 +1,3 @@
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS role_id INTEGER REFERENCES roles(id),
+    ADD COLUMN IF NOT EXISTS sub_role_id INTEGER REFERENCES sub_roles(id);
