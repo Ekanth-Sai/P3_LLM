@@ -1,0 +1,10 @@
+Department: Engineering
+Project: Phoenix
+Sensitivity: Confidential
+
+Phoenix Architecture Overview:
+- Python Flask microservices
+- PostgreSQL database
+- Angular frontend
+- ChromaDB vector database for embeddings
+

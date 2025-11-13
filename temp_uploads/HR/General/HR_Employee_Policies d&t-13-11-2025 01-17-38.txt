@@ -1,0 +1,9 @@
+Department: HR
+Project: General
+Sensitivity: Public
+
+Company HR Policy:
+- 20 days annual leave
+- 3 days remote work per week
+- Business casual dress code
+

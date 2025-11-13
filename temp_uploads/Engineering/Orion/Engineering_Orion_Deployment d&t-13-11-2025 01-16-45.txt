@@ -1,0 +1,10 @@
+Department: Engineering
+Project: Orion
+Sensitivity: Internal
+
+Orion Deployment:
+- AWS ECS orchestration
+- RDS PostgreSQL
+- CloudFront for distribution
+- Monthly infra cost: $12,000
+

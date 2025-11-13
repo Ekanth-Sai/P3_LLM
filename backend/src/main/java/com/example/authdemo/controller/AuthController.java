@@ -79,7 +79,9 @@ public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         .map(user -> {
             if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
 
-                //  Check account status
+                    //  Check account status
+                    System.out.println("Going into the log");
+                
                 if ("PENDING".equals(user.getStatus())) {
                     return ResponseEntity.ok(Map.of("status", "pending", "message", "Your account is awaiting admin approval"));
                 }

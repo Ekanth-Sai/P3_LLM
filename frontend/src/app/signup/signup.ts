@@ -88,7 +88,7 @@ export class SignupComponent implements OnInit {
       role: this.role
     };
 
-    this.http.post('http://localhost:8080/signup', signupData).subscribe({
+    this.http.post('http://localhost:8080/create-user', signupData).subscribe({
       next: (res: any) => {
         alert('Signup successful. Awaiting admin approval.');
         this.router.navigate(['/signup-confirmation']);

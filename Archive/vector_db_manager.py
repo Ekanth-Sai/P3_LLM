@@ -58,13 +58,25 @@ class VectorDBManager:
                        user_roles: List[str], n_results: int = 5) -> List[Dict]:
         collection = self.get_or_create_department_collection(department)
 
-        # Build base filter for department, project, and sensitivity
-        where_filter = {
-            "$and": [
-                {"project": {"$in": allowed_projects}},
-                {"sensitivity": {"$in": allowed_sensitivity}}
-            ]
+        # Build base filter for project and sensitivity
+        where_clauses = []
+        if allowed_projects:
+            where_clauses.append({"project": {"$in": allowed_projects}})
+        if allowed_sensitivity:
+            where_clauses.append({"sensitivity": {"$in": allowed_sensitivity}})
+
+        query_params = {
+            'query_embeddings': [query_embedding],
+            'n_results': n_results * 3,
+            'include': ['documents', 'metadatas', 'distances']
         }
+
+        if where_clauses:
+            if len(where_clauses) > 1:
+                where_filter = {"$and": where_clauses}
+            else:
+                where_filter = where_clauses[0]
+            query_params['where'] = where_filter
 
         print(f"Querying {department} collection")
         print(f"Projects: {allowed_projects}")
@@ -73,12 +85,7 @@ class VectorDBManager:
 
         try:
             # Query without role filter first (we'll filter in Python)
-            results = collection.query(
-                query_embeddings=[query_embedding], 
-                n_results=n_results * 3,  # Get more results to filter
-                where=where_filter,
-                include=['documents', 'metadatas', 'distances']
-            )
+            results = collection.query(**query_params)
 
             processed_results = []
             if results and results.get('documents') and len(results['documents'][0]) > 0:

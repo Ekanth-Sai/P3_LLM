@@ -306,5 +306,166 @@
         "response": "No relevant information found with your access permissions.",
         "filters": {},
         "timestamp": "2025-11-10T16:40:09.983915+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "What is the name of the project",
+        "response": "User not found or unauthorized",
+        "filters": {},
+        "timestamp": "2025-11-13T10:42:30.135508+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "Is the bot active?",
+        "response": "User not found or unauthorized",
+        "filters": {},
+        "timestamp": "2025-11-13T16:12:16.758942+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "Is the bot working",
+        "response": "User not found or unauthorized",
+        "filters": {},
+        "timestamp": "2025-11-13T16:25:29.065761+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "Is the bot working",
+        "response": "User not found or unauthorized",
+        "filters": {},
+        "timestamp": "2025-11-13T16:26:32.048410+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "Is the bot working?",
+        "response": "User not found or unauthorized",
+        "filters": {},
+        "timestamp": "2025-11-13T16:35:09.822113+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "Is the bot working",
+        "response": "No relevant information found with your access permissions.",
+        "filters": {},
+        "timestamp": "2025-11-13T16:39:09.203770+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "Is the bot working?",
+        "response": "No relevant information found with your access permissions.",
+        "filters": {},
+        "timestamp": "2025-11-13T16:40:48.937002+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "What is the project name?",
+        "response": "No relevant information found with your access permissions.",
+        "filters": {},
+        "timestamp": "2025-11-13T16:41:00.177344+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "What is the project name?",
+        "response": "An error occurred while trying to generate a response from the AI (Ollama API Error).",
+        "filters": {},
+        "timestamp": "2025-11-13T16:42:56.127844+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "What is the project name?",
+        "response": "Based on Document Chunk 1, the project name is \"Phoenix\".",
+        "filters": {},
+        "timestamp": "2025-11-13T16:44:55.397023+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "What is the budget for Phoenix?",
+        "response": "According to Document Chunk 1, the Project Budget for Phoenix is $500,000.",
+        "filters": {},
+        "timestamp": "2025-11-13T17:02:24.932590+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "Can you give me information about Orion?",
+        "response": "I cannot find the information about Orion in the provided context. The context only mentions Phoenix, an analytics platform for enterprise clients, and Zerodha's AIML overview, which discusses various machine learning models used by Zerodha. There is no mention of Orion in any of the document chunks.",
+        "filters": {},
+        "timestamp": "2025-11-13T17:03:47.950576+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "Give me the dress code of the company",
+        "response": "I cannot find any information about the dress code of the company based on the provided context. The context only discusses topics related to software development, testing, quality standards, and AI/ML models used by Zerodha. There is no mention of dress codes or corporate attire. If you have more context or a different document chunk that provides this information, I'd be happy to help!",
+        "filters": {},
+        "timestamp": "2025-11-13T17:05:16.345995+00:00"
+    },
+    {
+        "username": "carol@p3.com",
+        "query": "Describe Phoenix's architecture",
+        "response": "Based on the provided context (Document Chunk 1), I can describe Phoenix's architecture as follows:\n\nPhoenix Architecture Overview:\n\n* Python Flask microservices\n* PostgreSQL database\n* Angular frontend\n* ChromaDB vector database for embeddings\n\nThis is the only information available about Phoenix's architecture in the provided context.",
+        "filters": {},
+        "timestamp": "2025-11-13T17:47:23.254679+00:00"
+    },
+    {
+        "username": "carol@p3.com",
+        "query": "Give me steps for Orion's Deployment",
+        "response": "Based on the provided context, I can provide you with the steps for Orion's deployment:\n\n1. Use AWS ECS orchestration to deploy the application.\n2. Utilize RDS PostgreSQL as the database service.\n\nNote that there is no specific information provided regarding other steps or details of the deployment process beyond these two points. If you need more information, please let me know and I'll do my best to help!",
+        "filters": {},
+        "timestamp": "2025-11-13T17:48:19.414665+00:00"
+    },
+    {
+        "username": "carol@p3.com",
+        "query": "What is HR Remote work policy?",
+        "response": "I apologize, but I cannot find the information about HR Remote work policy in the provided context. The context only mentions details about Orion and Phoenix projects in Engineering department, their sensitivity levels, and some technical architecture overview. There is no mention of HR or remote work policy.",
+        "filters": {},
+        "timestamp": "2025-11-13T17:49:15.621017+00:00"
+    },
+    {
+        "username": "frank@p3.com",
+        "query": "Who leads the sales report",
+        "response": "Based on the provided context (Document Chunk 1), I can answer your question:\n\nThe leader of the sales report is Frank Brown.",
+        "filters": {},
+        "timestamp": "2025-11-13T17:49:47.744879+00:00"
+    },
+    {
+        "username": "frank@p3.com",
+        "query": "Give the company annual number of leaves",
+        "response": "I apologize, but I cannot find information about the company's annual number of leaves in the provided context. The context only includes a sales department document, a Q4 2024 market report, and a user query, but it does not mention anything about leaves or employee benefits. If you provide more relevant information, I'd be happy to help!",
+        "filters": {},
+        "timestamp": "2025-11-13T17:50:16.604487+00:00"
+    },
+    {
+        "username": "frank@p3.com",
+        "query": "What cloud provoder does Orion use",
+        "response": "I cannot find the information in the provided context. The documents only mention market reports and sales department information, but not cloud provider specifics for Orion.",
+        "filters": {},
+        "timestamp": "2025-11-13T17:51:00.247503+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "Give me the details of phoenix project",
+        "response": "Based on the provided context (Document Chunk 1-4), I can provide you with the details of the Phoenix project:\n\n**Project Overview:** The Phoenix project is an analytics platform for enterprise clients, featuring real-time dashboards and predictive modeling. The budget allocated for this project is $500,000.\n\n**Lead:** Alice Johnson, Product Manager, is leading this project.\n\nThat's all the information I can gather from the provided context regarding the Phoenix project. If you have any further questions or would like more information, please let me know!",
+        "filters": {},
+        "timestamp": "2025-11-13T19:11:18.122943+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "Give me the details of Orion project",
+        "response": "I apologize, but there is no mention of the \"Orion\" project in any of the provided documents. The context only includes information about a project called \"Phoenix\", which appears to be an analytics platform for enterprise clients. If you're looking for information on the Orion project, I'm afraid it's not present in the provided context.",
+        "filters": {},
+        "timestamp": "2025-11-13T19:13:13.760599+00:00"
+    },
+    {
+        "username": "alice@p3.com",
+        "query": "Give me the Q4 of sales",
+        "response": "I cannot find any information about Zerodha's sales or Q4 in the provided context. The documents only seem to discuss AI models used by Zerodha, analytics platform for enterprise clients (Phoenix), and important questions related to software development process. If you're looking for information on Zerodha's sales, I recommend searching for publicly available data or contacting their customer support directly.",
+        "filters": {},
+        "timestamp": "2025-11-13T19:16:02.046237+00:00"
+    },
+    {
+        "username": "frank@p3.com",
+        "query": "Give me details of the projects",
+        "response": "Based on the provided context, I can answer that there is only one project mentioned:\n\n* Project: General\n\nThere is no additional information about this project in the provided chunks. If you would like to know more about this project or any other aspect, please provide more context or clarification.",
+        "filters": {},
+        "timestamp": "2025-11-13T19:18:35.419145+00:00"
     }
 ]

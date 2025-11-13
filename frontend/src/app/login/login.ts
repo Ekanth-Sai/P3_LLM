@@ -41,7 +41,7 @@ export class LoginComponent {
           localStorage.setItem('email', this.email);
 
           // ✅ Navigate based on role
-          if (response.role === 'USER') {
+          if (response.role === 'USER' || response.role === 'PRODUCT_MANAGER' || response.role === 'SENIOR_DEVELOPER' || response.role === 'DEVELOPER' || response.role === 'HR') {
             this.router.navigate(['/bot-usage']);
           } else if (response.role === 'ADMIN') {
             this.router.navigate(['/admin']);

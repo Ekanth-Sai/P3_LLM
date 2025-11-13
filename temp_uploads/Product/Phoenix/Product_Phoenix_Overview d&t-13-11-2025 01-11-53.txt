@@ -1,0 +1,9 @@
+Department: Product
+Project: Phoenix
+Sensitivity: Internal
+
+Phoenix is an analytics platform for enterprise clients.
+It includes real-time dashboards and predictive modeling.
+Project Budget: $500,000.
+Lead: Alice Johnson (Product Manager).
+
