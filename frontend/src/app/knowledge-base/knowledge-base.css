@@ -6,78 +6,80 @@
   min-height: 100vh;
 }
 
-  
-  
-  /* ============================
+
+
+/* ============================
      Navbar
   ============================ */
-  .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 10;
-    background-color: #0066cc; /* Same as #06c, clearer */
-    color: white;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  .logo {
-    height: 36px;
-    width: auto;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-  
-  .nav-left {
-    display: flex;
-    align-items: center;
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: white;
-  }
-  
-  /* Right section container */
-  .nav-right-container {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem; /* spacing between Home and Sign Out */
-  }
-  
-  /* Right-side items (Home text) */
-  .nav-right {
-   
-    font-weight: 500;
-    transition: opacity 0.2s ease;
-  }
-  
-  .nav-right:hover {
-    opacity: 0.8;
-  }
-  
-  /* Sign Out button */
-  .logout-btn {
-    background-color: #ffffff;
-    color: rgb(0, 0, 0);
-    border: none;
-    border-radius: 6px;
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-  }
-  
-  .logout-btn:hover {
-    background-color: #c5c0c0;
-    transform: scale(1.05);
-  }
-  
-  
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background-color: #0066cc;
+  /* Same as #06c, clearer */
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.logo {
+  height: 36px;
+  width: auto;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: white;
+}
+
+/* Right section container */
+.nav-right-container {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  /* spacing between Home and Sign Out */
+}
+
+/* Right-side items (Home text) */
+.nav-right {
+
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.nav-right:hover {
+  opacity: 0.8;
+}
+
+/* Sign Out button */
+.logout-btn {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.logout-btn:hover {
+  background-color: #c5c0c0;
+  transform: scale(1.05);
+}
+
+
 
 /* Cards */
 .card {
@@ -106,10 +108,12 @@
   text-align: center;
   font-weight: 500;
 }
+
 .message-success {
   background-color: #d4edda;
   color: #155724;
 }
+
 .message-error {
   background-color: #f8d7da;
   color: #721c24;
@@ -120,20 +124,24 @@
   max-width: 750px;
   margin: 0 auto;
 }
+
 .upload-form {
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
 }
+
 .form-row {
   display: flex;
   flex-direction: column;
 }
+
 .form-label {
   font-weight: 600;
   color: #333;
   margin-bottom: 0.3rem;
 }
+
 .file-input,
 .select-input,
 .text-input {
@@ -144,6 +152,7 @@
   font-size: 0.95rem;
   transition: all 0.2s ease-in-out;
 }
+
 .file-input:focus,
 .select-input:focus,
 .text-input:focus {
@@ -151,9 +160,11 @@
   background: #fff;
   outline: none;
 }
+
 .button-row {
   text-align: right;
 }
+
 .btn-primary {
   background: #0077ff;
   color: white;
@@ -164,6 +175,7 @@
   cursor: pointer;
   transition: background 0.2s;
 }
+
 .btn-primary:hover {
   background: #005ad6;
 }
@@ -181,6 +193,7 @@
   border-left: 3px solid #0077ff20;
   padding-left: 0.8rem;
 }
+
 .department-header {
   display: flex;
   justify-content: space-between;
@@ -193,13 +206,16 @@
   cursor: pointer;
   transition: background 0.25s ease-in-out;
 }
+
 .department-header:hover {
   background: #0077ff;
   color: white;
 }
+
 .department-title {
   font-size: 1rem;
 }
+
 .department-projects {
   margin-top: 0.6rem;
   padding-left: 1.2rem;
@@ -210,6 +226,7 @@
 .project-block {
   margin-bottom: 0.8rem;
 }
+
 .project-header {
   display: flex;
   justify-content: space-between;
@@ -221,23 +238,28 @@
   font-weight: 500;
   transition: all 0.2s;
 }
+
 .project-header:hover {
   background: #0077ff;
   color: white;
 }
+
 .project-title {
   font-weight: 600;
   color: #1e40af;
 }
+
 .project-title:hover {
   color: white;
 }
+
 .file-count {
   color: #555;
   font-size: 0.9rem;
   min-width: 70px;
   text-align: right;
 }
+
 .toggle-icon {
   font-size: 1rem;
   color: #333;
@@ -250,6 +272,7 @@
   margin-top: 0.6rem;
   padding-left: 1.2rem;
 }
+
 .file-item {
   display: flex;
   justify-content: space-between;
@@ -257,13 +280,16 @@
   padding: 0.4rem 0;
   border-bottom: 1px solid #f1f1f1;
 }
+
 .file-item:last-child {
   border-bottom: none;
 }
+
 .file-actions {
   display: flex;
   gap: 0.5rem;
 }
+
 .btn-secondary {
   background: #e0e7ff;
   color: #1e3a8a;
@@ -273,9 +299,11 @@
   cursor: pointer;
   transition: 0.2s;
 }
+
 .btn-secondary:hover {
   background: #c7d2fe;
 }
+
 .btn-danger {
   background: #fee2e2;
   color: #b91c1c;
@@ -285,6 +313,7 @@
   cursor: pointer;
   transition: 0.2s;
 }
+
 .btn-danger:hover {
   background: #fecaca;
 }

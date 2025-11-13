@@ -197,14 +197,12 @@ export class BotUsageComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error('❌ Error downloading file:', err);
+        console.error('Error downloading file:', err);
         alert('Download failed. Please try again later.');
       }
     });
   }
   
-  
-
   showChat() {
     this.activeTab = 'chat';
   }

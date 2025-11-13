@@ -189,7 +189,7 @@ ngOnInit() {
 
 // fetch all existing project names
 loadProjects() {
-  this.http.get<string[]>('http://localhost:8080/admin/projects').subscribe({
+  this.http.get<string[]>('http://localhost:8080/signup/projects').subscribe({
     next: (data) => this.projects = data,
     error: (err) => console.error('Failed to load projects:', err)
   });

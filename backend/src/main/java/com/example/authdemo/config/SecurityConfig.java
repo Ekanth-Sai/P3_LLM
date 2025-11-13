@@ -45,6 +45,7 @@ public class SecurityConfig {
             	.requestMatchers("/api/auth/login").permitAll()  
             	.requestMatchers("/create-user").permitAll()
             	.requestMatchers("/signup/**").permitAll()
+            	.requestMatchers("/api/roles/**").permitAll()
                 .anyRequest().authenticated()
             )
 //            .formLogin(AbstractHttpConfigurer::disable)

@@ -32,7 +32,7 @@ public class UserService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(rawPassword));  // Hashing the password here
-        user.setRole("ADMIN");
+        user.setRole("USER");
         user.setStatus("PENDING");
         user.setFirstName(firstName);
         user.setLastName(lastName);

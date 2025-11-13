@@ -306,5 +306,19 @@
         "response": "No relevant information found with your access permissions.",
         "filters": {},
         "timestamp": "2025-11-10T16:40:09.983915+00:00"
+    },
+    {
+        "username": "admin@p3.com",
+        "query": "Hi",
+        "response": "User not found or unauthorized",
+        "filters": {},
+        "timestamp": "2025-11-13T16:09:51.827027+00:00"
+    },
+    {
+        "username": "bob@p3.com",
+        "query": "Hi",
+        "response": "User not found or unauthorized",
+        "filters": {},
+        "timestamp": "2025-11-13T16:17:20.474667+00:00"
     }
 ]

@@ -114,4 +114,3 @@ describe('KnowledgeBaseComponent', () => {
     expect(component.projects.length).toBe(0);
   }));
 });
-

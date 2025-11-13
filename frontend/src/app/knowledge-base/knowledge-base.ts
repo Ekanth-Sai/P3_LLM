@@ -51,7 +51,7 @@ export class KnowledgeBaseComponent implements OnInit {
   }
 
   loadDepartments() {
-    this.http.get<string[]>('http://localhost:8080/admin/departments').subscribe({
+    this.http.get<string[]>('http://localhost:8080/signup/departments').subscribe({
       next: (data) => (this.departments = data),
       error: (err) => {
         console.error('Failed to load departments:', err);
@@ -63,7 +63,7 @@ export class KnowledgeBaseComponent implements OnInit {
   loadProjects() {
     if (!this.selectedDepartment) return;
     this.http
-      .get<string[]>(`http://localhost:8080/admin/projects/${this.selectedDepartment}`)
+      .get<string[]>(`http://localhost:8080/signup/projects/${this.selectedDepartment}`)
       .subscribe({
         next: (data) => (this.projects = data),
         error: (err) => {

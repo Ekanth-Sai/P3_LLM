@@ -110,7 +110,6 @@ public class AdminController {
         }
         if (updates.containsKey("role"))
             user.setRole((String) updates.get("role"));
-
         userRepository.save(user);
         return ResponseEntity.ok(Collections.singletonMap("status", "updated"));
     }
